@@ -13,7 +13,7 @@ export const QueueVideo: React.FC = () => {
 
       <img
         src={videos[0].image}
-        alt={videos[0].alt}
+        alt={videos[0].title}
         className = "queue__image"
         style={{
           borderRadius: '5px',

@@ -1,19 +1,12 @@
+import { Channel } from "./channel";
+
 export interface Video {
-  id: Number;
+  id: number;
   image: string;
-  alt: string;
-  time: String;
-  avatar: String;
-  title: String;
+  duration: number;
+  avatar: string;
+  title: string;
+  views: number;
+  createdOn: string;
   channel: Channel;
-  meta: Meta;
-}
-
-interface Channel {
-  name: string;
-}
-
-interface Meta {
-  views: Number;
-  date: Date;
 }
