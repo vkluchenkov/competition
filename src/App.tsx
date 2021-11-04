@@ -1,27 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { QueueVideo } from './components/QueueVideo';
+import { GridVideo } from './components/GridVideo';
+import { videos } from './videos';
 
 function App() {
   return (
-    <QueueVideo />
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.tsx</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
+    // <QueueVideo video={videos[0]} onClick={() => {console.log('1')}} />
+    <GridVideo video={videos[0]} onClick={() => {console.log('2')}} inQueue={true} />
   );
 }
 

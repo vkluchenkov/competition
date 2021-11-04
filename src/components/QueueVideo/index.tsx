@@ -1,7 +1,10 @@
 import React from 'react';
-import { videos } from '../../videos';
+import { QueueVideoProps } from './types';
 
-export const QueueVideo: React.FC = () => {
+export const QueueVideo: React.FC<QueueVideoProps> = ({
+  video,
+  onClick,
+}) => {
   return (
     <div
       className = "queue__item"
@@ -9,11 +12,12 @@ export const QueueVideo: React.FC = () => {
         display: 'flex',
         width: '100%',
         maxWidth: '350px',
-      }}>
+      }}
+      onClick={onClick}>
 
       <img
-        src={videos[0].image}
-        alt={videos[0].title}
+        src={video.image}
+        alt={video.title}
         className = "queue__image"
         style={{
           borderRadius: '5px',
@@ -29,24 +33,26 @@ export const QueueVideo: React.FC = () => {
           flexDirection: 'column'
         }}>
 
-        <h5 className = "queue__title" style={{
+        <h5 className = "queue__title"
+        style={{
           fontSize: '16px',
           lineHeight: '18px',
           fontWeight: 600,
           paddingBottom: '10px',
           margin: 0,
         }}>
-          {videos[0].title}
+          {video.title}
         </h5>
 
-        <p className = "queue__channel" style={{
+        <p className = "queue__channel"
+        style={{
           fontSize: '16px',
           lineHeight: '18px',
           fontWeight: 600,
           paddingBottom: '10px',
           margin: 0,
         }}>
-          {videos[0].channel.name}
+          {video.channel.name}
         </p>
       </div>
     </div>

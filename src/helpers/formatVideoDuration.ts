@@ -9,6 +9,12 @@ export function formatVideoDuration(duration: number) {
   if (duration >= 60 && duration < 3600){
     const hours = Math.round(duration / oneMinute)
     const minutes = (duration % oneMinute)
-    return (hours + ':' + minutes)
+
+    if (minutes <= 9) {
+      return (hours + ':0' + minutes)
+    }
+    else {
+      return (hours + ':' + minutes)
+    }
   }
 }
