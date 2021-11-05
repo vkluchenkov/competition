@@ -7,6 +7,7 @@ import { formatAge } from "../../helpers/formatAge";
 import { formatViews } from "../../helpers/formatViews";
 import { formatVideoDuration } from "../../helpers/formatVideoDuration";
 import { useState } from "react";
+import clsx from "clsx";
 
 export const GridVideo: React.FC<GridVideoProps> = ({
   video,
@@ -14,7 +15,7 @@ export const GridVideo: React.FC<GridVideoProps> = ({
   inQueue,
 }) => {
 
-  const [mouseState, setMouseState] = useState('');
+  const [isHovered, setIsHovered] = useState(false);
 
   const videoViews = formatViews(video.views);
   const videoAge = formatAge(video.createdAt);
@@ -23,13 +24,13 @@ export const GridVideo: React.FC<GridVideoProps> = ({
 
   return (
     <div
-      id = {video.id}
+      id={video.id}
       css={styles.video}>
 
       <div
         css={styles.video_media}
-        onMouseOver={() => setMouseState('hovered')}
-        onMouseLeave={() => setMouseState('')}>
+        onMouseOver={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}>
 
         <img
           src={video.image}
@@ -43,7 +44,7 @@ export const GridVideo: React.FC<GridVideoProps> = ({
 
         <div
           css={styles.video_actions}
-          className={mouseState}
+          className={clsx({hovered: isHovered})}
         >
           <button
           onClick={onClick}

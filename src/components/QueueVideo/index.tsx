@@ -1,5 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import React from 'react';
 import { QueueVideoProps } from './types';
+import { css, jsx } from "@emotion/react";
+import { styles } from './styles';
 
 export const QueueVideo: React.FC<QueueVideoProps> = ({
   video,
@@ -7,51 +10,22 @@ export const QueueVideo: React.FC<QueueVideoProps> = ({
 }) => {
   return (
     <div
-      className = "queue__item"
-      style={{
-        display: 'flex',
-        width: '100%',
-        maxWidth: '350px',
-      }}
+      css={styles.queue_item}
       onClick={onClick}>
 
       <img
         src={video.image}
         alt={video.title}
-        className = "queue__image"
-        style={{
-          borderRadius: '5px',
-          width: '120px',
-          height: '67px',
-          objectFit: 'cover'
-        }}></img>
+        css={styles.queue_image}>
+        </img>
 
-      <div className = "queue__meta"
-        style={{
-          padding: '5px 15px',
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
+      <div css={styles.queue_meta}>
 
-        <h5 className = "queue__title"
-        style={{
-          fontSize: '16px',
-          lineHeight: '18px',
-          fontWeight: 600,
-          paddingBottom: '10px',
-          margin: 0,
-        }}>
+        <h5 css={styles.queue_title}>
           {video.title}
         </h5>
 
-        <p className = "queue__channel"
-        style={{
-          fontSize: '16px',
-          lineHeight: '18px',
-          fontWeight: 600,
-          paddingBottom: '10px',
-          margin: 0,
-        }}>
+        <p css={styles.queue_channel}>
           {video.channel.name}
         </p>
       </div>

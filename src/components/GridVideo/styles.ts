@@ -50,6 +50,10 @@ export const styles = createStyles({
     border: 'none',
     cursor: 'pointer',
     marginBottom: '5px',
+    transition: 'background-color .3s',
+    "&:hover" : {
+      backgroundColor: '#404241',
+    }
   },
   video_description: {
     display: 'flex',
