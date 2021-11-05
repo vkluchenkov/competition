@@ -1,13 +1,20 @@
+/** @jsxImportSource @emotion/react */
 import React from 'react';
+import { css } from '@emotion/react';
 import './App.css';
-import { QueueVideo } from './components/QueueVideo';
-import { GridVideo } from './components/GridVideo';
-import { videos } from './videos';
+import { VideoGrid } from './components/VideoGrid';
+import { Header } from './components/Header';
+import { Menu } from './components/Menu';
 
 function App() {
   return (
-    // <QueueVideo video={videos[0]} onClick={() => {console.log('1')}} />
-    <GridVideo video={videos[0]} onClick={() => {console.log('2')}} inQueue={true} />
+    <>
+    <Header />
+    <main css={{display: "flex", backgroundColor: "#f8f8f8"}}>
+      <Menu />
+      <VideoGrid />
+    </main>
+    </>
   );
 }
 

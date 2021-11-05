@@ -2,10 +2,10 @@ import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
   video: {
-    maxWidth: '700px',
+    width: '100%',
     border: 0,
     padding: 0,
-    verticaAlign: 'baseline',
+    verticalAlign: 'baseline',
   },
 
   video_media: {
@@ -28,6 +28,7 @@ export const styles = createStyles({
     position: 'absolute',
     bottom: '5px',
     right: '5px',
+    fontSize: '14px',
   },
   video_actions: {
     position: 'absolute',
