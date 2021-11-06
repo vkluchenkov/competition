@@ -15,6 +15,11 @@ export const Menu: React.FC = () => {
       <MenuItem>Item2</MenuItem>
       <MenuItem>Item3</MenuItem>
     </MenuSection>
+    <MenuSection>
+      <MenuItem>Item1</MenuItem>
+      <MenuItem>Item2</MenuItem>
+      <MenuItem>Item3</MenuItem>
+    </MenuSection>
     </nav>
   )
 }

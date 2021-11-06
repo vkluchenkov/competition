@@ -3,11 +3,10 @@ import React from "react";
 import { css } from "@emotion/react";
 import { styles } from "./styles";
 
-export const MenuTitle: React.FC = () => {
-  const title: string = "Меню раздела"
+export const MenuTitle: React.FC = ({ children }) => {
   return (
     <figcaption css={styles.menu_title}>
-      {title}
+      {children}
     </figcaption>
   )
 }
