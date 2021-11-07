@@ -5,6 +5,7 @@ import './App.css';
 import { VideoGrid } from './components/VideoGrid';
 import { Header } from './components/Header';
 import { Menu } from './components/Menu';
+import { QueuePopup } from './components/QueuePopup';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Menu />
       <VideoGrid />
     </main>
+    <QueuePopup />
     </>
   );
 }

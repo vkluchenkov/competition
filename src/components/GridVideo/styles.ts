@@ -29,6 +29,7 @@ export const styles = createStyles({
     bottom: '5px',
     right: '5px',
     fontSize: '14px',
+    lineHeight: 1,
   },
   video_actions: {
     position: 'absolute',
@@ -73,14 +74,17 @@ export const styles = createStyles({
   video_title: {
     fontSize: '18px',
     fontWeight: 600,
+    lineHeight: 1,
     margin: '0 0 10px',
   },
   video_channel: {
     color: 'grey',
     margin: '0 0 3px',
+    lineHeight: 1,
   },
   video_meta: {
     color: 'grey',
     margin: 0,
+    lineHeight: 1,
   },
 })

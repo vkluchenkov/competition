@@ -11,14 +11,14 @@ export const Menu: React.FC = () => {
     <nav css={styles.menu}>
      <MenuSection>
       <MenuTitle>Title</MenuTitle>
-      <MenuItem>Item1</MenuItem>
-      <MenuItem>Item2</MenuItem>
-      <MenuItem>Item3</MenuItem>
+      <MenuItem menuLink={"#"}>Item1</MenuItem>
+      <MenuItem menuLink={"#"}>Item2</MenuItem>
+      <MenuItem menuLink={"#"}>Item3</MenuItem>
     </MenuSection>
     <MenuSection>
-      <MenuItem>Item1</MenuItem>
-      <MenuItem>Item2</MenuItem>
-      <MenuItem>Item3</MenuItem>
+      <MenuItem menuLink={"#"}>Item1</MenuItem>
+      <MenuItem menuLink={"#"}>Item2</MenuItem>
+      <MenuItem menuLink={"#"}>Item3</MenuItem>
     </MenuSection>
     </nav>
   )
