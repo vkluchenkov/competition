@@ -8,26 +8,19 @@ import { formatViews } from "../../helpers/formatViews";
 import { formatVideoDuration } from "../../helpers/formatVideoDuration";
 import { useState } from "react";
 import clsx from "clsx";
-import { useQueue } from "../../store/Queue";
 
-export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
+export const GridVideo: React.FC<GridVideoProps> = ({
+  video,
+  onClick,
+  inQueue,
+}) => {
 
-  const [{queue}, {addVideo, removeVideo}] = useQueue()
-  const inQueue = queue.includes(video)
   const [isHovered, setIsHovered] = useState(false);
 
   const videoViews = formatViews(video.views);
   const videoAge = formatAge(video.createdAt);
   const videoDuration = formatVideoDuration(video.duration);
-  const videoButtonStyle = inQueue ? 'video__action_active' : '';
-
-  const onClick = () => {
-    if (inQueue) {
-      removeVideo(video)
-    } else {
-      addVideo(video)
-    }
-  }
+  const videoButtonStyle = inQueue ? 'video__action video__action_type_queue video__action_active' : 'video__action video__action_type_queue';
 
   return (
     <div
@@ -54,7 +47,6 @@ export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
           className={clsx({hovered: isHovered})}
         >
           <button
-          className = {videoButtonStyle}
           onClick={onClick}
             css={styles.video_action}>
               <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false"

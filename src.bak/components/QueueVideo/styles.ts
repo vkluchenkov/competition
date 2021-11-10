@@ -5,11 +5,6 @@ export const styles = createStyles({
     display: 'flex',
     width: '100%',
     maxWidth: '350px',
-    cursor: "pointer",
-    transition: "background-color .3s",
-    "&:hover": {
-      backgroundColor: "#eee"
-    },
   },
 
   queue_image: {

@@ -19,9 +19,6 @@ export const styles = createStyles({
       cursor: "unset",
       minWidth: "350px",
     },
-    "&.notification_empty": {
-      display: 'none',
-    },
   },
 
   notification__title: {

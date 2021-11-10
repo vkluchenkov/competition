@@ -55,13 +55,7 @@ export const styles = createStyles({
     transition: 'background-color .3s',
     "&:hover" : {
       backgroundColor: '#404241',
-    },
-    "&.video__action_active": {
-      backgroundColor: "red"
-    },
-    "&.video__action_active:hover": {
-      backgroundColor: "darkred"
-    },
+    }
   },
   video_description: {
     display: 'flex',
