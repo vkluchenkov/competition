@@ -14,12 +14,12 @@ import { UserProvider } from './store/User';
     <QueueProvider>
       <UserProvider>
         <Header />
+        <main css={{display: "flex", backgroundColor: "#f8f8f8"}}>
+          <Menu />
+          <VideoGrid />
+        </main>
+        <QueuePopup />
       </UserProvider>
-      <main css={{display: "flex", backgroundColor: "#f8f8f8"}}>
-        <Menu />
-        <VideoGrid />
-      </main>
-      <QueuePopup />
     </QueueProvider>
   );
 }
