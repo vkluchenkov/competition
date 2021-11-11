@@ -8,13 +8,10 @@ import { videos } from "../../videos";
 import { Video } from "../../models/video";
 
 export const VideoGrid: React.FC<VideoGridProps> = () => {
-  const videoCards = () => {
-    return videos.map((video: Video) => <GridVideo video={video}></GridVideo>)
-  }
   return (
     <section css={styles.section}>
       <div css={styles.videoGrid}>
-        {videoCards()}
+      {videos.map((video: Video) => <GridVideo video={video} />)}
       </div>
     </section>
   )

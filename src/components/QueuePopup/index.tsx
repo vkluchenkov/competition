@@ -5,21 +5,22 @@ import { css } from "@emotion/react";
 import { styles } from './styles';
 import clsx from "clsx";
 import { QueueVideo } from '../QueueVideo/index';
-import { videos } from '../../videos';
 import { useQueue } from '../../store/Queue';
 
 export const QueuePopup: React.FC = () => {
   const [isOpened, setIsOpened] = useState(true);
   const [{queue, activeVideo}] = useQueue();
   const activeVideoIndex = queue.findIndex((video) => video.id === activeVideo?.id)
-  const isQueue = queue.length === 0
-  const queueVideos = queue.map((video) => <QueueVideo video={video} />)
+
+  if (!queue.length) {
+    return null;
+  }
 
   return (
     <figure
     css={styles.notification}
     onClick={() => setIsOpened(true)}
-    className={clsx({notification_state_opened: isOpened, notification_empty: isQueue})}
+    className={clsx({notification_state_opened: isOpened})}
     >
       <figcaption css={styles.notification__title}>
         Видео в очереди
@@ -31,7 +32,7 @@ export const QueuePopup: React.FC = () => {
         css={styles.queue}
         className={clsx({queue_visible: isOpened, queue_hidden: !isOpened})}
         >
-          {queueVideos}
+          {queue.map((video) => <QueueVideo video={video} />)}
       </div>
       <div
         css={styles.close_button}

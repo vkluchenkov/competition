@@ -19,7 +19,6 @@ export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
   const videoViews = formatViews(video.views);
   const videoAge = formatAge(video.createdAt);
   const videoDuration = formatVideoDuration(video.duration);
-  const videoButtonStyle = inQueue ? 'video__action_active' : '';
 
   const onClick = () => {
     if (inQueue) {
@@ -54,7 +53,7 @@ export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
           className={clsx({hovered: isHovered})}
         >
           <button
-          className = {videoButtonStyle}
+          className = {clsx({video__action_active: inQueue})}
           onClick={onClick}
             css={styles.video_action}>
               <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false"

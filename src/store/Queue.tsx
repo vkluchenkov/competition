@@ -1,7 +1,5 @@
 import React from "react";
-import { videos } from "../videos";
 import { Video } from "../models/video";
-import { QueueVideo } from "../components/QueueVideo";
 
 interface QueueStore {
   queue: Video[]

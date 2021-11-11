@@ -1,6 +1,6 @@
 // Formatting view numbers
 export function formatViews(num: number) {
-  if (num == 1) {
+  if (num === 1) {
     return '1 view';
   };
   if (num > 1e6) {

@@ -2,8 +2,29 @@
 import React from "react";
 import { css } from "@emotion/react";
 import { styles } from "./styles";
+import { UserProvider, useUser } from "../../store/User";
 
 export const Header: React.FC = () => {
+  const login = () => {
+    setActiveUser(
+      {
+        id: "001",
+        username: "Vasya",
+        avatar: "./images/media.webp"
+      })
+  }
+
+  const logout = () => {
+    removeActiveUser()
+  }
+  const [{CurrentUser}, {setActiveUser, removeActiveUser}] = useUser()
+  const user = () => {
+    if (CurrentUser) {
+      return <img src={CurrentUser.avatar} alt={CurrentUser.username} css={styles.header_button} onClick={logout}/>
+    }
+    return <button onClick={login}>Login</button>
+  }
+
   return (
     <header css={styles.header}>
       <div css={styles.header_section}>
@@ -47,6 +68,9 @@ export const Header: React.FC = () => {
             </path>
           </svg>
         </button>
+
+        {user()}
+
       </div>
     </header>
   )
