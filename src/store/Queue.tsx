@@ -34,16 +34,35 @@ export const QueueProvider: React.FC = ({ children }) => {
   const removeVideo:QueueStoreActions['removeVideo'] = (video) => {
     setState((prev) => {
       const NewQueue = prev.queue.slice()
+      let newActive = prev.activeVideo
       const ifInQueue = NewQueue.includes(video)
+      const ifActive = video === prev.activeVideo
       const Index = NewQueue.indexOf(video)
 
       if (ifInQueue){
         NewQueue.splice(Index, 1)
+        if (ifActive && !NewQueue.length) {
+          // Если в очереди пусто^^ удаляем активное
+          newActive = null
+        }
+        else if (ifActive && NewQueue.length === 1) {
+        //   // Если в очереди есть 1 видео^^ назначаем его активным
+          newActive = NewQueue[0]
+        }
+        else if (ifActive && NewQueue.length > 1 && Index > 0) {
+          // Если в очереди осталось несколько видео до текущего^^ назначаем активным предыдущее
+          newActive = NewQueue[Index - 1]
+        }
+        else {
+          // Во всех остальных случаях назначаем активным следующее
+          newActive = NewQueue[Index]
+        }
       }
 
       return {
         ...prev,
-        queue: NewQueue
+        queue: NewQueue,
+        activeVideo: newActive
       }
     })
   }

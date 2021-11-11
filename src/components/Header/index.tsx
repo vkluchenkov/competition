@@ -2,7 +2,7 @@
 import React from "react";
 import { css } from "@emotion/react";
 import { styles } from "./styles";
-import { UserProvider, useUser } from "../../store/User";
+import { useUser } from "../../store/User";
 
 export const Header: React.FC = () => {
   const login = () => {
@@ -17,10 +17,10 @@ export const Header: React.FC = () => {
   const logout = () => {
     removeActiveUser()
   }
-  const [{CurrentUser}, {setActiveUser, removeActiveUser}] = useUser()
+  const [{currentUser: currentUser}, {setActiveUser, removeActiveUser}] = useUser()
   const user = () => {
-    if (CurrentUser) {
-      return <img src={CurrentUser.avatar} alt={CurrentUser.username} css={styles.header_button} onClick={logout}/>
+    if (currentUser) {
+      return <img src={currentUser.avatar} alt={currentUser.username} css={styles.header_button} onClick={logout}/>
     }
     return <button onClick={login}>Login</button>
   }

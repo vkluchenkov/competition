@@ -3,7 +3,7 @@ import { User } from "../models/user"
 import { Video } from "../models/video";
 
 interface UserStore {
-  CurrentUser: User | null
+  currentUser: User | null
   favorites: Video[]
 }
 
@@ -18,7 +18,7 @@ export const ActiveUser = React.createContext<[UserStore, UserStoreActions] | nu
 
 export const UserProvider: React.FC = ({ children }) => {
   const [state, setState] = React.useState<UserStore>({
-    CurrentUser: null,
+    currentUser: null,
     favorites: []
   });
 
@@ -26,7 +26,7 @@ export const UserProvider: React.FC = ({ children }) => {
     setState((prev) => {
       return{
         ...prev,
-        CurrentUser: user
+        currentUser: user
       }
     })
   }
@@ -35,7 +35,7 @@ export const UserProvider: React.FC = ({ children }) => {
     setState((prev) => {
       return{
         ...prev,
-        CurrentUser: null
+        currentUser: null
       }
     })
   }
