@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
+import React, { Fragment } from 'react';
 import { css } from '@emotion/react';
 import './App.css';
 import { VideoGrid } from './components/VideoGrid';
@@ -9,20 +9,30 @@ import { QueuePopup } from './components/QueuePopup';
 import { QueueProvider } from './store/Queue';
 import { UserProvider } from './store/User';
 import { Login } from './pages/login';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
   function App() {
     return (
       <QueueProvider>
-      <UserProvider>
-        <Header />
-        <main css={{display: "flex", backgroundColor: "#f8f8f8"}}>
-          <Menu />
-          <Login />
-          {/* <VideoGrid /> */}
-        </main>
-        <QueuePopup />
-      </UserProvider>
-    </QueueProvider>
+        <UserProvider>
+          <Router>
+            <Header />
+            <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
+              <Menu />
+              <Routes>
+                <Route path="/">
+                  <VideoGrid />
+                  <Login />
+                </Route>
+                <Route path="/login">
+                  <Login />
+                </Route>
+              </Routes>
+            </main>
+            <QueuePopup />
+          </Router>
+        </UserProvider>
+      </QueueProvider>
   );
 }
 
