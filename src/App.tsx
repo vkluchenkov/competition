@@ -20,13 +20,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
             <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
               <Menu />
               <Routes>
-                <Route path="/">
-                  <VideoGrid />
-                  <Login />
-                </Route>
-                <Route path="/login">
-                  <Login />
-                </Route>
+                <Route path="/" element={<VideoGrid />} />
+                <Route path="/login" element={<Login />} />
               </Routes>
             </main>
             <QueuePopup />

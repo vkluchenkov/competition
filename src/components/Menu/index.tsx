@@ -11,7 +11,7 @@ export const Menu: React.FC = () => {
     <nav css={styles.menu}>
      <MenuSection>
       <MenuTitle>Title</MenuTitle>
-      <MenuItem menuLink={"#"}>Item1</MenuItem>
+      <MenuItem menuLink={"/"}>Home</MenuItem>
       <MenuItem menuLink={"#"}>Item2</MenuItem>
       <MenuItem menuLink={"#"}>Item3</MenuItem>
     </MenuSection>

@@ -3,7 +3,7 @@ import { createStyles } from "../../types/emotion-styles";
 export const styles = createStyles({
   menu: {
     display: "block",
-    height: "calc(100vh - 53px)",
+    height: "calc(100vh - 55px)",
     width: "200px",
     backgroundColor: "white",
     overflowY: "scroll",

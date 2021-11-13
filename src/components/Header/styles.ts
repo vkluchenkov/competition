@@ -40,4 +40,24 @@ export const styles = createStyles({
     width: "350px",
     paddingLeft: "15px"
   },
+
+  header_blue_button: {
+    display: "flex",
+    alignItems: "center",
+    height: "38px",
+    padding: "0 15px",
+    textDecoration: "none",
+    backgroundColor: "#1a73e8",
+    color: "white",
+    fontSize: "14px",
+    lineHeight: 1,
+    fontWeight: 600,
+    border: 0,
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "background-color .3s",
+    "&:hover": {
+      backgroundColor: "#1557af"
+    }
+  },
 })

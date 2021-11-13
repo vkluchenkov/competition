@@ -10,7 +10,7 @@ export const styles = createStyles({
   },
 
   section: {
-    height: "calc(100vh - 53px)",
+    height: "calc(100vh - 55px)",
     overflowY: "scroll",
     width: "calc(100vw - 200px)",
     "&::-webkit-scrollbar": {

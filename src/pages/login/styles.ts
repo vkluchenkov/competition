@@ -1,4 +1,4 @@
-import { createStyles } from "../types/emotion-styles"
+import { createStyles } from "../../types/emotion-styles"
 
 export const styles = createStyles({
   login_frame: {

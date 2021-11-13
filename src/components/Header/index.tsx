@@ -24,7 +24,7 @@ export const Header: React.FC = () => {
       return <img src={currentUser.avatar} alt={currentUser.username} css={styles.header_button} onClick={logout}/>
     }
     return (
-      <Link to="/login" css={styles.header_button}>Login</Link>
+      <Link to="/login" css={styles.header_blue_button}>Sign In</Link>
     )
   }
 
@@ -37,7 +37,9 @@ export const Header: React.FC = () => {
             <path d="M21,6H3V5h18V6z M21,11H3v1h18V11z M21,17H3v1h18V17z"></path>
           </svg>
         </button>
-        <img css={styles.header_logo} src='./images/logo.svg'></img>
+        <Link to="/">
+          <img css={styles.header_logo} src='./images/logo.svg'></img>
+        </Link>
       </div>
 
       <div css={styles.header_section}>
