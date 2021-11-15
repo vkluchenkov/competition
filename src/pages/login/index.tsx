@@ -31,6 +31,7 @@ export const Login: React.FC = () => {
     return (
       <div css={styles.login_frame}>
         <div css={styles.login_window}>
+
           <Link to="/">
             <img src={'./images/logo.svg'} css={styles.login_logo}></img>
           </Link>
@@ -63,7 +64,7 @@ export const Login: React.FC = () => {
             <img src={'./images/logo.svg'} css={styles.login_logo}></img>
           </Link>
           <h1 css={styles.login_title}>Hi {currentUser.username}!</h1>
-          <p css={styles.login_subtitle}>Nice to see you again{error}</p>
+          <p css={styles.login_subtitle}>Nice to see you again</p>
         </div>
       </div>
     )
