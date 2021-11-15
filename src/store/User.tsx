@@ -31,6 +31,7 @@ export const UserProvider: React.FC = ({ children }) => {
         {
           id: "001",
           username: "Vasya",
+          email: "user@example.com",
           avatar: "./images/media.webp"
         })
     } else {

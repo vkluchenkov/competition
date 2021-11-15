@@ -6,14 +6,6 @@ import { useUser } from "../../store/User";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
 export const Header: React.FC = () => {
-  const login = () => {
-    setActiveUser(
-      {
-        id: "001",
-        username: "Vasya",
-        avatar: "./images/media.webp"
-      })
-  }
 
   const logout = () => {
     removeActiveUser()

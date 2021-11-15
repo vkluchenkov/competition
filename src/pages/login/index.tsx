@@ -17,6 +17,7 @@ export const Login: React.FC = () => {
 
   const emailHandle = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
   const passHandle = (event: React.ChangeEvent<HTMLInputElement>) => setPass(event.target.value);
+
   const formSubmit = (event: any) => {
     event.preventDefault();
     try {
@@ -25,6 +26,7 @@ export const Login: React.FC = () => {
       setError(error.message)
     }
   }
+
   if (!currentUser) {
     return (
       <div css={styles.login_frame}>
