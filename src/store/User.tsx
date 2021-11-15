@@ -9,6 +9,7 @@ interface UserStore {
 
 interface UserStoreActions {
   setActiveUser: (user: User) => void;
+  checkCredentials: (username: string, password: string) => void;
   removeActiveUser: () => void;
   addFavorite: (video: Video) => void;
   removeFavorite: (video: Video) => void;
@@ -21,6 +22,19 @@ export const UserProvider: React.FC = ({ children }) => {
     currentUser: null,
     favorites: []
   });
+
+  const checkCredentials:UserStoreActions['checkCredentials'] = (username, password) => {
+    const validUsername = "user@example.com"
+    const validPassword = "pass"
+    if (username === validUsername && password === validPassword) {
+      setActiveUser(
+        {
+          id: "001",
+          username: "Vasya",
+          avatar: "./images/media.webp"
+        })
+    }
+  }
 
   const setActiveUser:UserStoreActions['setActiveUser'] = (user) => {
     setState((prev) => {
@@ -73,6 +87,7 @@ export const UserProvider: React.FC = ({ children }) => {
       state,
       {
         setActiveUser,
+        checkCredentials,
         removeActiveUser,
         addFavorite,
         removeFavorite
