@@ -8,7 +8,7 @@ import { Menu } from './components/Menu';
 import { QueuePopup } from './components/QueuePopup';
 import { QueueProvider } from './store/Queue';
 import { UserProvider } from './store/User';
-import { Login } from './pages/login';
+import { Login } from './pages/Login';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
   function App() {

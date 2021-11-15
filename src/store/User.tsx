@@ -33,6 +33,8 @@ export const UserProvider: React.FC = ({ children }) => {
           username: "Vasya",
           avatar: "./images/media.webp"
         })
+    } else {
+      throw new Error("User not found");
     }
   }
 
