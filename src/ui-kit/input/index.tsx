@@ -3,14 +3,21 @@
 import React, { InputHTMLAttributes } from "react";
 import { css } from "@emotion/react";
 import { styles } from "./styles";
+import clsx from "clsx";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  error?: string
+}
 
 export const Input: React.FC<InputProps> = ({
+  error,
   children,
   ...props
 }) => {
  return (
-  <input css={styles.login_input} {...props}></input>
+  <div>
+    <input css={styles.input} {...props}></input>
+    <p css={styles.error} className={clsx({visible: error})}>{error}</p>
+   </div>
  )
 }

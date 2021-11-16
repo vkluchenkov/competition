@@ -6,14 +6,13 @@ import { Button } from "../../ui-kit/button";
 import { Input } from "../../ui-kit/input";
 import { Link } from "react-router-dom";
 import { useUser } from "../../store/User";
-import clsx from "clsx";
 
 export const Login: React.FC = () => {
   const [{currentUser}, {checkCredentials}] = useUser()
 
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   const emailHandle = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
   const passHandle = (event: React.ChangeEvent<HTMLInputElement>) => setPass(event.target.value);
@@ -37,13 +36,10 @@ export const Login: React.FC = () => {
           </Link>
 
           <h1 css={styles.login_title}>Sign In</h1>
-          <p css={styles.login_subtitle}>to continue to Best video{error}</p>
+          <p css={styles.login_subtitle}>to continue to Best video</p>
 
           <form id="login" css={styles.login_form} onSubmit={formSubmit}>
-            <Input type="text" name="email" id="email" placeholder="Enter your email" value={email} onChange={emailHandle} />
-
-            <p css={styles.login_error}className={clsx({visible: error})}>{error}</p>
-
+            <Input type="text" name="email" id="email" placeholder="Enter your email" value={email} onChange={emailHandle} error={error} />
             <Input type="password" name="password" id="password" placeholder="Enter your password" value={pass} onChange={passHandle} />
 
             <a href="#" css={styles.login_link}>Forgot your email or password?</a>

@@ -38,17 +38,6 @@ export const styles = createStyles({
     margin: "0 0 10px",
   },
 
-  login_error: {
-    fontSize: "14px",
-    color: "red",
-    fontWeight: 400,
-    margin: "5px 0 0",
-    display: "none",
-    "&.visible": {
-      display: "block"
-    }
-  },
-
   login_form: {
     width: "100%",
   },
