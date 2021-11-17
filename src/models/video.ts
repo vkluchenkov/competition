@@ -1,4 +1,5 @@
 import { Channel } from "./channel";
+import { VideoCategory } from "./videoCategories";
 
 export interface Video {
   id: string;
@@ -9,4 +10,5 @@ export interface Video {
   views: number;
   createdAt: string;
   channel: Channel;
+  categories: VideoCategory[];
 }

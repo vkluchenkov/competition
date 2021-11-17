@@ -1,16 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import { css } from "@emotion/react";
 import { styles } from "./styles";
 import { useUser } from "../../store/User";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Header: React.FC = () => {
 
   const logout = () => {
     removeActiveUser()
   }
-  const [{currentUser: currentUser}, {setActiveUser, removeActiveUser}] = useUser()
+  const [{currentUser: currentUser}, {removeActiveUser}] = useUser()
   const user = () => {
     if (currentUser) {
       return <img src={currentUser.avatar} alt={currentUser.username} css={styles.header_button} onClick={logout}/>
@@ -30,7 +29,7 @@ export const Header: React.FC = () => {
           </svg>
         </button>
         <Link to="/">
-          <img css={styles.header_logo} src='./images/logo.svg'></img>
+          <img css={styles.header_logo} src='./images/logo.svg' alt="logo"></img>
         </Link>
       </div>
 

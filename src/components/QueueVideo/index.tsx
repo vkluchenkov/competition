@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { QueueVideoProps } from './types';
-import { css, jsx } from "@emotion/react";
 import { styles } from './styles';
 import { useQueue } from '../../store/Queue';
 
 export const QueueVideo: React.FC<QueueVideoProps> = ({video}) => {
-  const [{}, {setActiveVideo}] = useQueue()
+  const [, {setActiveVideo}] = useQueue()
 
   return (
     <div

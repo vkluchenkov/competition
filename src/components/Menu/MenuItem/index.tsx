@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import { css } from "@emotion/react";
 import { styles } from "./styles";
 import { MenuIcon } from "./MenuIcon";
 import { MenuItemProps } from "./types";

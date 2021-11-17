@@ -44,7 +44,8 @@ export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
   return (
     <div
       id={video.id}
-      css={styles.video}>
+      css={styles.video}
+      >
 
       <div
         css={styles.video_media}

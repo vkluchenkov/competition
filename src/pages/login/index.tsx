@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { css } from "@emotion/react";
 import { styles } from "./styles";
 import { Button } from "../../ui-kit/button";
 import { Input } from "../../ui-kit/input";
@@ -32,7 +31,7 @@ export const Login: React.FC = () => {
         <div css={styles.login_window}>
 
           <Link to="/">
-            <img src={'./images/logo.svg'} css={styles.login_logo}></img>
+            <img src={'./images/logo.svg'} css={styles.login_logo} alt="logo"></img>
           </Link>
 
           <h1 css={styles.login_title}>Sign In</h1>
@@ -57,7 +56,7 @@ export const Login: React.FC = () => {
       <div css={styles.login_frame}>
         <div css={styles.login_window}>
           <Link to="/">
-            <img src={'./images/logo.svg'} css={styles.login_logo}></img>
+            <img src={'./images/logo.svg'} css={styles.login_logo} alt="logo"></img>
           </Link>
           <h1 css={styles.login_title}>Hi {currentUser.username}!</h1>
           <p css={styles.login_subtitle}>Nice to see you again</p>

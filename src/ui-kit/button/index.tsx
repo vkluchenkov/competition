@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {ButtonHTMLAttributes} from "react";
-import { css } from "@emotion/react";
 import { styles } from "./styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{}

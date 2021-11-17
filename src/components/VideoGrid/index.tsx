@@ -1,20 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import { css } from "@emotion/react";
 import { styles } from "./styles";
-import { VideoGridProps } from "./types";
 import { GridVideo } from "../GridVideo";
 import { videos } from "../../videos";
 import { Video } from "../../models/video";
-import { Chips } from "../Chips";
+import { VideoCategory } from "../../models/videoCategories";
 
-export const VideoGrid: React.FC<VideoGridProps> = () => {
+interface VideoGridProps {
+  activeCategory: VideoCategory | null;
+}
+
+export const VideoGrid: React.FC<VideoGridProps> = ({ activeCategory }) => {
   return (
-    <section css={styles.section}>
-      <Chips />
       <div css={styles.videoGrid}>
-      {videos.map((video: Video) => <GridVideo video={video} />)}
+        {
+        videos.
+        filter((v) => !activeCategory || v.categories.includes(activeCategory)).
+        map((video: Video) => <GridVideo video={video} />)
+        }
       </div>
-    </section>
   )
 }

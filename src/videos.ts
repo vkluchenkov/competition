@@ -1,4 +1,5 @@
 import { Video } from './models/video'
+import { VideoCategory } from './models/videoCategories';
 
 export const videos: Video[] = [
   {
@@ -10,6 +11,7 @@ export const videos: Video[] = [
   channel: {name: 'Супер канал #1'},
   views: 0,
   createdAt: '2020-01-01',
+  categories: [VideoCategory.Show, VideoCategory.Comedy],
   },
   {
   id: '2',
@@ -20,6 +22,7 @@ export const videos: Video[] = [
   channel: {name: 'Супер канал #1'},
   views: 99,
   createdAt: '2021-01-01',
+  categories: [VideoCategory.Show],
   },
   {
   id: '3',
@@ -30,6 +33,7 @@ export const videos: Video[] = [
   channel: {name: 'Супер канал #1'},
   views: 1001,
   createdAt: '2021-03-28',
+  categories: [VideoCategory.Comedy],
   },
   {
   id: '4',
@@ -40,6 +44,7 @@ export const videos: Video[] = [
   channel: {name: 'Супер канал #1'},
   views: 10001,
   createdAt: '2019-08-16',
+  categories: [VideoCategory.Show],
   },
   {
   id: '5',
@@ -50,6 +55,7 @@ export const videos: Video[] = [
   channel: {name: 'Супер канал #1'},
   views: 15000000,
   createdAt: '2020-04-05',
+  categories: [VideoCategory.Comedy],
   },
   {
   id: '6',
@@ -60,5 +66,6 @@ export const videos: Video[] = [
   channel: {name: 'Супер канал #1'},
   views: 1,
   createdAt: '2021-10-04',
+  categories: [VideoCategory.Show],
   },
 ];

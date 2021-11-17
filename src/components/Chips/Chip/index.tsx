@@ -1,21 +1,24 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { css } from "@emotion/react";
 import { styles } from "./styles";
 import clsx from "clsx";
 
 interface ChipProps {
-  active?: boolean
+  active: boolean;
+  label: string;
+  onClick: () => void;
 }
 
-export const Chip: React.FC<ChipProps> = ({ children, active }) => {
+export const Chip: React.FC<ChipProps> = ({ label, active, onClick }) => {
+
   return (
-    <div
+    <li
       css={styles.chip}
-      className={clsx({active: active})}
+      className={clsx({ active })}
+      onClick={onClick}
     >
-      {children}
-    </div>
+      { label }
+    </li>
   )
 }
