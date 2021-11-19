@@ -13,7 +13,7 @@ export const Main = () => {
     <section css={styles.section}>
       <Chips
         activeCategory={activeCategory}
-        onChange={(category) => setActiveCategory(category)}
+        onChange={setActiveCategory}
       />
       <VideoGrid activeCategory={activeCategory} />
     </section>
