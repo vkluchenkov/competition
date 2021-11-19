@@ -30,7 +30,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ activeCategory }) => {
 
     setCurrentVideos(filteredVideos)
 
-    setTimeout (() => setOverlay(false), 0)
+    setOverlay(false)
   },[activeCategory])
 
   useEffect(() => {
