@@ -5,6 +5,7 @@ import { GridVideo } from "../GridVideo";
 import { videos } from "../../videos";
 import { Video } from "../../models/video";
 import { VideoCategory } from "../../models/videoCategories";
+import { Link, Outlet } from "react-router-dom";
 import clsx from "clsx";
 
 interface VideoGridProps {
@@ -41,7 +42,12 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ activeCategory }) => {
     <div css={styles.container}>
       <div css={styles.overlay} className={clsx({overlay})}></div>
       <div css={styles.videoGrid}>
-        {currentVideos.map((video: Video) => <GridVideo video={video} />)}
+        {currentVideos.map((video: Video) => {
+          <Link to={`/single/${video.id}`}>
+            <GridVideo video={video} />
+          </Link>
+        })}
+        <Outlet />
       </div>
     </div>
   )

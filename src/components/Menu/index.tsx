@@ -11,7 +11,7 @@ export const Menu: React.FC = () => {
      <MenuSection>
       <MenuTitle>Title</MenuTitle>
       <MenuItem menuLink={"/"}>Home</MenuItem>
-      <MenuItem menuLink={"#"}>Item2</MenuItem>
+      <MenuItem menuLink={"/single"}>Single</MenuItem>
       <MenuItem menuLink={"#"}>Item3</MenuItem>
     </MenuSection>
     <MenuSection>
