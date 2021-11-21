@@ -64,14 +64,31 @@ export const styles = createStyles({
     margin: "15px 0 0",
     gap: "20px",
     display: "grid",
-    gridTemplateColumns: "50px 1fr 40px",
+    gridTemplateColumns: "50px 1fr 100px",
     width: "100%",
   },
   single_video_text: {
     display: "flex",
     flexDirection: "column",
   },
-  single_video_action: {
+  comment_wrapper: {
+    backgroundColor: "#f0f0f0",
+    boxSizing: "border-box",
+    padding: "15px 25px",
+    borderRadius: "5px",
+    margin: "7px 0",
+  },
+  comment_text: {
+    fontSize: "20px",
+    lineHeight: 1,
+    margin: "0 0 15px",
+  },
+  comment_date: {
+    fontSize: "14px",
+    lineHeight: 1,
+    margin: "0 0 5px",
+  },
+  like_icon: {
     backgroundColor: "rgba(0, 0, 0, 0)",
     padding: 0,
     fill: "black",
@@ -80,17 +97,51 @@ export const styles = createStyles({
     height: "40px",
     outline: "none",
     border: "none",
-    cursor: "pointer",
     justifySelf: "flex-end",
-    transition: "fill .3s",
+    transform: "translate(0, -3px)",
+    transition: "all .3s",
+    "&.icon_active": {
+      fill: "white",
+    },
+  },
+  like_button: {
+    cursor: "pointer",
+    justifySelf: "end",
+    backgroundColor: "white",
+    boxSizing: "border-box",
+    border: "1px solid grey",
+    borderRadius: "5px",
+    padding: "3px 7px",
+    display: "grid",
+    gridTemplateColumns: "40px 1fr",
+    alignItems: "center",
+    gap: "5px",
+    transition: "all .3s",
     "&:hover": {
-      fill: "#404241",
+      backgroundColor: "#eee",
     },
-    "&.single_video_action_active": {
-      fill: "red",
+    "&.like_active": {
+      backgroundColor: "red",
+      color: "white",
+      border: "1px solid white",
     },
-    "&.single_video_action_active:hover": {
-      fill: "darkred",
+    "&.like_active:hover": {
+      backgroundColor: "rgb(200, 0, 0)",
+    },
+  },
+  like_counter: {
+    fontSize: "18px",
+    lineHeight: 1,
+    fontWeight: 600,
+    textAlign: "left",
+    margin: "0 8px 0 0",
+  },
+  link: {
+    color: "#1a73e8",
+    fontWeight: 600,
+    transition: "color .3s",
+    "&:hover": {
+      color: "#1557af",
     },
   },
 });

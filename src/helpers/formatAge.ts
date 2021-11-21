@@ -9,6 +9,9 @@ export function formatAge(date: string): string {
   const diffInDays = Math.round(diffInTime / oneDay);
   const diffInWeeks = Math.round(diffInTime / oneWeek);
   const diffInYears = Math.round(diffInTime / oneYear);
+  if (diffInDays === 0) {
+    return "today";
+  }
   if (diffInDays === 1) {
     return "1 day ago";
   }
