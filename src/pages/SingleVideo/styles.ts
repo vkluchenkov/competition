@@ -2,8 +2,11 @@ import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
   section: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
     height: "calc(100vh - 55px)",
-    padding: "25px",
+    padding: "0 25px 25px",
     boxSizing: "border-box",
     overflowY: "scroll",
     width: "calc(100vw - 200px)",
@@ -18,12 +21,18 @@ export const styles = createStyles({
       outline: "1px solid slategrey",
     },
   },
+  container: {
+    width: "100%",
+    maxWidth: "1950px",
+    margin: "0 auto",
+  },
   single_video_img: {
     width: "100%",
+    margin: "0 0 15px",
   },
   single_video_time: {},
   single_video_title: {
-    fontSize: "45px",
+    fontSize: "40px",
     fontWeight: 700,
     lineHeight: 1,
     margin: "0 0 15px 0",
@@ -32,7 +41,7 @@ export const styles = createStyles({
     fontSize: "20px",
     fontWeight: 400,
     lineHeight: 1,
-    margin: "0 0 15px 0",
+    margin: "0 0 10px 0",
   },
   single_video_meta: {
     fontSize: "16px",
