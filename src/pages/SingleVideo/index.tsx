@@ -10,6 +10,8 @@ import { useUser } from "../../store/User";
 import { Video } from "../../models/video";
 import { videos } from "../../videos";
 import { useParams } from "react-router";
+import { TextArea } from "../../ui-kit/textarea";
+import { Button } from "../../ui-kit/button";
 
 const getVideo = (videoId: string | undefined) => {
   const delay = (ms: number) =>
@@ -35,6 +37,20 @@ export const SingleVideo: React.FC = () => {
     fetchVideo();
   }, [fetchVideo]);
 
+  const [comments, setComments] = useState<any[]>([])
+  const [comment, setComment] = useState("")
+  const commentHandle = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setComment(event.target.value);
+
+  const commentSubmit = (comment: string) => {
+    setComments([...comments, comment])
+  }
+
+  const formSubmit = (event: any) => {
+    event.preventDefault();
+    commentSubmit(comment);
+  };
+
   if (!video) {
     return <div>Loading...</div>;
   } else {
@@ -50,6 +66,8 @@ export const SingleVideo: React.FC = () => {
         addFavorite(video);
       }
     };
+
+    console.log(comments)
 
     return (
       <section css={styles.section}>
@@ -89,6 +107,29 @@ export const SingleVideo: React.FC = () => {
             </svg>
           </button>
         </div>
+        <h2>
+          Comments
+        </h2>
+
+        {comments.map((c) => {
+          return <p>{c}</p>
+        })}
+
+        <form
+          name="comment"
+          id="comment"
+          onSubmit={formSubmit}>
+          <TextArea
+            name="comment-form"
+            id="comment-form"
+            placeholder="Write your comment here"
+            css={css`height: 100px`}
+            onChange={commentHandle}
+          ></TextArea>
+          <Button type="submit" id="commentSubmit">
+            Submit
+          </Button>
+        </form>
       </section>
     );
   }
