@@ -1,4 +1,4 @@
-import { createStyles } from "../../types/emotion-styles"
+import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
   input: {
@@ -25,7 +25,7 @@ export const styles = createStyles({
     margin: "5px 0 0",
     display: "none",
     "&.visible": {
-      display: "block"
-    }
+      display: "block",
+    },
   },
-})
+});

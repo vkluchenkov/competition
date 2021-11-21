@@ -10,14 +10,13 @@ export const styles = createStyles({
     padding: "5px 10px",
     transition: "background-color 0.5s",
     "&:hover": {
-      backgroundColor: "lightgrey"
-    }
+      backgroundColor: "lightgrey",
     },
+  },
 
   menu_icon: {
     width: "25px",
     height: "25px",
     marginRight: "8px",
   },
-
-},)
+});

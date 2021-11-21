@@ -8,14 +8,14 @@ export const styles = createStyles({
     backgroundColor: "white",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
-      width: '3px',
+      width: "3px",
     },
     "&::-webkit-scrollbar-track": {
-      boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+      boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: 'darkgrey',
-      outline: '1px solid slategrey',
+      backgroundColor: "darkgrey",
+      outline: "1px solid slategrey",
     },
   },
-})
+});

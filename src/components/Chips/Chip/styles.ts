@@ -1,7 +1,6 @@
-import { createStyles } from "../../../types/emotion-styles"
+import { createStyles } from "../../../types/emotion-styles";
 
 export const styles = createStyles({
-
   chip: {
     display: "block",
     padding: "10px 15px",
@@ -24,4 +23,4 @@ export const styles = createStyles({
       fontWeight: 600,
     },
   },
-})
+});

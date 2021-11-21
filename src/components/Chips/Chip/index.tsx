@@ -11,14 +11,9 @@ interface ChipProps {
 }
 
 export const Chip: React.FC<ChipProps> = ({ label, active, onClick }) => {
-
   return (
-    <li
-      css={styles.chip}
-      className={clsx({ active })}
-      onClick={onClick}
-    >
-      { label }
+    <li css={styles.chip} className={clsx({ active })} onClick={onClick}>
+      {label}
     </li>
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
-import { createStyles } from "../../types/emotion-styles"
+import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
   blue_button: {
@@ -13,7 +13,7 @@ export const styles = createStyles({
     cursor: "pointer",
     transition: "background-color .3s",
     "&:hover": {
-      backgroundColor: "#1557af"
-    }
+      backgroundColor: "#1557af",
+    },
   },
-})
+});

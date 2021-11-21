@@ -9,11 +9,9 @@ export const MenuItem: React.FC<MenuItemProps> = ({ children, menuLink }) => {
   return (
     <li>
       <Link to={menuLink} css={styles.menu_item}>
-        <div css={styles.menu_icon}>
-          {MenuIcon}
-        </div>
+        <div css={styles.menu_icon}>{MenuIcon}</div>
         {children}
       </Link>
     </li>
-  )
-}
+  );
+};

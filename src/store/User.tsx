@@ -1,10 +1,10 @@
 import React from "react";
-import { User } from "../models/user"
+import { User } from "../models/user";
 import { Video } from "../models/video";
 
 interface UserStore {
-  currentUser: User | null
-  favorites: Video[]
+  currentUser: User | null;
+  favorites: Video[];
 }
 
 interface UserStoreActions {
@@ -15,87 +15,93 @@ interface UserStoreActions {
   removeFavorite: (video: Video) => void;
 }
 
-export const ActiveUser = React.createContext<[UserStore, UserStoreActions] | null>(null)
+export const ActiveUser = React.createContext<
+  [UserStore, UserStoreActions] | null
+>(null);
 
 export const UserProvider: React.FC = ({ children }) => {
   const [state, setState] = React.useState<UserStore>({
     currentUser: null,
-    favorites: []
+    favorites: [],
   });
 
-  const checkCredentials:UserStoreActions['checkCredentials'] = (username, password) => {
-    const validUsername = "user@example.com"
-    const validPassword = "pass"
+  const checkCredentials: UserStoreActions["checkCredentials"] = (
+    username,
+    password
+  ) => {
+    const validUsername = "user@example.com";
+    const validPassword = "pass";
     if (username === validUsername && password === validPassword) {
-      setActiveUser(
-        {
-          id: "001",
-          username: "Vasya",
-          email: "user@example.com",
-          avatar: "./images/media.webp"
-        })
+      setActiveUser({
+        id: "001",
+        username: "Vasya",
+        email: "user@example.com",
+        avatar: "./images/media.webp",
+      });
     } else {
       throw new Error("User not found");
     }
-  }
+  };
 
-  const setActiveUser:UserStoreActions['setActiveUser'] = (user) => {
+  const setActiveUser: UserStoreActions["setActiveUser"] = (user) => {
     setState((prev) => {
-      return{
-        ...prev,
-        currentUser: user
-      }
-    })
-  }
-
-  const removeActiveUser:UserStoreActions['removeActiveUser'] = () => {
-    setState((prev) => {
-      return{
-        ...prev,
-        currentUser: null
-      }
-    })
-  }
-
-  const addFavorite:UserStoreActions['addFavorite'] = (video) => {
-    setState((prev) => {
-      const newFavorites = prev.favorites.slice()
-      newFavorites.push(video)
       return {
         ...prev,
-        favorites: newFavorites
-      }
-    })
-  }
+        currentUser: user,
+      };
+    });
+  };
 
-  const removeFavorite:UserStoreActions['removeFavorite'] = (video) => {
+  const removeActiveUser: UserStoreActions["removeActiveUser"] = () => {
     setState((prev) => {
-      const newFavorites = prev.favorites.slice()
-      const ifInFavorites = newFavorites.includes(video)
-      const Index = newFavorites.indexOf(video)
+      return {
+        ...prev,
+        currentUser: null,
+      };
+    });
+  };
+
+  const addFavorite: UserStoreActions["addFavorite"] = (video) => {
+    setState((prev) => {
+      const newFavorites = prev.favorites.slice();
+      newFavorites.push(video);
+      return {
+        ...prev,
+        favorites: newFavorites,
+      };
+    });
+  };
+
+  const removeFavorite: UserStoreActions["removeFavorite"] = (video) => {
+    setState((prev) => {
+      const newFavorites = prev.favorites.slice();
+      const ifInFavorites = newFavorites.includes(video);
+      const Index = newFavorites.indexOf(video);
 
       if (ifInFavorites) {
-        newFavorites.splice(Index, 1)
+        newFavorites.splice(Index, 1);
       }
 
       return {
         ...prev,
-        favorites: newFavorites
-      }
-    })
-  }
+        favorites: newFavorites,
+      };
+    });
+  };
 
   return (
-    <ActiveUser.Provider value={[
-      state,
-      {
-        setActiveUser,
-        checkCredentials,
-        removeActiveUser,
-        addFavorite,
-        removeFavorite
-      }
-    ]}>
+    <ActiveUser.Provider
+      value={[
+        state,
+        {
+          setActiveUser,
+          checkCredentials,
+          removeActiveUser,
+          addFavorite,
+          removeFavorite,
+        },
+      ]}
+    >
       {children}
     </ActiveUser.Provider>
   );

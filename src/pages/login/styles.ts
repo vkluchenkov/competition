@@ -1,11 +1,11 @@
-import { createStyles } from "../../types/emotion-styles"
+import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
   login_frame: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%"
+    width: "100%",
   },
 
   login_window: {
@@ -22,7 +22,7 @@ export const styles = createStyles({
 
   login_logo: {
     width: "120px",
-    margin: "0 0 10px"
+    margin: "0 0 10px",
   },
 
   login_title: {
@@ -68,14 +68,14 @@ export const styles = createStyles({
     transition: "color .3s",
     "&:hover": {
       color: "#1557af",
-    }
+    },
   },
 
   login_buttons: {
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    margin: "35px 0 0"
+    margin: "35px 0 0",
   },
 
   login_button: {
@@ -90,7 +90,7 @@ export const styles = createStyles({
     cursor: "pointer",
     transition: "background-color .3s",
     "&:hover": {
-      backgroundColor: "#1557af"
-    }
+      backgroundColor: "#1557af",
+    },
   },
-})
+});

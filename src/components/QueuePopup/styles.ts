@@ -22,17 +22,17 @@ export const styles = createStyles({
   },
 
   notification__title: {
-    paddingBottom: '10px',
+    paddingBottom: "10px",
     fontSize: "14px",
     lineHeight: 1,
   },
 
   hidden: {
-    display: 'none',
+    display: "none",
   },
 
   notification__content: {
-    color: 'gray',
+    color: "gray",
     fontSize: "14px",
   },
 
@@ -44,7 +44,7 @@ export const styles = createStyles({
     maxHeight: "250px",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
-      width: '3px',
+      width: "3px",
     },
     "&::-webkit-scrollbar-track": {
       boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
@@ -58,7 +58,7 @@ export const styles = createStyles({
     },
     "&.queue_visible": {
       display: "flex",
-    }
+    },
   },
 
   close_button: {
@@ -78,7 +78,7 @@ export const styles = createStyles({
     "&:hover": {
       backgroundColor: "red",
       color: "white",
-      cursor: "pointer"
+      cursor: "pointer",
     },
     "&.close_button_state_opened": {
       display: "flex",
@@ -87,4 +87,4 @@ export const styles = createStyles({
       display: "none",
     },
   },
-})
+});

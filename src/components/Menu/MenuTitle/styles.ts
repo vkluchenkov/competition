@@ -9,4 +9,4 @@ export const styles = createStyles({
     marginBottom: "10px",
     textTransform: "uppercase",
   },
-})
+});

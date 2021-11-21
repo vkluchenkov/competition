@@ -10,19 +10,19 @@ export function formatAge(date: string): string {
   const diffInWeeks = Math.round(diffInTime / oneWeek);
   const diffInYears = Math.round(diffInTime / oneYear);
   if (diffInDays === 1) {
-    return '1 day ago';
-  };
+    return "1 day ago";
+  }
   if (diffInDays < 7) {
-    return diffInDays + ' days ago';
-  };
+    return diffInDays + " days ago";
+  }
   if (diffInDays >= 7 && diffInDays < 14) {
-    return '1 week ago';
-  };
+    return "1 week ago";
+  }
   if (diffInDays >= 14 && diffInDays < 365) {
-    return diffInWeeks + ' weeks ago';
-  };
+    return diffInWeeks + " weeks ago";
+  }
   if (diffInDays >= 365 && diffInDays < 365 * 2) {
-    return '1 year ago';
-  };
-  return diffInYears + ' years ago';
-};
+    return "1 year ago";
+  }
+  return diffInYears + " years ago";
+}

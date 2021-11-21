@@ -1,12 +1,11 @@
-import { createStyles } from "../../types/emotion-styles"
+import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
-
   header: {
     padding: "6px 25px",
     borderBottom: "1px solid lightgrey",
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
 
   header_section: {
@@ -28,17 +27,17 @@ export const styles = createStyles({
     borderRadius: "50%",
     transition: "background-color 0.5s",
     "&:hover": {
-      backgroundColor: "lightgrey"
-    }
+      backgroundColor: "lightgrey",
+    },
   },
 
   header_logo: {
-    width: '110px'
+    width: "110px",
   },
 
   header_search_input: {
     width: "350px",
-    paddingLeft: "15px"
+    paddingLeft: "15px",
   },
 
   header_blue_button: {
@@ -57,7 +56,7 @@ export const styles = createStyles({
     cursor: "pointer",
     transition: "background-color .3s",
     "&:hover": {
-      backgroundColor: "#1557af"
-    }
+      backgroundColor: "#1557af",
+    },
   },
-})
+});

@@ -8,17 +8,17 @@ import { MenuItem } from "./MenuItem";
 export const Menu: React.FC = () => {
   return (
     <nav css={styles.menu}>
-     <MenuSection>
-      <MenuTitle>Title</MenuTitle>
-      <MenuItem menuLink={"/"}>Home</MenuItem>
-      <MenuItem menuLink={"#"}>Item2</MenuItem>
-      <MenuItem menuLink={"#"}>Item3</MenuItem>
-    </MenuSection>
-    <MenuSection>
-      <MenuItem menuLink={"#"}>Item1</MenuItem>
-      <MenuItem menuLink={"#"}>Item2</MenuItem>
-      <MenuItem menuLink={"#"}>Item3</MenuItem>
-    </MenuSection>
+      <MenuSection>
+        <MenuTitle>Title</MenuTitle>
+        <MenuItem menuLink={"/"}>Home</MenuItem>
+        <MenuItem menuLink={"#"}>Item2</MenuItem>
+        <MenuItem menuLink={"#"}>Item3</MenuItem>
+      </MenuSection>
+      <MenuSection>
+        <MenuItem menuLink={"#"}>Item1</MenuItem>
+        <MenuItem menuLink={"#"}>Item2</MenuItem>
+        <MenuItem menuLink={"#"}>Item3</MenuItem>
+      </MenuSection>
     </nav>
-  )
-}
+  );
+};

@@ -2,11 +2,11 @@ import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
   videoGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(470px, 1fr))',
-    gridColumnGap: '10px',
-    gridRowGap: '35px',
-    padding: '25px',
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(470px, 1fr))",
+    gridColumnGap: "10px",
+    gridRowGap: "35px",
+    padding: "25px",
   },
   container: {
     position: "relative",
@@ -25,7 +25,7 @@ export const styles = createStyles({
     display: "none",
     "&.overlay": {
       display: "block",
-      opacity: .5,
+      opacity: 0.5,
     },
   },
-})
+});

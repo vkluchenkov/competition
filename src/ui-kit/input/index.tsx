@@ -5,18 +5,16 @@ import { styles } from "./styles";
 import clsx from "clsx";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  error?: string
+  error?: string;
 }
 
-export const Input: React.FC<InputProps> = ({
-  error,
-  children,
-  ...props
-}) => {
- return (
-  <div>
-    <input css={styles.input} {...props}></input>
-    <p css={styles.error} className={clsx({visible: error})}>{error}</p>
-   </div>
- )
-}
+export const Input: React.FC<InputProps> = ({ error, children, ...props }) => {
+  return (
+    <div>
+      <input css={styles.input} {...props}></input>
+      <p css={styles.error} className={clsx({ visible: error })}>
+        {error}
+      </p>
+    </div>
+  );
+};

@@ -10,7 +10,7 @@ interface ChipsProps {
   onChange: (category: VideoCategory | null) => void;
 }
 
-export const Chips: React.FC<ChipsProps> = ({activeCategory, onChange}) => {
+export const Chips: React.FC<ChipsProps> = ({ activeCategory, onChange }) => {
   const categories = [
     {
       label: "All",
@@ -24,21 +24,19 @@ export const Chips: React.FC<ChipsProps> = ({activeCategory, onChange}) => {
       label: "Comedy",
       category: VideoCategory.Comedy,
     },
-  ]
+  ];
 
   return (
     <ul css={styles.chips_container}>
-      {
-        categories.map((cat) => {
-          return (
-            <Chip
-              label={cat.label}
-              active={cat.category === activeCategory}
-              onClick={() => onChange(cat.category)}
-            />
-          )
-        })
-      }
+      {categories.map((cat) => {
+        return (
+          <Chip
+            label={cat.label}
+            active={cat.category === activeCategory}
+            onClick={() => onChange(cat.category)}
+          />
+        );
+      })}
     </ul>
-  )
-}
+  );
+};

@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
-import './App.css';
-import { Main } from './pages/Main';
-import { Header } from './components/Header';
-import { Menu } from './components/Menu';
-import { QueuePopup } from './components/QueuePopup';
-import { QueueProvider } from './store/Queue';
-import { UserProvider } from './store/User';
-import { Login } from './pages/Login';
-import { SingleVideo } from './pages/SingleVideo';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import "./App.css";
+import { Main } from "./pages/Main";
+import { Header } from "./components/Header";
+import { Menu } from "./components/Menu";
+import { QueuePopup } from "./components/QueuePopup";
+import { QueueProvider } from "./store/Queue";
+import { UserProvider } from "./store/User";
+import { Login } from "./pages/Login";
+import { SingleVideo } from "./pages/SingleVideo";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
                     <p>There's nothing here!</p>
                   </div>
                 }
-                />
+              />
             </Routes>
           </main>
           <QueuePopup />

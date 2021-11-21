@@ -1,7 +1,6 @@
-import { createStyles } from "../../types/emotion-styles"
+import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
-
   chips_container: {
     display: "flex",
     position: "relative",
@@ -26,9 +25,10 @@ export const styles = createStyles({
     fontWeight: 800,
     width: "80px",
     height: "calc(100% - 20px)",
-    background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 40%)",
+    background:
+      "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 40%)",
     position: "absolute",
     right: 0,
     cursor: "pointer",
   },
-})
+});
