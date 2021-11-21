@@ -82,6 +82,10 @@ export const styles = createStyles({
     fontWeight: 600,
     lineHeight: 1,
     margin: '0 0 10px',
+    color: "black",
+  },
+  link: {
+    textDecoration: "none",
   },
   video_channel: {
     color: 'grey',

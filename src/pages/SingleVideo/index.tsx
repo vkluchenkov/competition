@@ -9,12 +9,18 @@ import { formatVideoDuration } from "../../helpers/formatVideoDuration";
 import { useUser } from "../../store/User";
 import { Video } from "../../models/video";
 import { videos } from "../../videos"
+import { useParams } from "react-router";
 
-interface SingleVideoProps {
-  video: Video;
+
+const getVideo = (videoId: string | undefined) => {
+  const index = videos.findIndex((v: Video) => v.id === videoId)
+  return videos[index]
 }
 
-export const SingleVideo: React.FC<SingleVideoProps> = ({video}) => {
+export const SingleVideo: React.FC = () => {
+
+  const { videoId } = useParams()
+  const video = getVideo(videoId)
 
   const videoViews = formatViews(video.views);
   const videoAge = formatAge(video.createdAt);
@@ -34,7 +40,7 @@ export const SingleVideo: React.FC<SingleVideoProps> = ({video}) => {
   return (
     <section css={styles.section}>
       <img
-          src={video.image}
+          src={`.${video.image}`}
           alt={video.title}
           css={styles.single_video_img}></img>
 

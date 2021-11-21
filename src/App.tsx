@@ -20,10 +20,17 @@ function App() {
           <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
             <Menu />
             <Routes>
-              <Route path="/" element={<Main />}>
-                <Route path="/single/:singleId" element={<SingleVideo />} />
-              </Route>
+              <Route path="/" element={<Main />} />
+              <Route path="/single/:videoId" element={<SingleVideo />} />
               <Route path="/login" element={<Login />} />
+              <Route
+                path="*"
+                element={
+                  <div style={{ padding: "1rem" }}>
+                    <p>There's nothing here!</p>
+                  </div>
+                }
+                />
             </Routes>
           </main>
           <QueuePopup />

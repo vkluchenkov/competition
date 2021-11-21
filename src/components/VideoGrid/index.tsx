@@ -42,13 +42,9 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ activeCategory }) => {
     <div css={styles.container}>
       <div css={styles.overlay} className={clsx({overlay})}></div>
       <div css={styles.videoGrid}>
-        {currentVideos.map((video: Video) => {
-          <Link to={`/single/${video.id}`}>
-            <GridVideo video={video} />
-          </Link>
-        })}
-        <Outlet />
+        {currentVideos.map((video: Video) => <GridVideo video={video} />)}
       </div>
+      <Outlet />
     </div>
   )
 }

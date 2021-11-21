@@ -10,6 +10,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import { useQueue } from "../../store/Queue";
 import { useUser } from "../../store/User";
+import { Link } from "react-router-dom";
 
 export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
 
@@ -52,11 +53,12 @@ export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
         onMouseOver={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
 
-        <img
-          src={video.image}
-          alt={video.title}
-          css={styles.video_img}></img>
-
+        <Link to={`single/${video.id}`}>
+          <img
+            src={video.image}
+            alt={video.title}
+            css={styles.video_img}></img>
+        </Link>
         <div
           css={styles.video_time}>
           {videoDuration}
@@ -90,10 +92,12 @@ export const GridVideo: React.FC<GridVideoProps> = ({video}) => {
           {video.avatar}
         </div>
         <div>
-          <h5
-            css={styles.video_title}>
-            {video.title}
-          </h5>
+          <Link to={`single/${video.id}`} style={styles.link}>
+            <h5
+              css={styles.video_title}>
+              {video.title}
+            </h5>
+          </Link>
           <p
             css={styles.video_channel}>
             {video.channel.name}
