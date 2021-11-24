@@ -2,9 +2,12 @@
 import React from "react";
 import { styles } from "./styles";
 import { useUser } from "../../store/User";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import logo from "../../images/logo.svg"
 
 export const Header: React.FC = () => {
+  const currentUrl = useLocation();
+
   const logout = () => {
     removeActiveUser();
   };
@@ -21,7 +24,11 @@ export const Header: React.FC = () => {
       );
     }
     return (
-      <Link to="/login" css={styles.header_blue_button}>
+      <Link to={{
+        pathname: "/login",
+        search: "?redirect=" + currentUrl.pathname
+      }}
+        css={styles.header_blue_button}>
         Sign In
       </Link>
     );
@@ -48,7 +55,7 @@ export const Header: React.FC = () => {
         <Link to="/">
           <img
             css={styles.header_logo}
-            src="./images/logo.svg"
+            src={logo}
             alt="logo"
           ></img>
         </Link>

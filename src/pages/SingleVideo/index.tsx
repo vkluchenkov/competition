@@ -9,7 +9,7 @@ import { formatVideoDuration } from "../../helpers/formatVideoDuration";
 import { useUser } from "../../store/User";
 import { Video } from "../../models/video";
 import { videos } from "../../videos";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { TextArea } from "../../ui-kit/textarea";
 import { Button } from "../../ui-kit/button";
 import { Link } from "react-router-dom";
@@ -21,6 +21,8 @@ const getVideo = (videoId: string | undefined) => {
 };
 
 export const SingleVideo: React.FC = () => {
+  const currentUrl = useLocation();
+
   const [video, setVideo] = useState<Video | null>(null);
   const [{ favorites, currentUser }, { addFavorite, removeFavorite }] = useUser();
 
@@ -58,7 +60,12 @@ export const SingleVideo: React.FC = () => {
 
   const commentForm = () => {
     if (!currentUser) {
-      return <p>Only registered users can post comments. Please <Link to={"/login"} css={styles.link}>sign in</Link> or <Link to={"#"} css={styles.link}>create account</Link> to post comments.</p>
+      return <p>Only registered users can post comments. Please <Link to={{
+        pathname: "/login",
+        search: "?redirect=" + currentUrl.pathname
+      }}
+        css={styles.link}>
+        sign in</Link> or <Link to={"#"} css={styles.link}>create account</Link> to post comments.</p>
     } else {
       return (
         <form
@@ -106,7 +113,7 @@ export const SingleVideo: React.FC = () => {
       <section css={styles.section}>
         <div css={styles.container}>
           <img
-            src={`.${video.image}`}
+            src={video.image}
             alt={video.title}
             css={styles.single_video_img}
           ></img>

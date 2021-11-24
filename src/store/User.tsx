@@ -1,6 +1,7 @@
 import React from "react";
 import { User } from "../models/user";
 import { Video } from "../models/video";
+import avatar from "../images/media.webp";
 
 interface UserStore {
   currentUser: User | null;
@@ -36,7 +37,7 @@ export const UserProvider: React.FC = ({ children }) => {
         id: "001",
         username: "Vasya",
         email: "user@example.com",
-        avatar: "./images/media.webp",
+        avatar: avatar,
       });
     } else {
       throw new Error("User not found");

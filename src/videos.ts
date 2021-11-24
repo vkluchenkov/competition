@@ -1,10 +1,11 @@
 import { Video } from "./models/video";
 import { VideoCategory } from "./models/videoCategories";
+import videoimage from "./images/media.webp";
 
 export const videos: Video[] = [
   {
     id: "1",
-    image: "./images/media.webp",
+    image: videoimage,
     duration: 2880,
     avatar: "U",
     title: "Название видео 1",
@@ -15,7 +16,7 @@ export const videos: Video[] = [
   },
   {
     id: "2",
-    image: "./images/media.webp",
+    image: videoimage,
     duration: 924,
     avatar: "V",
     title: "Название видео 2",
@@ -26,7 +27,7 @@ export const videos: Video[] = [
   },
   {
     id: "3",
-    image: "./images/media.webp",
+    image: videoimage,
     duration: 924,
     avatar: "V",
     title: "Название видео 3",
@@ -37,7 +38,7 @@ export const videos: Video[] = [
   },
   {
     id: "4",
-    image: "./images/media.webp",
+    image: videoimage,
     duration: 1084,
     avatar: "V",
     title: "Название видео 4",
@@ -48,7 +49,7 @@ export const videos: Video[] = [
   },
   {
     id: "5",
-    image: "./images/media.webp",
+    image: videoimage,
     duration: 687,
     avatar: "V",
     title: "Название видео 5",
@@ -59,7 +60,7 @@ export const videos: Video[] = [
   },
   {
     id: "6",
-    image: "./images/media.webp",
+    image: videoimage,
     duration: 1354,
     avatar: "V",
     title: "Название видео 6",
