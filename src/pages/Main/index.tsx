@@ -4,6 +4,7 @@ import { VideoGrid } from "../../components/VideoGrid";
 import { Chips } from "../../components/Chips";
 import { styles } from "./styles";
 import { VideoCategory } from "../../models/videoCategories";
+import { Signup } from "../../components/SignUp";
 
 export const Main = () => {
   const [activeCategory, setActiveCategory] = useState<VideoCategory | null>(
@@ -12,8 +13,9 @@ export const Main = () => {
 
   return (
     <section css={styles.section}>
-      <Chips activeCategory={activeCategory} onChange={setActiveCategory} />
-      <VideoGrid activeCategory={activeCategory} />
+      <Signup />
+      {/* <Chips activeCategory={activeCategory} onChange={setActiveCategory} />
+      <VideoGrid activeCategory={activeCategory} /> */}
     </section>
   );
 };

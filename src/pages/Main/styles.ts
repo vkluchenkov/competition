@@ -2,7 +2,12 @@ import { createStyles } from "../../types/emotion-styles";
 
 export const styles = createStyles({
   section: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     height: "calc(100vh - 55px)",
+    boxSizing: "border-box",
+    padding: "25px",
     overflowY: "scroll",
     width: "calc(100vw - 200px)",
     "&::-webkit-scrollbar": {
