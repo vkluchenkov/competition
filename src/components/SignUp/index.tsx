@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Link } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import { Grid } from "@material-ui/core";
+import { isNullishCoalesce } from "typescript";
 
 export const Signup: React.FC = () => {
   // const [birthDate, setBirthDate] = useState<MaterialUiPickersDate>(null);
@@ -13,16 +14,26 @@ export const Signup: React.FC = () => {
 
   const [email, setEmail] = useState("")
   const [pass, setPass] = useState("");
+  const [result, setResult] = useState({
+    email: '',
+    pass: '',
+  });
 
   const emailHandle = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
   const passHandle = (event: React.ChangeEvent<HTMLInputElement>) => setPass(event.target.value);
+  const submitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+    setResult({ email, pass });
+    console.log(result);
+  };
 
   return (
     <Box
       component="form"
+      onSubmit={submitHandler}
       sx={{
         width: "100%",
-        maxWidth: 600,
+        maxWidth: 450,
       }}>
       <Paper
         variant="outlined"
@@ -46,7 +57,7 @@ export const Signup: React.FC = () => {
         </Typography>
 
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={12}>
             <TextField
               required
               fullWidth
@@ -58,7 +69,7 @@ export const Signup: React.FC = () => {
               onChange={emailHandle}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={12}>
             <TextField
               required
               fullWidth
