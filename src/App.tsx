@@ -21,7 +21,7 @@ function App() {
           <Router>
             <Header />
             <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
-              <Menu />
+              {/* <Menu /> */}
               <Routes>
                 <Route path="/" element={<Main />} />
                 {/* <Route path="/single/:videoId" element={<SingleVideo />} />

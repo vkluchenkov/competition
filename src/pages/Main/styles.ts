@@ -5,11 +5,12 @@ export const styles = createStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
     height: "calc(100vh - 55px)",
     boxSizing: "border-box",
     padding: "25px",
     overflowY: "scroll",
-    width: "calc(100vw - 200px)",
+    width: "100%",
     "&::-webkit-scrollbar": {
       width: "3px",
     },
