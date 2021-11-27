@@ -78,7 +78,7 @@ export const Signup: React.FC = () => {
               control={control}
               rules={{ required: true }}
               render={({ field }) =>
-                <TextField
+                <TextField {...field}
                   required
                   fullWidth
                   id="Password"
