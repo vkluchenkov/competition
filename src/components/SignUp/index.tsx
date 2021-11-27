@@ -11,17 +11,12 @@ interface FormFields {
 }
 
 export const Signup: React.FC = () => {
-  const { handleSubmit, control, reset } = useForm<FormFields>();
+  const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = data => console.log(data);
 
   const [checked, setChecked] = useState(false);
   const checkHandle = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
-
-  const [email, setEmail] = useState("")
-  const [pass, setPass] = useState("");
-
-  const emailHandle = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
-  const passHandle = (event: React.ChangeEvent<HTMLInputElement>) => setPass(event.target.value);
+  console.log(errors)
 
   return (
     <Box
@@ -57,37 +52,49 @@ export const Signup: React.FC = () => {
             <Controller
               name="email"
               control={control}
-              rules={{ required: true }}
-              render={({ field }) =>
-                <TextField {...field}
-                  required
+              rules={{
+                required: true,
+                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              }}
+              defaultValue=""
+              render={({ field: { onChange, onBlur, value } }) =>
+                <TextField
+                  // required
                   fullWidth
+                  error={!!errors.email}
+                  helperText={
+                    errors?.email?.message
+                  }
                   id="Email"
                   label="Email"
                   variant="outlined"
-                  value={email}
+                  value={value}
                   placeholder="mary@gmail.com"
-                  onChange={emailHandle}
+                  onChange={onChange}
                 />}
             />
+
           </Grid>
 
           <Grid item sm={12}>
             <Controller
               name="password"
               control={control}
-              rules={{ required: true }}
-              render={({ field }) =>
-                <TextField {...field}
+              rules={{
+                required: true,
+              }}
+              defaultValue=""
+              render={({ field: { onChange, onBlur, value } }) =>
+                <TextField
                   required
                   fullWidth
                   id="Password"
                   type="password"
                   label="Password"
                   variant="outlined"
-                  value={pass}
-                  onChange={passHandle}
-                  helperText="!!!Password requirments!!!"
+                  value={value}
+                  onChange={onChange}
+                  helperText="Your password must be"
                 />}
             />
           </Grid>
