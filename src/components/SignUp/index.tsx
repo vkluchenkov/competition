@@ -2,41 +2,37 @@
 import React, { useState } from "react";
 import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Link } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import { Grid } from "@material-ui/core";
-import { isNullishCoalesce } from "typescript";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+
+interface FormFields {
+  email: string,
+  password: string
+}
 
 export const Signup: React.FC = () => {
-  // const [birthDate, setBirthDate] = useState<MaterialUiPickersDate>(null);
-  // const birthDateISO = birthDate?.toISODate()
+  const { handleSubmit, control, reset } = useForm<FormFields>();
+  const onSubmit: SubmitHandler<FormFields> = data => console.log(data);
+
   const [checked, setChecked] = useState(false);
   const checkHandle = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
 
   const [email, setEmail] = useState("")
   const [pass, setPass] = useState("");
-  const [result, setResult] = useState({
-    email: '',
-    pass: '',
-  });
 
   const emailHandle = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
   const passHandle = (event: React.ChangeEvent<HTMLInputElement>) => setPass(event.target.value);
-  const submitHandler = (event: React.FormEvent) => {
-    event.preventDefault();
-    setResult({ email, pass });
-    console.log(result);
-  };
 
   return (
     <Box
       component="form"
-      onSubmit={submitHandler}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         width: "100%",
         maxWidth: 450,
       }}>
       <Paper
-        variant="outlined"
+        elevation={3}
         sx={{
           padding: "25px",
           display: "flex",
@@ -58,30 +54,44 @@ export const Signup: React.FC = () => {
 
         <Grid container spacing={2}>
           <Grid item sm={12}>
-            <TextField
-              required
-              fullWidth
-              id="Email"
-              label="Email"
-              variant="outlined"
-              value={email}
-              placeholder="mary@gmail.com"
-              onChange={emailHandle}
+            <Controller
+              name="email"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) =>
+                <TextField {...field}
+                  required
+                  fullWidth
+                  id="Email"
+                  label="Email"
+                  variant="outlined"
+                  value={email}
+                  placeholder="mary@gmail.com"
+                  onChange={emailHandle}
+                />}
             />
           </Grid>
+
           <Grid item sm={12}>
-            <TextField
-              required
-              fullWidth
-              id="Password"
-              type="password"
-              label="Password"
-              variant="outlined"
-              value={pass}
-              onChange={passHandle}
-              helperText="!!!Password requirments!!!"
+            <Controller
+              name="password"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) =>
+                <TextField
+                  required
+                  fullWidth
+                  id="Password"
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  value={pass}
+                  onChange={passHandle}
+                  helperText="!!!Password requirments!!!"
+                />}
             />
           </Grid>
+
           <Grid item xs={12}>
             <FormControlLabel control={
               <Switch
@@ -117,80 +127,3 @@ export const Signup: React.FC = () => {
     </Box>
   )
 }
-{/* 
-            <h2>Pesonal information</h2>
-            <TextField
-              required
-              id="FirstName"
-              label="First name"
-              variant="outlined"
-              placeholder="Mary"
-            />
-            <TextField
-              required
-              id="LastName"
-              label="Last name"
-              variant="outlined"
-              placeholder="Doe"
-            />
-            <TextField
-              id="StageName"
-              label="Stage name"
-              variant="outlined"
-              placeholder="Asmahan"
-              helperText="Fill this if you have one"
-            />
-            <DatePicker
-              disableFuture
-              inputVariant="outlined"
-              openTo="year"
-              format="dd.MM.yyyy"
-              label="Date of birth"
-              views={["year", "month", "date"]}
-              value={birthDate}
-              onChange={setBirthDate}
-            /> */}
-{/* <h2>Address</h2>
-          <TextField
-            required
-            id="Country"
-            label="Country"
-            variant="outlined"
-            placeholder="Poland"
-          />
-          <TextField
-            required
-            id="City"
-            label="City"
-            variant="outlined"
-            placeholder="Warsaw"
-          />
-          <TextField
-            required
-            id="Street"
-            label="Street address"
-            variant="outlined"
-            placeholder="Podskarbińska 2"
-          />
-          <TextField
-            id="Zip"
-            label="Zip code"
-            variant="outlined"
-            placeholder="03-833"
-          /> */}
-
-{/* <h2>Contact info</h2>
-          <TextField
-            id="Phone"
-            label="Phone"
-            variant="outlined"
-            placeholder="+48 111 222 333"
-            helperText="We will use to contact you in case of emergency"
-          />
-          <TextField
-            id="Social"
-            label="Social networks"
-            variant="outlined"
-            placeholder="for example facebook.com/danceweekendwarsaw"
-            helperText="Provide a link to your profile on Facebook or Instagram"
-          /> */}
