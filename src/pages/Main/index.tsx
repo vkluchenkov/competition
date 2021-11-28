@@ -4,7 +4,7 @@
 // import { Chips } from "../../components/Chips";
 import { styles } from "./styles";
 // import { VideoCategory } from "../../models/videoCategories";
-import { Signup } from "../../components/SignUp";
+import { Signup } from "../SignUp";
 
 export const Main = () => {
   // const [activeCategory, setActiveCategory] = useState<VideoCategory | null>(

@@ -4,6 +4,7 @@ import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Sw
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Grid } from "@material-ui/core";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { FormInputField } from "../../ui-kit/input"
 
 interface FormFields {
   email: string,
@@ -49,7 +50,14 @@ export const Signup: React.FC = () => {
 
         <Grid container spacing={2}>
           <Grid item sm={12}>
-            <Controller
+            <FormInputField
+              name="Email"
+              variant="outlined"
+              label="Email"
+              placeholder="user@example.com"
+              control={control}
+            />
+            {/* <Controller
               name="email"
               control={control}
               rules={{
@@ -72,7 +80,7 @@ export const Signup: React.FC = () => {
                   placeholder="mary@gmail.com"
                   onChange={onChange}
                 />}
-            />
+            /> */}
 
           </Grid>
 
