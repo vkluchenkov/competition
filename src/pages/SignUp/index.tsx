@@ -51,59 +51,35 @@ export const Signup: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item sm={12}>
             <FormInputField
-              name="Email"
-              variant="outlined"
+              name="email"
               label="Email"
               placeholder="user@example.com"
               control={control}
-            />
-            {/* <Controller
-              name="email"
-              control={control}
               rules={{
-                required: true,
-                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                required: "Please fill in this field",
+                validate: (value: string) => {
+                  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || "Incorrect email"
+                },
               }}
-              defaultValue=""
-              render={({ field: { onChange, onBlur, value } }) =>
-                <TextField
-                  // required
-                  fullWidth
-                  error={!!errors.email}
-                  helperText={
-                    errors?.email?.message
-                  }
-                  id="Email"
-                  label="Email"
-                  variant="outlined"
-                  value={value}
-                  placeholder="mary@gmail.com"
-                  onChange={onChange}
-                />}
-            /> */}
-
+              error={!!errors.email}
+              helperText={errors?.email?.message}
+            />
           </Grid>
 
           <Grid item sm={12}>
-            <Controller
+            <FormInputField
               name="password"
+              label="Password"
+              type="password"
               control={control}
               rules={{
-                required: true,
+                required: "Please fill in this field",
+                validate: (value: string) => {
+                  return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value) || "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters"
+                },
               }}
-              defaultValue=""
-              render={({ field: { onChange, onBlur, value } }) =>
-                <TextField
-                  required
-                  fullWidth
-                  id="Password"
-                  type="password"
-                  label="Password"
-                  variant="outlined"
-                  value={value}
-                  onChange={onChange}
-                  helperText="Your password must be"
-                />}
+              error={!!errors.password}
+              helperText={errors?.password?.message || "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters"}
             />
           </Grid>
 

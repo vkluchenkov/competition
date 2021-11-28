@@ -3,12 +3,12 @@ import { Control, useController, UseControllerProps } from "react-hook-form"
 import { InputField, InputFieldProps } from "./InputFIeld";
 
 type FormInputFieldProps = InputFieldProps & {
-  control: Control;
+  control: Control<any>;
   name: string;
-  rules: UseControllerProps["rules"]
+  rules?: UseControllerProps["rules"];
 }
 
-export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, rules }) => {
+export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, rules, ...props }) => {
   const {
     field: { onChange, onBlur, value, ref },
     fieldState: { invalid }
@@ -23,6 +23,9 @@ export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, r
 
   return (
     <InputField
+      {...props}
+      fullWidth
+      variant="outlined"
       onChange={onChange}
       onBlur={onBlur}
       value={value}
