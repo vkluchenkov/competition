@@ -24,6 +24,7 @@ export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, r
   return (
     <InputField
       {...props}
+      required={!!rules?.required}
       fullWidth
       variant="outlined"
       onChange={onChange}
@@ -31,6 +32,7 @@ export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, r
       value={value}
       name={name}
       inputRef={ref}
+      InputProps={{ required: false }}
     />
   )
 }

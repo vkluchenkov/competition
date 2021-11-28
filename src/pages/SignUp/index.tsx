@@ -56,7 +56,7 @@ export const Signup: React.FC = () => {
               placeholder="user@example.com"
               control={control}
               rules={{
-                required: "Please fill in this field",
+                required: "Please fill out this field",
                 validate: (value: string) => {
                   return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || "Incorrect email"
                 },
@@ -73,7 +73,7 @@ export const Signup: React.FC = () => {
               type="password"
               control={control}
               rules={{
-                required: "Please fill in this field",
+                required: "Please fill out this field",
                 validate: (value: string) => {
                   return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value) || "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters"
                 },
