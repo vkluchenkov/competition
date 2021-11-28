@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Link } from "@mui/material";
+import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Link, Select } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Grid } from "@material-ui/core";
+import { Grid, MenuItem } from "@material-ui/core";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { FormInputField } from "../../ui-kit/input"
+import { FormInputField } from "../../ui-kit/input";
+import { useTranslation, Namespace } from "react-i18next";
 
 interface FormFields {
   email: string,
@@ -12,12 +13,17 @@ interface FormFields {
 }
 
 export const Signup: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  // const lngs = {
+  //   en: { nativeName: 'English' },
+  //   ru: { nativeName: 'Русский' }
+  // };
+
   const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = data => console.log(data);
 
   const [checked, setChecked] = useState(false);
   const checkHandle = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
-  console.log(errors)
 
   return (
     <Box
@@ -34,10 +40,11 @@ export const Signup: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          mb: 3,
         }}>
 
         <Typography variant="h3" component="h1" gutterBottom>
-          Welcome!
+          {t('SignUp.title')}
         </Typography>
 
         <Avatar sx={{ mb: 2, bgcolor: 'secondary.main' }}>
@@ -45,7 +52,7 @@ export const Signup: React.FC = () => {
         </Avatar>
 
         <Typography variant="body1" gutterBottom sx={{ mb: 2 }}>
-          Let's create your profile
+          {t('SignUp.subtitle')}
         </Typography>
 
         <Grid container spacing={2}>
@@ -56,9 +63,9 @@ export const Signup: React.FC = () => {
               placeholder="user@example.com"
               control={control}
               rules={{
-                required: "Please fill out this field",
+                required: t<string>('SignUp.required'),
                 validate: (value: string) => {
-                  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || "Incorrect email"
+                  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || t<string>('SignUp.incorrectEmail')
                 },
               }}
               error={!!errors.email}
@@ -69,17 +76,17 @@ export const Signup: React.FC = () => {
           <Grid item sm={12}>
             <FormInputField
               name="password"
-              label="Password"
+              label={t<string>('SignUp.password')}
               type="password"
               control={control}
               rules={{
-                required: "Please fill out this field",
+                required: t<string>('SignUp.required'),
                 validate: (value: string) => {
-                  return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value) || "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters"
+                  return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value) || t<string>('SignUp.passwordHint')
                 },
               }}
               error={!!errors.password}
-              helperText={errors?.password?.message || "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters"}
+              helperText={errors?.password?.message || t<string>('SignUp.passwordHint')}
             />
           </Grid>
 
@@ -89,7 +96,7 @@ export const Signup: React.FC = () => {
                 onChange={checkHandle}
               />
             }
-              label={<span>I accept {<Link href="#">terms and conditions</Link>} *</span>} />
+              label={<span>{t('SignUp.switchLabel1')}{<Link href="#">{t('SignUp.switchLabel2')}</Link>} *</span>} />
           </Grid>
         </Grid>
 
@@ -105,16 +112,33 @@ export const Signup: React.FC = () => {
           disableElevation
           fullWidth
         >
-          Sign up
+          {t('SignUp.submitBtn')}
         </Button>
         <Grid container justifyContent="center">
           <Grid item>
             <Link href="#" variant="body1">
-              Already have an account? Sign in
+              {t('SignUp.signIn')}
             </Link>
           </Grid>
         </Grid>
       </Paper>
+      <Grid container justifyContent="center">
+        <Grid item>
+          <Link
+            href="#"
+            variant="body1"
+            onClick={() => i18n.changeLanguage("en")}>
+            En
+          </Link>
+          <span> | </span>
+          <Link
+            href="#"
+            variant="body1"
+            onClick={() => i18n.changeLanguage("ru")}>
+            Ru
+          </Link>
+        </Grid>
+      </Grid>
     </Box>
   )
 }

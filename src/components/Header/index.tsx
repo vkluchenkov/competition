@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../images/logo.svg"
 
 export const Header: React.FC = () => {
+
   const currentUrl = useLocation();
 
   const logout = () => {

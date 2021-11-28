@@ -1,0 +1,14 @@
+{
+  "SignUp": {
+    "title": "Welcome!",
+    "subtitle": "Let's create your profile",
+    "required": "Please fill out this field",
+    "incorretEmail": "Incorrect email",
+    "password": "Password",
+    "passwordHint": "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters",
+    "switchLabel1": "I accept ",
+    "switchLabel2": "terms and conditions",
+    "signIn": "Already have an account? Sign in",
+    "submitBtn": "Sign up"
+  }
+}

@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
+import { Suspense } from "react";
 import "./App.css";
 import { Main } from "./pages/Main";
 import { Header } from "./components/Header";
@@ -15,32 +16,34 @@ import LuxonUtils from '@date-io/luxon';
 
 function App() {
   return (
-    <MuiPickersUtilsProvider utils={LuxonUtils}>
-      <QueueProvider>
-        <UserProvider>
-          <Router>
-            <Header />
-            <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
-              {/* <Menu /> */}
-              <Routes>
-                <Route path="/" element={<Main />} />
-                {/* <Route path="/single/:videoId" element={<SingleVideo />} />
+    <Suspense fallback="loading">
+      <MuiPickersUtilsProvider utils={LuxonUtils}>
+        <QueueProvider>
+          <UserProvider>
+            <Router>
+              <Header />
+              <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
+                {/* <Menu /> */}
+                <Routes>
+                  <Route path="/" element={<Main />} />
+                  {/* <Route path="/single/:videoId" element={<SingleVideo />} />
               <Route path="/login" element={<Login />} /> */}
-                <Route
-                  path="*"
-                  element={
-                    <div style={{ padding: "1rem" }}>
-                      <p>There's nothing here!</p>
-                    </div>
-                  }
-                />
-              </Routes>
-            </main>
-            <QueuePopup />
-          </Router>
-        </UserProvider>
-      </QueueProvider>
-    </MuiPickersUtilsProvider>
+                  <Route
+                    path="*"
+                    element={
+                      <div style={{ padding: "1rem" }}>
+                        <p>There's nothing here!</p>
+                      </div>
+                    }
+                  />
+                </Routes>
+              </main>
+              <QueuePopup />
+            </Router>
+          </UserProvider>
+        </QueueProvider>
+      </MuiPickersUtilsProvider>
+    </Suspense>
   );
 }
 
