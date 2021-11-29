@@ -10,5 +10,14 @@
     "switchLabel2": "terms and conditions",
     "signIn": "Already have an account? Sign in",
     "submitBtn": "Sign up"
+  },
+  "Login": {
+    "title": "Log In",
+    "subtitle": "Welcome back!",
+    "required": "Please fill out this field",
+    "password": "Password",
+    "passwordHint": "Forgot your password?",
+    "signup": "Do not have an account? Sign up",
+    "submitBtn": "Log in"
   }
 }

@@ -14,10 +14,6 @@ interface FormFields {
 
 export const Signup: React.FC = () => {
   const { t, i18n } = useTranslation();
-  // const lngs = {
-  //   en: { nativeName: 'English' },
-  //   ru: { nativeName: 'Русский' }
-  // };
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = data => console.log(data);
@@ -56,7 +52,7 @@ export const Signup: React.FC = () => {
         </Typography>
 
         <Grid container spacing={2}>
-          <Grid item sm={12}>
+          <Grid item xs={12}>
             <FormInputField
               name="email"
               label="Email"
@@ -73,7 +69,7 @@ export const Signup: React.FC = () => {
             />
           </Grid>
 
-          <Grid item sm={12}>
+          <Grid item xs={12}>
             <FormInputField
               name="password"
               label={t<string>('SignUp.password')}
