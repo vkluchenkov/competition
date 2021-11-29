@@ -8,6 +8,7 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation, Namespace } from "react-i18next";
 import { LangSwitch } from "../../ui-kit/langSwitch";
+import { useMutation, gql } from "@apollo/client";
 
 interface FormFields {
   email: string,
@@ -15,10 +16,31 @@ interface FormFields {
 }
 
 export const Signup: React.FC = () => {
+
   const { t, i18n } = useTranslation();
 
+  const ADD_USER = gql`
+  mutation addUser($user_id: Int, $password: String, $email: String) {
+    insert_users_one(
+      object: {
+        email: $email,
+        password: $password,
+        user_id: $user_id,
+      })
+      {
+        email
+        password
+        user_id
+      }
+  }`
+  const [addUser, { data, loading, error }] = useMutation(ADD_USER);
+
   const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
-  const onSubmit: SubmitHandler<FormFields> = data => console.log(data);
+  const onSubmit: SubmitHandler<FormFields> = values => {
+    console.log(values)
+
+    addUser({ variables: { user_id: 99, email: values.email, password: values.password } });
+  };
 
   const [checked, setChecked] = useState(false);
   const checkHandle = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);

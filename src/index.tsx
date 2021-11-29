@@ -4,10 +4,25 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./i18n"
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql
+} from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: 'https://destined-pheasant-56.hasura.app/v1/graphql',
+  headers: { 'X-Hasura-Admin-Secret': '7yuGwyHMZskn3YwmW5MiDFS77e3SbyQ6kHestCWshFi9HO73VhdQbJDxVzAJMQsU' },
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
