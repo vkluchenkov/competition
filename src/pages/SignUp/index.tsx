@@ -37,7 +37,6 @@ export const Signup: React.FC = () => {
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = values => {
-    console.log(values)
 
     addUser({ variables: { user_id: 99, email: values.email, password: values.password } });
   };
