@@ -2,17 +2,18 @@
 import React, { useState } from "react";
 import { styles } from "./styles";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useUser } from "../../store/User";
 import qs from "query-string";
 import logo from "../../images/logo.svg"
 
-import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Select, Link } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Grid, MenuItem } from "@material-ui/core";
+import { Button, Typography, Box, Paper, Avatar } from "@mui/material";
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import { Grid } from "@material-ui/core";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation, Namespace } from "react-i18next";
+import { LangSwitch } from "../../ui-kit/langSwitch";
 
 interface FormFields {
   email: string,
@@ -20,9 +21,9 @@ interface FormFields {
 }
 
 export const Login: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
+  const { handleSubmit, control, reset, formState: { errors }, setError } = useForm<FormFields>();
 
   const currentUrl = useLocation();
   const parsedUrl = qs.parse(currentUrl.search);
@@ -37,19 +38,17 @@ export const Login: React.FC = () => {
 
   const [{ currentUser }, { checkCredentials }] = useUser();
 
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [error, setError] = useState("");
-
-  const onSubmit = (event: any) => {
-    event.preventDefault();
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
     try {
-      checkCredentials(email, pass);
+      checkCredentials(data.email, data.password);
       if (mustBeString(parsedUrl.redirect)) {
         navigate(parsedUrl.redirect)
       }
     } catch (error: any) {
-      setError(error.message);
+      setError("email", {
+        type: "manual",
+        message: error.message,
+      });
     }
   };
 
@@ -77,7 +76,7 @@ export const Login: React.FC = () => {
           </Typography>
 
           <Avatar sx={{ mb: 2, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+            <LockOpenOutlinedIcon />
           </Avatar>
 
           <Typography variant="body1" gutterBottom sx={{ mb: 2 }}>
@@ -111,8 +110,10 @@ export const Login: React.FC = () => {
                 error={!!errors.password}
                 helperText={errors?.password?.message}
               />
-              <Link href="#" variant="body1">
-                {t('Login.passwordHint')}
+              <Link to="#">
+                <Typography variant="body1">
+                  {t('Login.passwordHint')}
+                </Typography>
               </Link>
             </Grid>
           </Grid>
@@ -132,46 +133,43 @@ export const Login: React.FC = () => {
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link href="#" variant="body1">
-                {t('Login.signup')}
+              <Link to="/signup">
+                <Typography variant="body1">
+                  {t('Login.signup')}
+                </Typography>
               </Link>
             </Grid>
           </Grid>
         </Paper>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Link
-              href="#"
-              variant="body1"
-              onClick={() => i18n.changeLanguage("en")}>
-              En
-            </Link>
-            <span> | </span>
-            <Link
-              href="#"
-              variant="body1"
-              onClick={() => i18n.changeLanguage("ru")}>
-              Ru
-            </Link>
-          </Grid>
-        </Grid>
+        <LangSwitch />
       </Box>
     );
   } else {
     return (
-      <div css={styles.login_frame}>
-        <div css={styles.login_window}>
-          <Link href="/">
-            <img
-              src={"./images/logo.svg"}
-              css={styles.login_logo}
-              alt="logo"
-            ></img>
-          </Link>
-          <h1 css={styles.login_title}>Hi {currentUser.username}!</h1>
-          <p css={styles.login_subtitle}>Nice to see you again</p>
-        </div>
-      </div>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 450,
+        }}>
+        <Paper
+          elevation={3}
+          sx={{
+            padding: "25px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mb: 3,
+          }}>
+
+          <Typography variant="h3" component="h1" gutterBottom>
+            Hi {currentUser.username}!
+          </Typography>
+          <Typography variant="body1">
+            Nice to see you again
+          </Typography>
+        </Paper>
+
+      </Box>
     );
   }
 };

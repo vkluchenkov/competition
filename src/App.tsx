@@ -9,10 +9,12 @@ import { QueuePopup } from "./components/QueuePopup";
 import { QueueProvider } from "./store/Queue";
 import { UserProvider } from "./store/User";
 import { Login } from "./pages/Login";
+import { Signup } from "./pages/SignUp";
 import { SingleVideo } from "./pages/SingleVideo";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import LuxonUtils from '@date-io/luxon';
+import { styles } from "./pages/Main/styles";
 
 function App() {
   return (
@@ -26,8 +28,17 @@ function App() {
                 {/* <Menu /> */}
                 <Routes>
                   <Route path="/" element={<Main />} />
-                  {/* <Route path="/single/:videoId" element={<SingleVideo />} />
-              <Route path="/login" element={<Login />} /> */}
+                  {/* <Route path="/single/:videoId" element={<SingleVideo />} />*/}
+                  <Route path="/login" element={
+                    <section css={styles.section}>
+                      <Login />
+                    </section>
+                  } />
+                  <Route path="/signup" element={
+                    <section css={styles.section}>
+                      <Signup />
+                    </section>
+                  } />
                   <Route
                     path="*"
                     element={

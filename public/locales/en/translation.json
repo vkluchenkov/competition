@@ -8,7 +8,7 @@
     "passwordHint": "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters",
     "switchLabel1": "I accept ",
     "switchLabel2": "terms and conditions",
-    "signIn": "Already have an account? Sign in",
+    "signIn": "Already have an account? Log in",
     "submitBtn": "Sign up"
   },
   "Login": {

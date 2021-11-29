@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Link, Select } from "@mui/material";
+import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Select } from "@mui/material";
+import { Link } from "react-router-dom";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Grid, MenuItem } from "@material-ui/core";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation, Namespace } from "react-i18next";
+import { LangSwitch } from "../../ui-kit/langSwitch";
 
 interface FormFields {
   email: string,
@@ -92,7 +94,7 @@ export const Signup: React.FC = () => {
                 onChange={checkHandle}
               />
             }
-              label={<span>{t('SignUp.switchLabel1')}{<Link href="#">{t('SignUp.switchLabel2')}</Link>} *</span>} />
+              label={<span>{t('SignUp.switchLabel1')}{<Link to="#">{t('SignUp.switchLabel2')}</Link>} *</span>} />
           </Grid>
         </Grid>
 
@@ -112,29 +114,15 @@ export const Signup: React.FC = () => {
         </Button>
         <Grid container justifyContent="center">
           <Grid item>
-            <Link href="#" variant="body1">
-              {t('SignUp.signIn')}
+            <Link to="/login">
+              <Typography variant="body1">
+                {t('SignUp.signIn')}
+              </Typography>
             </Link>
           </Grid>
         </Grid>
       </Paper>
-      <Grid container justifyContent="center">
-        <Grid item>
-          <Link
-            href="#"
-            variant="body1"
-            onClick={() => i18n.changeLanguage("en")}>
-            En
-          </Link>
-          <span> | </span>
-          <Link
-            href="#"
-            variant="body1"
-            onClick={() => i18n.changeLanguage("ru")}>
-            Ru
-          </Link>
-        </Grid>
-      </Grid>
+      <LangSwitch />
     </Box>
   )
 }
