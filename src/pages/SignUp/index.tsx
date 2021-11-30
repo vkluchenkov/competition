@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { Button, TextField, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Select } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Grid, MenuItem } from "@material-ui/core";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { LangSwitch } from "../../components/langSwitch";
 import { FormInputField } from "../../ui-kit/input";
-import { useTranslation, Namespace } from "react-i18next";
-import { LangSwitch } from "../../ui-kit/langSwitch";
+
+import { Link } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useMutation, gql } from "@apollo/client";
 
 interface FormFields {
@@ -16,33 +16,26 @@ interface FormFields {
 }
 
 export const Signup: React.FC = () => {
-
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
 
   const ADD_USER = gql`
-  mutation addUser($user_id: Int, $password: String, $email: String) {
-    insert_users_one(
-      object: {
-        email: $email,
-        password: $password,
-        user_id: $user_id,
-      })
+  mutation addUser($password: String, $email: String) {
+    insert_users_one(object: { email: $email, password: $password })
       {
         email
         password
-        user_id
       }
   }`
+
   const [addUser, { data, loading, error }] = useMutation(ADD_USER);
 
-  const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = values => {
-
-    addUser({ variables: { user_id: 99, email: values.email, password: values.password } });
+    addUser({ variables: { email: values.email, password: values.password } });
   };
 
   const [checked, setChecked] = useState(false);
-  const checkHandle = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
 
   return (
     <Box
@@ -84,7 +77,7 @@ export const Signup: React.FC = () => {
               rules={{
                 required: t<string>('SignUp.required'),
                 validate: (value: string) => {
-                  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || t<string>('SignUp.incorrectEmail')
+                  return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || t<string>('SignUp.incorrectEmail')
                 },
               }}
               error={!!errors.email}
@@ -112,7 +105,7 @@ export const Signup: React.FC = () => {
           <Grid item xs={12}>
             <FormControlLabel control={
               <Switch
-                onChange={checkHandle}
+                onChange={handleCheck}
               />
             }
               label={<span>{t('SignUp.switchLabel1')}{<Link to="#">{t('SignUp.switchLabel2')}</Link>} *</span>} />

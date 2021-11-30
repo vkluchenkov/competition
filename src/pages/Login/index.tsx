@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useUser } from "../../store/User";
 import qs from "query-string";
 import { Button, Typography, Box, Paper, Avatar } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { Grid } from "@material-ui/core";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
-import { useTranslation, Namespace } from "react-i18next";
-import { LangSwitch } from "../../ui-kit/langSwitch";
+import { useTranslation } from "react-i18next";
+import { LangSwitch } from "../../components/langSwitch";
 
 interface FormFields {
   email: string,

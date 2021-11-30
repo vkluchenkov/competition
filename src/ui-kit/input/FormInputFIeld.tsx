@@ -11,7 +11,6 @@ type FormInputFieldProps = InputFieldProps & {
 export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, rules, ...props }) => {
   const {
     field: { onChange, onBlur, value, ref },
-    fieldState: { invalid }
   } = useController(
     {
       name,

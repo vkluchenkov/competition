@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
   const logout = () => {
     removeActiveUser();
   };
-  const [{ currentUser: currentUser }, { removeActiveUser }] = useUser();
+  const [{ currentUser }, { removeActiveUser }] = useUser();
   const user = () => {
     if (currentUser) {
       return (
