@@ -17,7 +17,7 @@ interface FormFields {
 
 export const Signup: React.FC = () => {
   const { t } = useTranslation();
-  const { handleSubmit, control, reset, formState: { errors } } = useForm<FormFields>();
+  const { handleSubmit, control, reset, setError, formState: { errors } } = useForm<FormFields>();
 
   const ADD_USER = gql`
   mutation addUser($password: String, $email: String) {
@@ -31,11 +31,78 @@ export const Signup: React.FC = () => {
   const [addUser, { data, loading, error }] = useMutation(ADD_USER);
 
   const onSubmit: SubmitHandler<FormFields> = values => {
-    addUser({ variables: { email: values.email, password: values.password } });
+    try {
+      addUser({ variables: { email: values.email, password: values.password } });
+    } catch (error: any) {
+      setError("email", {
+        type: "manual",
+        message: error.message,
+      });
+    }
   };
 
   const [checked, setChecked] = useState(false);
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
+
+  if (loading) {
+    return (
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          width: "100%",
+          maxWidth: 450,
+        }}>
+        <Paper
+          elevation={3}
+          sx={{
+            padding: "25px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mb: 3,
+          }}>
+
+          <Typography variant="h3" component="h1" gutterBottom>
+            Wait a sec
+          </Typography>
+          <Typography variant="body1">
+            We are creating your profile
+          </Typography>
+        </Paper>
+      </Box>
+    )
+  }
+
+  if (data) {
+    return (
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          width: "100%",
+          maxWidth: 450,
+        }}>
+        <Paper
+          elevation={3}
+          sx={{
+            padding: "25px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mb: 3,
+          }}>
+
+          <Typography variant="h3" component="h1" gutterBottom>
+            Thanks!
+          </Typography>
+          <Typography variant="body1">
+            Please check your email {data.insert_users_one.email} for confirmation link.
+          </Typography>
+        </Paper>
+      </Box>
+    )
+  }
 
   return (
     <Box
