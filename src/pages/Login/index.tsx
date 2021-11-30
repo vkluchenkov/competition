@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useUser } from "../../store/User";
 import qs from "query-string";
@@ -10,6 +10,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation } from "react-i18next";
 import { LangSwitch } from "../../components/langSwitch";
+import { useLazyQuery, gql } from "@apollo/client";
+import avatar from "../../images/media.webp";
 
 interface FormFields {
   email: string,
@@ -21,38 +23,90 @@ export const Login: React.FC = () => {
 
   const { handleSubmit, control, reset, formState: { errors }, setError } = useForm<FormFields>();
 
+  const CHECK_USER = gql`
+  query checkUser($password: String, $email: String) {
+    users(where: {email: {_eq: $email}, _and: {password: {_eq: $password}}}) {
+      email
+    }
+  }`
+
+  const [checkUser, { loading, error, data }] = useLazyQuery(CHECK_USER);
+
   const currentUrl = useLocation();
   const parsedUrl = qs.parse(currentUrl.search);
   const navigate = useNavigate();
 
   const mustBeString = (value: any): value is string => {
     if (typeof value !== 'string') {
-      throw new Error('Thats not a string')
+      return false;
     }
     return true;
   }
 
-  const [{ currentUser }, { checkCredentials }] = useUser();
+  const [{ currentUser }, { checkCredentials, setActiveUser }] = useUser();
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
+  const onSubmit = handleSubmit(async (values) => {
     try {
-      checkCredentials(data.email, data.password);
-      if (mustBeString(parsedUrl.redirect)) {
-        navigate(parsedUrl.redirect)
-      }
+      await checkUser({ variables: { email: values.email, password: values.password } });
     } catch (error: any) {
       setError("email", {
         type: "manual",
         message: error.message,
       });
     }
-  };
+  });
+
+  useEffect(() => {
+    if (data && data.users.length === 0) {
+      setError("email", {
+        type: "manual",
+        message: "Incorrect email or password",
+      });
+    }
+
+    if (data && data.users.length != 0) {
+      setActiveUser({
+        id: "001",
+        username: "Vasya",
+        email: "user@example.com",
+        avatar: avatar,
+      });
+    }
+  }, [data]);
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 450,
+        }}>
+        <Paper
+          elevation={3}
+          sx={{
+            padding: "25px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mb: 3,
+          }}>
+
+          <Typography variant="h3" component="h1" gutterBottom>
+            Wait a sec
+          </Typography>
+          <Typography variant="body1">
+            We are checking your credentials
+          </Typography>
+        </Paper>
+      </Box>
+    )
+  }
 
   if (!currentUser) {
     return (
       <Box
         component="form"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
         sx={{
           width: "100%",
           maxWidth: 450,
@@ -158,7 +212,7 @@ export const Login: React.FC = () => {
           }}>
 
           <Typography variant="h3" component="h1" gutterBottom>
-            Hi {currentUser.username}!
+            Hi there!
           </Typography>
           <Typography variant="body1">
             Nice to see you again

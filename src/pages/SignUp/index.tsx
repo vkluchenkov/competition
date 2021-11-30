@@ -30,16 +30,16 @@ export const Signup: React.FC = () => {
 
   const [addUser, { data, loading, error }] = useMutation(ADD_USER);
 
-  const onSubmit: SubmitHandler<FormFields> = values => {
+  const onSubmit = handleSubmit(async (values) => {
     try {
-      addUser({ variables: { email: values.email, password: values.password } });
+      await addUser({ variables: { email: values.email, password: values.password } });
     } catch (error: any) {
       setError("email", {
         type: "manual",
         message: error.message,
       });
     }
-  };
+  });
 
   const [checked, setChecked] = useState(false);
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
@@ -47,8 +47,6 @@ export const Signup: React.FC = () => {
   if (loading) {
     return (
       <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
         sx={{
           width: "100%",
           maxWidth: 450,
@@ -77,8 +75,6 @@ export const Signup: React.FC = () => {
   if (data) {
     return (
       <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
         sx={{
           width: "100%",
           maxWidth: 450,
@@ -94,10 +90,10 @@ export const Signup: React.FC = () => {
           }}>
 
           <Typography variant="h3" component="h1" gutterBottom>
-            Thanks!
+            Veryfy your email!
           </Typography>
           <Typography variant="body1">
-            Please check your email {data.insert_users_one.email} for confirmation link.
+            Please check your mailbox {data.insert_users_one.email} for email confirmation link.
           </Typography>
         </Paper>
       </Box>
@@ -107,7 +103,7 @@ export const Signup: React.FC = () => {
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={onSubmit}
       sx={{
         width: "100%",
         maxWidth: 450,
