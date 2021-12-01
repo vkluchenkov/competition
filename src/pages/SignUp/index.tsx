@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { LangSwitch } from "../../components/langSwitch";
 import { FormInputField } from "../../ui-kit/input";
@@ -46,29 +46,7 @@ export const Signup: React.FC = () => {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 450,
-        }}>
-        <Paper
-          elevation={3}
-          sx={{
-            padding: "25px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: 3,
-          }}>
-
-          <Typography variant="h3" component="h1" gutterBottom>
-            Wait a sec
-          </Typography>
-          <Typography variant="body1">
-            We are creating your profile
-          </Typography>
-        </Paper>
-      </Box>
+      <CircularProgress />
     )
   }
 

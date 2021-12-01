@@ -19,5 +19,22 @@
     "passwordHint": "Forgot your password?",
     "signup": "Do not have an account? Sign up",
     "submitBtn": "Log in"
+  },
+  "Dww": {
+    "title": "Dance Weekend in Warsaw 2022",
+    "subtitle": "Registration",
+    "required": "Please fill out this field",
+    "submitBtn": "Save",
+    "nextBtn": "Next",
+    "prevBtn": "Back",
+    "step1Label": "Events",
+    "step1Title": "Please select the events of the festival you wish to attend",
+    "workshops": "Workshops",
+    "worldShow": "World Show",
+    "competition": "Competition",
+    "fullPass": "Full Pass",
+    "step2Title": "Selection of the workshops to attend",
+    "step2RadioTitle": "Full pass or single workshops?",
+    "step2Single": "Single workshops"
   }
 }
