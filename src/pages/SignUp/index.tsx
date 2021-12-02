@@ -116,7 +116,7 @@ export const Signup: React.FC = () => {
               placeholder="user@example.com"
               control={control}
               rules={{
-                required: t<string>('SignUp.required'),
+                required: t<string>('Common.required'),
                 validate: (value: string) => {
                   return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || t<string>('SignUp.incorrectEmail')
                 },
@@ -133,7 +133,7 @@ export const Signup: React.FC = () => {
               type="password"
               control={control}
               rules={{
-                required: t<string>('SignUp.required'),
+                required: t<string>('Common.required'),
                 validate: (value: string) => {
                   return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value) || t<string>('SignUp.passwordHint')
                 },

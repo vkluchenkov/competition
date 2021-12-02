@@ -2,7 +2,6 @@
   "SignUp": {
     "title": "Привет!",
     "subtitle": "Давай создадим твой профиль",
-    "required": "Это поле не должно быть пустым",
     "incorretEmail": "Неправильный email",
     "password": "Пароль",
     "passwordHint": "Не менее 8 символов, должны быть БОЛЬШИЕ и малые буквы латинского алфавита и цифры",
@@ -14,10 +13,31 @@
   "Login": {
     "title": "Вход",
     "subtitle": "Добро пожаловать снова!",
-    "required": "Это поле не должно быть пустым",
     "password": "Пароль",
     "passwordHint": "Забыли пароль?",
     "signup": "Еще нету аккаунта? Регистрация",
     "submitBtn": "Войти"
+  },
+  "Dww": {
+    "title": "Dance Weekend in Warsaw 2022",
+    "subtitle": "Регистрация",
+    "submitBtn": "Сохранить",
+    "nextBtn": "Вперед",
+    "prevBtn": "Назад",
+    "Step1": {
+      "title": "В каких мероприятиях фестиваля вы хотите принять участие?"
+    },
+    "Step2": {
+      "title": "Выбор мастер-классов",
+      "choiceTitle": "Full pass или одиночные мастер-классы?",
+      "singleWS": "Одиночные мастер-классы"
+    },
+    "workshops": "Мастер-классы",
+    "worldShow": "World Show",
+    "competition": "Конкурс",
+    "fullPass": "Full Pass"
+  },
+  "Common": {
+    "required": "Это поле не должно быть пустым"
   }
 }

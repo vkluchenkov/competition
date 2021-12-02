@@ -119,7 +119,7 @@ export const Login: React.FC = () => {
                 placeholder="user@example.com"
                 control={control}
                 rules={{
-                  required: t<string>('SignUp.required'),
+                  required: t<string>('Common.required'),
                 }}
                 error={!!errors.email}
                 helperText={errors?.email?.message}
@@ -133,7 +133,7 @@ export const Login: React.FC = () => {
                 type="password"
                 control={control}
                 rules={{
-                  required: t<string>('Login.required'),
+                  required: t<string>('Common.required'),
                 }}
                 error={!!errors.password}
                 helperText={errors?.password?.message}
