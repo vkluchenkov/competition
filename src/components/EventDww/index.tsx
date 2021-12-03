@@ -11,8 +11,7 @@ import { LangSwitch } from "../langSwitch";
 import { AgeGroup } from "./AgeGroup";
 import { styles } from "./styles"
 import { FormHeader } from "./FormHeader"
-import { Step1 } from "./Step1";
-import { Step2 } from "./Step2";
+import { EventsList } from "./EventsList"
 
 // Заполнить для обработчика формы?
 interface FormFields {
@@ -30,33 +29,10 @@ const userData = {
 export const Dww: React.FC = () => {
   const { t } = useTranslation();
   const ageGroup = useMemo(() => AgeGroup(userData.age), [userData.age]);
-  const { handleSubmit, control, reset, setError, formState: { errors } } = useForm<FormFields>();
-
-  const onSubmit = handleSubmit(async (values) => {
-    try {
-      //     await checkUser({ variables: { email: values.email, password: values.password } });
-    } catch (error: any) {
-      //     setError("email", {
-      //       type: "manual",
-      //       message: error.message,
-      //     });
-    }
-  });
 
   return (
-    <StylesProvider injectFirst>
-      <Box component="form" onSubmit={onSubmit} css={styles.box}>
-        <FormHeader
-          userData={userData}
-          ageGroup={ageGroup}
-        />
-
-        <Paper elevation={3} css={styles.paper}>
-          <Step1 />
-          <Step2 />
-        </Paper>
-        <LangSwitch />
-      </Box>
-    </StylesProvider>
+    // <StylesProvider injectFirst>
+    <EventsList />
+    // </StylesProvider> 
   );
 };
