@@ -14,6 +14,7 @@ import {
   FormGroup,
   FormHelperText,
   Typography,
+  Collapse
 } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -80,22 +81,24 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
           </FormControl>
 
           {/* Список синглов */}
-          <Box hidden={(workshopsType != "single")}>
-            <FormControl component="fieldset" variant="standard" >
-              <FormGroup >
-                <Workshops teacher="Marta Korzun" onChange={handleSingles} />
-                <Workshops teacher="Alexey Ryaboshapka" onChange={handleSingles} />
-                <Workshops teacher="Daliya" onChange={handleSingles} />
-                <Workshops teacher="Chronis Taxidis" onChange={handleSingles} />
-                <Workshops teacher="Leandro Ferreyra" onChange={handleSingles} />
-                <Workshops teacher="Aliah" onChange={handleSingles} />
-                <Workshops teacher="Nathalie" onChange={handleSingles} />
-                <Workshops teacher="Darya" onChange={handleSingles} />
-                <Workshops teacher="Polina Ostrovska" onChange={handleSingles} />
-              </FormGroup>
-              <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
-            </FormControl>
-          </Box>
+          <Collapse in={(workshopsType === "single")}>
+            <Box>
+              <FormControl component="fieldset" variant="standard" >
+                <FormGroup >
+                  <Workshops teacher="Marta Korzun" onChange={handleSingles} />
+                  <Workshops teacher="Alexey Ryaboshapka" onChange={handleSingles} />
+                  <Workshops teacher="Daliya" onChange={handleSingles} />
+                  <Workshops teacher="Chronis Taxidis" onChange={handleSingles} />
+                  <Workshops teacher="Leandro Ferreyra" onChange={handleSingles} />
+                  <Workshops teacher="Aliah" onChange={handleSingles} />
+                  <Workshops teacher="Nathalie" onChange={handleSingles} />
+                  <Workshops teacher="Darya" onChange={handleSingles} />
+                  <Workshops teacher="Polina Ostrovska" onChange={handleSingles} />
+                </FormGroup>
+                <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
+              </FormControl>
+            </Box>
+          </Collapse>
 
         </Box>
       </DialogContent>
