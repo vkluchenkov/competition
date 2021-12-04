@@ -31,8 +31,8 @@ export const Dww: React.FC = () => {
   const ageGroup = useMemo(() => AgeGroup(userData.age), [userData.age]);
 
   return (
-    // <StylesProvider injectFirst>
-    <EventsList />
-    // </StylesProvider> 
+    <StylesProvider injectFirst>
+      <EventsList />
+    </StylesProvider>
   );
 };

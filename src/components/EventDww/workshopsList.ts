@@ -1,0 +1,88 @@
+import { basePrices } from "./prices";
+
+export const workshopsList = [
+  {
+    teacher: "Marta Korzun",
+    topic: "Tarab choreography",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Marta Korzun",
+    topic: "Mejance choreography",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Alexey Ryaboshapka",
+    topic: "TBA",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Alexey Ryaboshapka",
+    topic: "TBA",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Daliya",
+    topic: "Pop song choreography",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Chronis Taxidis",
+    topic: "Theory and practice of something drum solo",
+    length: "3h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Leandro Ferreyra",
+    topic: "Bollywood choreography",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Leandro Ferreyra",
+    topic: "Oriental tango choreography",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsStars,
+  },
+  {
+    teacher: "Aliah",
+    topic: "Drum solo fusion choreography",
+    length: "2h",
+    date: "2022-08-22",
+    price: basePrices.wsOther,
+  },
+  {
+    teacher: "Nathalie",
+    topic: "TBA",
+    length: "1.5h",
+    date: "2022-08-18",
+    price: basePrices.wsOther,
+  },
+  {
+    teacher: "Darya",
+    topic: "Baladi choreography",
+    length: "2h",
+    date: "2022-08-18",
+    price: basePrices.wsOther,
+  },
+  {
+    teacher: "Polina Ostrovska",
+    topic: "Mejance with veil choreography",
+    length: "2h",
+    date: "2022-08-18",
+    price: basePrices.wsOther,
+  },
+];

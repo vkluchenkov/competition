@@ -15,4 +15,26 @@ export const styles = createStyles({
   headerMargin: {
     marginBottom: "15px",
   },
+  largeInput: {
+    "& .MuiSvgIcon-root": { fontSize: 30 },
+  },
+  checkboxItem: {
+    marginLeft: "5px",
+    marginTop: "10px",
+  },
+  title: {
+    marginTop: "15px",
+  },
+  listButton: {
+    flexShrink: 0,
+    ml: 1,
+  },
+  bottomBar: {
+    padding: "12px 24px",
+  },
+  total: {
+    display: "block",
+    width: "100%",
+    justifySelf: "flex-start",
+  },
 });
