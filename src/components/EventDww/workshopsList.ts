@@ -62,7 +62,7 @@ export const workshopsList = [
       name: "Chronis Taxidis",
       sortOrder: 4,
     },
-    topic: "Theory and practice of something drum solo",
+    topic: "Theory and practice of live drum solo improvisation",
     start: "2022-08-19T12:15",
     end: "2022-08-19T15:45",
     price: basePrices.wsStars,

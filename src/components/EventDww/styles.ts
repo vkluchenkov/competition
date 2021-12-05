@@ -19,11 +19,12 @@ export const styles = createStyles({
     "& .MuiSvgIcon-root": { fontSize: 30 },
   },
   checkboxItem: {
-    marginLeft: "5px",
+    // marginLeft: "5px",
     marginTop: "10px",
   },
   title: {
     marginTop: "15px",
+    textAlign: "center",
   },
   listButton: {
     flexShrink: 0,

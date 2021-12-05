@@ -15,9 +15,6 @@ import {
   FormHelperText,
   Typography,
   Collapse,
-  ToggleButton,
-  ToggleButtonGroup,
-  Divider,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +22,7 @@ import { basePrices } from "./prices";
 import { styles } from "./styles"
 import { WorkshopsByTeacher } from "./WorkshopsByTeacher"
 import { WorkshopsByDate } from "./WorkshopsByDate"
+import { Filters } from "./WorkshopsFilters";
 
 interface WorkshopsFormProps {
   open: boolean;
@@ -97,26 +95,13 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
 
           {/* Список синглов */}
           <Collapse in={(workshopsType === "single")}>
-            {/* Фильтры */}
-            <Divider variant="middle" sx={styles.divider} />
 
-            <Box sx={styles.sortBox}>
-              <Typography variant="body1" sx={{ mr: 2 }}>Sort by: </Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={sort}
-                exclusive
-                onChange={handleSorting}
-              >
-                <ToggleButton value="teacher" size="small">Teacher</ToggleButton>
-                <ToggleButton value="date" size="small">Date</ToggleButton>
-              </ToggleButtonGroup>
-            </Box>
+            <Filters value={sort} onChange={handleSorting} />
 
             {/* Синглы по тичерам */}
             <Collapse in={(sort === "teacher")}>
               <Box>
-                <FormControl component="fieldset" variant="standard" >
+                <FormControl component="fieldset" variant="standard" sx={{ width: "100%" }}>
                   <FormGroup >
                     <WorkshopsByTeacher teacher="Marta Korzun" onChange={handleSingles} />
                     <WorkshopsByTeacher teacher="Alexey Ryaboshapka" onChange={handleSingles} />
@@ -136,7 +121,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
             {/* Синглы по дате */}
             <Collapse in={(sort === "date")}>
               <Box>
-                <FormControl component="fieldset" variant="standard" >
+                <FormControl component="fieldset" variant="standard" sx={{ width: "100%" }}>
                   <FormGroup >
                     <WorkshopsByDate onChange={handleSingles} />
                   </FormGroup>

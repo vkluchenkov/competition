@@ -22,41 +22,49 @@ const uniqueDays = Array.from(new Set(days))
 const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours')
 
 export const WorkshopsByDate: React.FC<WorkshopsByDateProps> = ({ onChange }) => {
-  return (
-    uniqueDays.map(day => {
 
-      const wsList = wsByDayFilter(day).map(ws => {
-        const wsLength = length(ws.start, ws.end).hours;
-        const wsDate = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + "h)";
-
-        return (
-          <FormControlLabel
-            sx={styles.checkboxItem}
-            control={
-              <Checkbox
-                // checked
-                onChange={onChange}
-                name="123"
-                sx={styles.largeInput} />
-            }
-            label={
-              <React.Fragment>
-                <Typography variant="body1">
-                  {ws.topic}: €{ws.price}
-                </Typography>
-                <Typography variant="body2">
-                  {wsDate}
-                </Typography>
-              </React.Fragment>
-            } />
-        )
-      });
+  const workshops = uniqueDays.map(day => {
+    const wsDate = DateTime.fromISO(day).toFormat("dd.LL.y")
+    const wsList = wsByDayFilter(day).map(ws => {
+      const wsLength = length(ws.start, ws.end).hours;
+      const wsDateTime = DateTime.fromISO(ws.start).toFormat("H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + "h)";
 
       return (
-        <React.Fragment>
-          <Typography variant="h6" css={styles.title}>{day}</Typography>
-          {wsList}
-        </React.Fragment>)
-    })
+        <FormControlLabel
+          sx={styles.checkboxItem}
+          control={
+            <Checkbox
+              // checked
+              onChange={onChange}
+              name={`${day}+${ws.teacher}+${ws.topic}`}
+              sx={styles.largeInput} />
+          }
+          label={
+            <React.Fragment>
+              <Typography variant="body1">
+                <strong>{ws.teacher.name}</strong>
+              </Typography>
+              <Typography variant="body1">
+                {ws.topic}: €{ws.price}
+              </Typography>
+              <Typography variant="body2">
+                {wsDateTime}
+              </Typography>
+            </React.Fragment>
+          } />
+      )
+    });
+
+    return (
+      <React.Fragment>
+        <Typography variant="h6" css={styles.title}>{wsDate}</Typography>
+        {wsList}
+      </React.Fragment>)
+  })
+
+  return (
+    <>
+      {workshops}
+    </>
   )
 }
