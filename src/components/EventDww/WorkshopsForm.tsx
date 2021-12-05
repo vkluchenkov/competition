@@ -11,8 +11,6 @@ import {
   FormControl,
   FormControlLabel,
   Box,
-  FormGroup,
-  FormHelperText,
   Typography,
   Collapse,
 } from "@mui/material";
@@ -35,7 +33,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
   const [singles, setSingles] = useState({});
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
 
-  const [sort, setSort] = React.useState('teacher');
+  const [sorting, setSorting] = React.useState('teacher');
 
   const [total, setTotal] = useState(0);
 
@@ -47,12 +45,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
     });
   };
 
-  const handleSorting = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    setSort(newAlignment);
-  };
+  const handleSorting = (event: React.MouseEvent<HTMLElement>, newSort: string,) => setSorting(newSort);
 
   const { t } = useTranslation();
 
@@ -96,38 +89,16 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
           {/* Список синглов */}
           <Collapse in={(workshopsType === "single")}>
 
-            <Filters value={sort} onChange={handleSorting} />
+            <Filters value={sorting} onChange={handleSorting} />
 
             {/* Синглы по тичерам */}
-            <Collapse in={(sort === "teacher")}>
-              <Box>
-                <FormControl component="fieldset" variant="standard" sx={{ width: "100%" }}>
-                  <FormGroup >
-                    <WorkshopsByTeacher teacher="Marta Korzun" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Alexey Ryaboshapka" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Daliya" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Chronis Taxidis" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Leandro Ferreyra" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Aliah" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Nathalie" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Darya" onChange={handleSingles} />
-                    <WorkshopsByTeacher teacher="Polina Ostrovska" onChange={handleSingles} />
-                  </FormGroup>
-                  <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
-                </FormControl>
-              </Box>
+            <Collapse in={(sorting === "teacher")}>
+              <WorkshopsByTeacher onChange={handleSingles} />
             </Collapse>
 
             {/* Синглы по дате */}
-            <Collapse in={(sort === "date")}>
-              <Box>
-                <FormControl component="fieldset" variant="standard" sx={{ width: "100%" }}>
-                  <FormGroup >
-                    <WorkshopsByDate onChange={handleSingles} />
-                  </FormGroup>
-                  <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
-                </FormControl>
-              </Box>
+            <Collapse in={(sorting === "date")}>
+              <WorkshopsByDate onChange={handleSingles} />
             </Collapse>
           </Collapse>
 
@@ -137,7 +108,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
       <DialogActions sx={styles.bottomBar}>
         <Typography variant="body1" sx={styles.total}>Total: €0</Typography>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onClose}>Submit</Button>
+        <Button onClick={onClose} variant="outlined">Submit</Button>
       </DialogActions>
     </Dialog>
   );

@@ -3,11 +3,16 @@ import React from "react";
 import { workshopsList } from "./workshopsList";
 import { styles } from "./styles";
 import {
-  FormControlLabel,
-  Checkbox,
   Typography,
+  FormGroup,
+  FormHelperText,
+  FormControl,
+  FormControlLabel,
+  Box,
 } from "@mui/material";
 import { DateTime } from "luxon";
+import { FormInputCheckbox } from "../../ui-kit/input";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface WorkshopsByDateProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,6 +27,7 @@ const uniqueDays = Array.from(new Set(days))
 const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours')
 
 export const WorkshopsByDate: React.FC<WorkshopsByDateProps> = ({ onChange }) => {
+  const { handleSubmit, control, reset, setError, formState: { errors } } = useForm();
 
   const workshops = uniqueDays.map(day => {
     const wsDate = DateTime.fromISO(day).toFormat("dd.LL.y")
@@ -33,14 +39,13 @@ export const WorkshopsByDate: React.FC<WorkshopsByDateProps> = ({ onChange }) =>
         <FormControlLabel
           sx={styles.checkboxItem}
           control={
-            <Checkbox
-              // checked
+            <FormInputCheckbox
               onChange={onChange}
               name={`${day}+${ws.teacher}+${ws.topic}`}
-              sx={styles.largeInput} />
+              control={control} />
           }
           label={
-            <React.Fragment>
+            <>
               <Typography variant="body1">
                 <strong>{ws.teacher.name}</strong>
               </Typography>
@@ -50,21 +55,26 @@ export const WorkshopsByDate: React.FC<WorkshopsByDateProps> = ({ onChange }) =>
               <Typography variant="body2">
                 {wsDateTime}
               </Typography>
-            </React.Fragment>
+            </>
           } />
       )
     });
 
     return (
-      <React.Fragment>
+      <>
         <Typography variant="h6" css={styles.title}>{wsDate}</Typography>
         {wsList}
-      </React.Fragment>)
+      </>)
   })
 
   return (
-    <>
-      {workshops}
-    </>
+    <Box>
+      <FormControl component="fieldset" variant="standard" sx={{ width: "100%" }}>
+        <FormGroup >
+          {workshops}
+        </FormGroup>
+        <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
+      </FormControl>
+    </Box>
   )
 }

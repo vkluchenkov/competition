@@ -5,7 +5,7 @@ export const workshopsList = [
     teacher: {
       id: 1,
       name: "Marta Korzun",
-      sortOrder: 1,
+      sortOrder: 2,
     },
     topic: "Tarab choreography",
     start: "2022-08-18T10:00",
@@ -16,7 +16,7 @@ export const workshopsList = [
     teacher: {
       id: 1,
       name: "Marta Korzun",
-      sortOrder: 1,
+      sortOrder: 2,
     },
     topic: "Mejance choreography",
     start: "2022-08-18T12:15",
@@ -27,7 +27,7 @@ export const workshopsList = [
     teacher: {
       id: 2,
       name: "Alexey Ryaboshapka",
-      sortOrder: 2,
+      sortOrder: 1,
     },
     topic: "TBA",
     start: "2022-08-18T14:30",
@@ -38,7 +38,7 @@ export const workshopsList = [
     teacher: {
       id: 2,
       name: "Alexey Ryaboshapka",
-      sortOrder: 2,
+      sortOrder: 1,
     },
     topic: "TBA",
     start: "2022-08-18T16:45",

@@ -32,6 +32,7 @@ export const styles = createStyles({
   },
   bottomBar: {
     padding: "12px 24px",
+    backgroundColor: "#eee",
   },
   total: {
     display: "block",

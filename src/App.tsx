@@ -11,40 +11,43 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import LuxonUtils from '@date-io/luxon';
 import { styles } from "./pages/Main/styles";
+import { StylesProvider } from "@material-ui/styles";
 
 function App() {
   return (
     <Suspense fallback="loading">
-      <MuiPickersUtilsProvider utils={LuxonUtils}>
-        <UserProvider>
-          <Router>
-            <Header />
-            <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
-              <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/login" element={
-                  <section css={styles.section}>
-                    <Login />
-                  </section>
-                } />
-                <Route path="/signup" element={
-                  <section css={styles.section}>
-                    <Signup />
-                  </section>
-                } />
-                <Route
-                  path="*"
-                  element={
-                    <div style={{ padding: "1rem" }}>
-                      <p>There's nothing here!</p>
-                    </div>
-                  }
-                />
-              </Routes>
-            </main>
-          </Router>
-        </UserProvider>
-      </MuiPickersUtilsProvider>
+      <StylesProvider injectFirst>
+        <MuiPickersUtilsProvider utils={LuxonUtils}>
+          <UserProvider>
+            <Router>
+              <Header />
+              <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
+                <Routes>
+                  <Route path="/" element={<Main />} />
+                  <Route path="/login" element={
+                    <section css={styles.section}>
+                      <Login />
+                    </section>
+                  } />
+                  <Route path="/signup" element={
+                    <section css={styles.section}>
+                      <Signup />
+                    </section>
+                  } />
+                  <Route
+                    path="*"
+                    element={
+                      <div style={{ padding: "1rem" }}>
+                        <p>There's nothing here!</p>
+                      </div>
+                    }
+                  />
+                </Routes>
+              </main>
+            </Router>
+          </UserProvider>
+        </MuiPickersUtilsProvider>
+      </StylesProvider>
     </Suspense>
   );
 }

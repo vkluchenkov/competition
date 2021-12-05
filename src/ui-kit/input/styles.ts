@@ -28,4 +28,8 @@ export const styles = createStyles({
       display: "block",
     },
   },
+
+  largeCheckbox: {
+    "& .MuiSvgIcon-root": { fontSize: 30 },
+  },
 });

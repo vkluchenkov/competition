@@ -3,62 +3,77 @@ import React from "react";
 import { workshopsList } from "./workshopsList";
 import { styles } from "./styles";
 import {
+  FormControl,
   FormControlLabel,
-  Checkbox,
+  Box,
+  FormGroup,
+  FormHelperText,
   Typography,
 } from "@mui/material";
 import { DateTime } from "luxon";
+import { FormInputCheckbox } from "../../ui-kit/input";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface WorkshopsByTeacherProps {
-  teacher: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const filteredWorkshops = (filter: string) => {
-  return workshopsList.filter((ws) => ws.teacher.name === filter)
-}
+const sortedWorkshops = workshopsList.sort((a, b) => a.teacher.sortOrder - b.teacher.sortOrder)
 
-const length = (start: string, end: string) => {
-  const wsStart = DateTime.fromISO(start);
-  const wsEnd = DateTime.fromISO(end);
-  const duration = wsEnd.diff(wsStart, "hours")
-  return duration;
-}
+const wsByTeacherFilter = (filter: number) => sortedWorkshops.filter(ws => ws.teacher.id === filter)
 
-export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = ({ teacher, onChange }) => {
-  const wsList = filteredWorkshops(teacher).map((ws, index) => {
-    const wsLength = length(ws.start, ws.end).hours;
-    const wsDate = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm")
-      + "-"
-      + DateTime.fromISO(ws.end).toFormat("H:mm")
-      + " (" + wsLength + "h)";
+const teachersId = sortedWorkshops.map(ws => ws.teacher.id)
+const uniqueTeachersId = Array.from(new Set(teachersId))
+
+const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours')
+
+export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = ({ onChange }) => {
+  const { handleSubmit, control, reset, setError, formState: { errors } } = useForm();
+
+  const workshops = uniqueTeachersId.map((id) => {
+    const teacherName = sortedWorkshops.find((ws) => ws.teacher.id === id)?.teacher.name
+    const wsList = wsByTeacherFilter(id).map(ws => {
+      const wsLength = length(ws.start, ws.end).hours;
+      const wsDateTime = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + "h)";
+
+      return (
+        <FormControlLabel
+          sx={styles.checkboxItem}
+          control={
+            <FormInputCheckbox
+              onChange={onChange}
+              name={`${wsDateTime}+${ws.teacher}+${ws.topic}`}
+              control={control} />
+          }
+          label={
+            <>
+              <Typography variant="body1">
+                {ws.topic}: €{ws.price}
+              </Typography>
+              <Typography variant="body2">
+                {wsDateTime}
+              </Typography>
+            </>
+          } />
+      )
+    });
 
     return (
-      <FormControlLabel
-        sx={styles.checkboxItem}
-        control={
-          <Checkbox
-            // checked
-            onChange={onChange}
-            name={`${teacher}${index + 1}`}
-            sx={styles.largeInput} />
-        }
-        label={
-          <React.Fragment>
-            <Typography variant="body1">
-              {ws.topic}: €{ws.price}
-            </Typography>
-            <Typography variant="body2">
-              {wsDate}
-            </Typography>
-          </React.Fragment>
-        } />)
-  });
+      <>
+        <Typography variant="h6" css={styles.title}>{teacherName}</Typography>
+        {wsList}
+      </>
+    )
+  })
 
   return (
-    <React.Fragment>
-      <Typography variant="h6" css={styles.title}>{teacher}</Typography>
-      {wsList}
-    </React.Fragment>
+    <Box>
+      <FormControl component="fieldset" variant="standard" sx={{ width: "100%" }}>
+        <FormGroup >
+          {workshops}
+        </FormGroup>
+        <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
+      </FormControl>
+    </Box>
   )
 }
