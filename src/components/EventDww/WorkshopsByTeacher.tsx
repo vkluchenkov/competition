@@ -7,18 +7,32 @@ import {
   Checkbox,
   Typography,
 } from "@mui/material";
+import { DateTime } from "luxon";
 
-interface WorkshopsProps {
+interface WorkshopsByTeacherProps {
   teacher: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const filteredWorkshops = (filter: string) => {
-  return workshopsList.filter((ws) => ws.teacher === filter)
+  return workshopsList.filter((ws) => ws.teacher.name === filter)
 }
 
-export const Workshops: React.FC<WorkshopsProps> = ({ teacher, onChange }) => {
+const length = (start: string, end: string) => {
+  const wsStart = DateTime.fromISO(start);
+  const wsEnd = DateTime.fromISO(end);
+  const duration = wsEnd.diff(wsStart, "hours")
+  return duration;
+}
+
+export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = ({ teacher, onChange }) => {
   const wsList = filteredWorkshops(teacher).map((ws, index) => {
+    const wsLength = length(ws.start, ws.end).hours;
+    const wsDate = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm")
+      + "-"
+      + DateTime.fromISO(ws.end).toFormat("H:mm")
+      + " (" + wsLength + "h)";
+
     return (
       <FormControlLabel
         sx={styles.checkboxItem}
@@ -32,10 +46,10 @@ export const Workshops: React.FC<WorkshopsProps> = ({ teacher, onChange }) => {
         label={
           <React.Fragment>
             <Typography variant="body1">
-              {ws.topic} ({ws.length}): €{ws.price}
+              {ws.topic}: €{ws.price}
             </Typography>
             <Typography variant="body2">
-              {ws.date}
+              {wsDate}
             </Typography>
           </React.Fragment>
         } />)

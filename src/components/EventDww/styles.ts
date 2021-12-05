@@ -37,4 +37,13 @@ export const styles = createStyles({
     width: "100%",
     justifySelf: "flex-start",
   },
+  divider: {
+    mt: 2,
+    mb: 3,
+  },
+  sortBox: {
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+  },
 });

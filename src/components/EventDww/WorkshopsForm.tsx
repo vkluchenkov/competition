@@ -14,13 +14,17 @@ import {
   FormGroup,
   FormHelperText,
   Typography,
-  Collapse
+  Collapse,
+  ToggleButton,
+  ToggleButtonGroup,
+  Divider,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { basePrices } from "./prices";
 import { styles } from "./styles"
-import { Workshops } from "./Workshops"
+import { WorkshopsByTeacher } from "./WorkshopsByTeacher"
+import { WorkshopsByDate } from "./WorkshopsByDate"
 
 interface WorkshopsFormProps {
   open: boolean;
@@ -32,13 +36,24 @@ type WorkshopsType = "fullPass" | "single";
 export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) => {
   const [singles, setSingles] = useState({});
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
+
+  const [sort, setSort] = React.useState('teacher');
+
   const [total, setTotal] = useState(0);
+
 
   const handleSingles = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSingles({
       ...singles,
       [event.target.name]: event.target.checked,
     });
+  };
+
+  const handleSorting = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    setSort(newAlignment);
   };
 
   const { t } = useTranslation();
@@ -82,22 +97,53 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
 
           {/* Список синглов */}
           <Collapse in={(workshopsType === "single")}>
-            <Box>
-              <FormControl component="fieldset" variant="standard" >
-                <FormGroup >
-                  <Workshops teacher="Marta Korzun" onChange={handleSingles} />
-                  <Workshops teacher="Alexey Ryaboshapka" onChange={handleSingles} />
-                  <Workshops teacher="Daliya" onChange={handleSingles} />
-                  <Workshops teacher="Chronis Taxidis" onChange={handleSingles} />
-                  <Workshops teacher="Leandro Ferreyra" onChange={handleSingles} />
-                  <Workshops teacher="Aliah" onChange={handleSingles} />
-                  <Workshops teacher="Nathalie" onChange={handleSingles} />
-                  <Workshops teacher="Darya" onChange={handleSingles} />
-                  <Workshops teacher="Polina Ostrovska" onChange={handleSingles} />
-                </FormGroup>
-                <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
-              </FormControl>
+            {/* Фильтры */}
+            <Divider variant="middle" sx={styles.divider} />
+
+            <Box sx={styles.sortBox}>
+              <Typography variant="body1" sx={{ mr: 2 }}>Sort by: </Typography>
+              <ToggleButtonGroup
+                color="primary"
+                value={sort}
+                exclusive
+                onChange={handleSorting}
+              >
+                <ToggleButton value="teacher" size="small">Teacher</ToggleButton>
+                <ToggleButton value="date" size="small">Date</ToggleButton>
+              </ToggleButtonGroup>
             </Box>
+
+            {/* Синглы по тичерам */}
+            <Collapse in={(sort === "teacher")}>
+              <Box>
+                <FormControl component="fieldset" variant="standard" >
+                  <FormGroup >
+                    <WorkshopsByTeacher teacher="Marta Korzun" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Alexey Ryaboshapka" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Daliya" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Chronis Taxidis" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Leandro Ferreyra" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Aliah" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Nathalie" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Darya" onChange={handleSingles} />
+                    <WorkshopsByTeacher teacher="Polina Ostrovska" onChange={handleSingles} />
+                  </FormGroup>
+                  <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
+                </FormControl>
+              </Box>
+            </Collapse>
+
+            {/* Синглы по дате */}
+            <Collapse in={(sort === "date")}>
+              <Box>
+                <FormControl component="fieldset" variant="standard" >
+                  <FormGroup >
+                    <WorkshopsByDate onChange={handleSingles} />
+                  </FormGroup>
+                  <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
+                </FormControl>
+              </Box>
+            </Collapse>
           </Collapse>
 
         </Box>
