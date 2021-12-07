@@ -9,25 +9,41 @@ import {
   FormControl,
   FormControlLabel,
   Box,
+  SwitchProps,
 } from "@mui/material";
 import { DateTime } from "luxon";
-import { FormInputCheckbox } from "../../ui-kit/input";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { FormInputCheckbox, InputCheckbox } from "../../ui-kit/input";
+import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hook-form";
+import { FormFields } from './types';
 
-interface WorkshopsByDateProps {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours');
 
-const wsByDayFilter = (filter: string) => workshopsList
-  .filter(ws => DateTime.fromISO(ws.start)
-    .hasSame(DateTime.fromISO(filter), 'day'));
+export const WorkshopsByDate: React.FC = () => {
+  const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
+  const { fields, append } = useFieldArray({
+    control,
+    name: "workshops",
+  });
 
-const days = workshopsList.map(ws => DateTime.fromISO(ws.start).toISODate())
-const uniqueDays = Array.from(new Set(days))
-const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours')
+  const watchWorkshops = watch("workshops");
+  const controlledFields = fields.map((field, index) => {
+    return {
+      ...field,
+      ...watchWorkshops[index],
+    };
+  });
 
-export const WorkshopsByDate: React.FC<WorkshopsByDateProps> = ({ onChange }) => {
-  const { handleSubmit, control, reset, setError, formState: { errors } } = useForm();
+  const wsByDayFilter = (filter: string) => controlledFields
+    .filter(ws => DateTime.fromISO(ws.start)
+      .hasSame(DateTime.fromISO(filter), 'day'));
+
+  const days = controlledFields.map(ws => DateTime.fromISO(ws.start).toISODate());
+  const uniqueDays = Array.from(new Set(days));
+
+  const handleChange = (wsId: number, event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    const wsIndex = watchWorkshops.findIndex((ws: any) => ws.id === wsId);
+    setValue(`workshops.${wsIndex}.selected`, checked);
+  }
 
   const workshops = uniqueDays.map(day => {
     const wsDate = DateTime.fromISO(day).toFormat("dd.LL.y")
@@ -39,10 +55,10 @@ export const WorkshopsByDate: React.FC<WorkshopsByDateProps> = ({ onChange }) =>
         <FormControlLabel
           sx={styles.checkboxItem}
           control={
-            <FormInputCheckbox
-              onChange={onChange}
-              name={`${day}+${ws.teacher}+${ws.topic}`}
-              control={control} />
+            <InputCheckbox
+              onChange={handleChange.bind(null, ws.id)}
+              checked={ws.selected}
+            />
           }
           label={
             <>

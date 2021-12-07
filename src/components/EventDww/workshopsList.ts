@@ -1,6 +1,21 @@
 import { basePrices } from "./prices";
 
-export const workshopsList = [
+interface Teacher {
+  id: number;
+  name: string;
+  sortOrder: number;
+}
+
+export interface Workshop {
+  teacher: Teacher;
+  topic: string;
+  start: string;
+  end: string;
+  price: number;
+  id: number;
+}
+
+export const workshopsList: Workshop[] = [
   {
     teacher: {
       id: 1,
@@ -11,6 +26,7 @@ export const workshopsList = [
     start: "2022-08-18T10:00",
     end: "2022-08-18T12:00",
     price: basePrices.wsStars,
+    id: 1,
   },
   {
     teacher: {
@@ -22,6 +38,7 @@ export const workshopsList = [
     start: "2022-08-18T12:15",
     end: "2022-08-18T14:15",
     price: basePrices.wsStars,
+    id: 2,
   },
   {
     teacher: {
@@ -33,6 +50,7 @@ export const workshopsList = [
     start: "2022-08-18T14:30",
     end: "2022-08-18T16:30",
     price: basePrices.wsStars,
+    id: 3,
   },
   {
     teacher: {
@@ -44,6 +62,7 @@ export const workshopsList = [
     start: "2022-08-18T16:45",
     end: "2022-08-18T18:45",
     price: basePrices.wsStars,
+    id: 4,
   },
   {
     teacher: {
@@ -55,6 +74,7 @@ export const workshopsList = [
     start: "2022-08-19T10:00",
     end: "2022-08-19T12:00",
     price: basePrices.wsStars,
+    id: 5,
   },
   {
     teacher: {
@@ -66,6 +86,7 @@ export const workshopsList = [
     start: "2022-08-19T12:15",
     end: "2022-08-19T15:45",
     price: basePrices.wsStars,
+    id: 6,
   },
   {
     teacher: {
@@ -77,6 +98,7 @@ export const workshopsList = [
     start: "2022-08-20T10:00",
     end: "2022-08-20T12:00",
     price: basePrices.wsStars,
+    id: 7,
   },
   {
     teacher: {
@@ -88,6 +110,7 @@ export const workshopsList = [
     start: "2022-08-20T12:15",
     end: "2022-08-20T14:15",
     price: basePrices.wsStars,
+    id: 8,
   },
   {
     teacher: {
@@ -99,6 +122,7 @@ export const workshopsList = [
     start: "2022-08-20T14:30",
     end: "2022-08-20T16:30",
     price: basePrices.wsOther,
+    id: 9,
   },
   {
     teacher: {
@@ -110,6 +134,7 @@ export const workshopsList = [
     start: "2022-08-20T16:45",
     end: "2022-08-20T18:15",
     price: basePrices.wsOther,
+    id: 10,
   },
   {
     teacher: {
@@ -121,6 +146,7 @@ export const workshopsList = [
     start: "2022-08-21T10:00",
     end: "2022-08-21T12:00",
     price: basePrices.wsOther,
+    id: 11,
   },
   {
     teacher: {
@@ -132,5 +158,6 @@ export const workshopsList = [
     start: "2022-08-21T12:15",
     end: "2022-08-21T14:15",
     price: basePrices.wsOther,
+    id: 12,
   },
 ];
