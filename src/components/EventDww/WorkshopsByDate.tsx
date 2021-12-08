@@ -12,13 +12,16 @@ import {
   SwitchProps,
 } from "@mui/material";
 import { DateTime } from "luxon";
-import { FormInputCheckbox, InputCheckbox } from "../../ui-kit/input";
+import { InputCheckbox } from "../../ui-kit/input";
 import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hook-form";
 import { FormFields } from './types';
+import { useTranslation } from "react-i18next";
+
 
 const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours');
 
 export const WorkshopsByDate: React.FC = () => {
+  const { t } = useTranslation();
   const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
   const { fields, append } = useFieldArray({
     control,
@@ -49,10 +52,11 @@ export const WorkshopsByDate: React.FC = () => {
     const wsDate = DateTime.fromISO(day).toFormat("dd.LL.y")
     const wsList = wsByDayFilter(day).map(ws => {
       const wsLength = length(ws.start, ws.end).hours;
-      const wsDateTime = DateTime.fromISO(ws.start).toFormat("H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + "h)";
+      const wsDateTime = DateTime.fromISO(ws.start).toFormat("H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + t('Dww.ws.h') + ")";
 
       return (
         <FormControlLabel
+          key={ws.id}
           sx={styles.checkboxItem}
           control={
             <InputCheckbox
@@ -77,10 +81,10 @@ export const WorkshopsByDate: React.FC = () => {
     });
 
     return (
-      <>
+      <React.Fragment key={wsDate}>
         <Typography variant="h6" css={styles.title}>{wsDate}</Typography>
         {wsList}
-      </>)
+      </React.Fragment>)
   })
 
   return (
@@ -89,7 +93,7 @@ export const WorkshopsByDate: React.FC = () => {
         <FormGroup >
           {workshops}
         </FormGroup>
-        <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
+        <FormHelperText>{t('Dww.ws.tip')}</FormHelperText>
       </FormControl>
     </Box>
   )

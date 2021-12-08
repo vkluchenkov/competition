@@ -66,9 +66,11 @@ export const Login: React.FC = () => {
 
     if (data && data.users.length != 0) {
       setActiveUser({
-        id: "001",
-        username: "Vasya",
+        firstName: "Ivan",
+        lastName: "Ivanov",
         email: "user@example.com",
+        id: "1",
+        birthDate: "1990-12-12",
         avatar: avatar,
       });
     }

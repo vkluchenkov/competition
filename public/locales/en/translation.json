@@ -19,13 +19,38 @@
     "submitBtn": "Log in"
   },
   "Dww": {
+    "eventsList": {
+      "wsSecondary": "Select single workshops or buy Full Pass and get them all",
+      "competitionSecondary": "3 workshops or Full Pass required to take part in competition",
+      "showSecondary": "Take part in the closing show of the festival",
+      "checkIn": "Check-in"
+    },
     "title": "Dance Weekend in Warsaw 2022",
     "subtitle": "Registration",
     "submitBtn": "Save",
     "nextBtn": "Next",
     "prevBtn": "Back",
-    "Step1": {
-      "title": "Choose the events you wish to attend"
+    "cancelBtn": "Cancel",
+    "ws": {
+      "title": "Workshops selection",
+      "sub1": "You can choose between Full Pass and single workshops.",
+      "sub2": "Full Pass includes all festival workshops and gives you discounts for competition and World Show participation. Also allows you to pay in installments (except Promo tariff).",
+      "sortBy": "Sort by",
+      "Teacher": "Teacher",
+      "Date": "Date",
+      "h": "h",
+      "tip": "Tip: you need to take at least 3 workshops to take part in competition"
+    },
+    "wsList": {
+      "Marta": "Marta Korzun",
+      "Alexey": "Alexey Ryaboshapka",
+      "Daliya": "Daliya",
+      "Chronis": "Chronis Taxidis",
+      "Leandro": "Leandro Ferreyra",
+      "Aliah": "Aliah",
+      "Nathalie": "Nathalie",
+      "Darya": "Darya",
+      "Polina": "Polina Ostrovska"
     },
     "Step2": {
       "title": "Selection of the workshops to attend",

@@ -11,39 +11,63 @@ import {
   Typography,
 } from "@mui/material";
 import { DateTime } from "luxon";
-import { FormInputCheckbox } from "../../ui-kit/input";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { InputCheckbox } from "../../ui-kit/input";
+import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hook-form";
+import { FormFields } from './types';
+import { useTranslation } from "react-i18next";
 
 interface WorkshopsByTeacherProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const sortedWorkshops = workshopsList.sort((a, b) => a.teacher.sortOrder - b.teacher.sortOrder)
-
-const wsByTeacherFilter = (filter: number) => sortedWorkshops.filter(ws => ws.teacher.id === filter)
-
-const teachersId = sortedWorkshops.map(ws => ws.teacher.id)
-const uniqueTeachersId = Array.from(new Set(teachersId))
-
 const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours')
 
 export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = ({ onChange }) => {
-  const { handleSubmit, control, reset, setError, formState: { errors } } = useForm();
+  const { t } = useTranslation();
+
+  const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
+
+  const { fields, append } = useFieldArray({
+    control,
+    name: "workshops",
+  });
+
+  const watchWorkshops = watch("workshops");
+  const controlledFields = fields.map((field, index) => {
+    return {
+      ...field,
+      ...watchWorkshops[index],
+    };
+  });
+
+  const sortedWorkshops = controlledFields.slice().sort((a, b) => a.teacher.sortOrder - b.teacher.sortOrder)
+
+  const wsByTeacherFilter = (filter: number) => sortedWorkshops.filter(ws => ws.teacher.id === filter)
+
+  const teachersId = sortedWorkshops.map(ws => ws.teacher.id)
+  const uniqueTeachersId = Array.from(new Set(teachersId))
+
+  const handleChange = (wsId: number, event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    const wsIndex = watchWorkshops.findIndex((ws: any) => ws.id === wsId);
+    setValue(`workshops.${wsIndex}.selected`, checked);
+  }
+
 
   const workshops = uniqueTeachersId.map((id) => {
     const teacherName = sortedWorkshops.find((ws) => ws.teacher.id === id)?.teacher.name
     const wsList = wsByTeacherFilter(id).map(ws => {
       const wsLength = length(ws.start, ws.end).hours;
-      const wsDateTime = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + "h)";
+      const wsDateTime = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + t('Dww.ws.h') + ")";
 
       return (
         <FormControlLabel
+          key={ws.id}
           sx={styles.checkboxItem}
           control={
-            <FormInputCheckbox
-              onChange={onChange}
-              name={`${wsDateTime}+${ws.teacher}+${ws.topic}`}
-              control={control} />
+            <InputCheckbox
+              onChange={handleChange.bind(null, ws.id)}
+              checked={ws.selected}
+            />
           }
           label={
             <>
@@ -59,10 +83,10 @@ export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = ({ onChange
     });
 
     return (
-      <>
+      <React.Fragment key={teacherName}>
         <Typography variant="h6" css={styles.title}>{teacherName}</Typography>
         {wsList}
-      </>
+      </React.Fragment>
     )
   })
 
@@ -72,7 +96,7 @@ export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = ({ onChange
         <FormGroup >
           {workshops}
         </FormGroup>
-        <FormHelperText>Tip: you need to take at least 3 workshops to take part in competition</FormHelperText>
+        <FormHelperText>{t('Dww.ws.tip')}</FormHelperText>
       </FormControl>
     </Box>
   )

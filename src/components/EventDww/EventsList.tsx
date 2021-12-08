@@ -4,8 +4,14 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WorkshopsForm } from "./WorkshopsForm";
 import { styles } from "./styles";
+import { LangSwitch } from "../langSwitch";
 
-export const EventsList: React.FC = () => {
+
+interface EventsListProps {
+  ageGroup?: string | undefined;
+}
+
+export const EventsList: React.FC<EventsListProps> = ({ ageGroup }) => {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -18,38 +24,38 @@ export const EventsList: React.FC = () => {
 
         <ListItem divider>
           <ListItemText
-            primary="Workshops"
-            secondary="Select single workshops or buy Full Pass and get them all"
+            primary={t('Dww.workshops')}
+            secondary={t('Dww.eventsList.wsSecondary')}
           />
           <Button variant="outlined" onClick={handleClickOpen} sx={styles.listButton}>
-            Check-in
+            {t('Dww.eventsList.checkIn')}
           </Button>
         </ListItem>
 
         <ListItem divider>
           <ListItemText
-            primary="Competition"
-            secondary="3 workshops or Full Pass required to take part in competition"
+            primary={t('Dww.competition')}
+            secondary={t('Dww.eventsList.competitionSecondary')}
           />
           <Button disabled variant="outlined" sx={styles.listButton}>
-            Check-in
+            {t('Dww.eventsList.checkIn')}
           </Button>
         </ListItem>
 
         <ListItem>
           <ListItemText
-            primary="World show"
-            secondary="Take part in the closing show of the festival"
+            primary={t('Dww.worldShow')}
+            secondary={t('Dww.eventsList.showSecondary')}
           />
           <Button variant="outlined" sx={styles.listButton}>
-            Check-in
+            {t('Dww.eventsList.checkIn')}
           </Button>
         </ListItem>
 
       </List>
 
-      <WorkshopsForm open={open} onClose={handleClose} />
-
+      <WorkshopsForm open={open} onClose={handleClose} ageGroup={ageGroup} />
+      <LangSwitch />
     </Box>
 
   )

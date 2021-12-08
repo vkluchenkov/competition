@@ -14,29 +14,48 @@ import {
   Typography,
   Collapse,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { basePrices } from "./prices";
 import { styles } from "./styles"
 import { WorkshopsByTeacher } from "./WorkshopsByTeacher"
 import { WorkshopsByDate } from "./WorkshopsByDate"
 import { Filters } from "./WorkshopsFilters";
+import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hook-form";
+import { FormFields } from './types';
 
 interface WorkshopsFormProps {
   open: boolean;
   onClose: () => void;
+  ageGroup: string | undefined;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) => {
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup }) => {
+  const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
+
   const [singles, setSingles] = useState({});
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
-
   const [sorting, setSorting] = React.useState('teacher');
 
-  const [total, setTotal] = useState(0);
+  const fullPassPrice = () => {
+    if (ageGroup === "baby" || ageGroup === "kids") {
+      return basePrices.fullPass / 2
+    }
+    return basePrices.fullPass
+  }
 
+  const selected = watch("workshops").filter((ws) => ws.selected);
+  const total = useMemo(() => {
+    if (workshopsType === "fullPass") {
+      return fullPassPrice()
+    } else
+      if (!selected) {
+        return 0
+      }
+    return selected.reduce(((prev, current) => prev + current.price), 0)
+  }, [selected])
 
   const handleSingles = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSingles({
@@ -51,13 +70,10 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Workshops selection</DialogTitle>
+      <DialogTitle>{t('Dww.ws.title')}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          You can choose between Full Pass and single workshops.
-        </DialogContentText>
-        <DialogContentText>
-          Full Pass includes all festival workshops and gives you discounts for competition and World Show participation. Also allows you to pay in installments (except Promo tariff).
+        <DialogContentText>{t('Dww.ws.sub1')}</DialogContentText>
+        <DialogContentText>{t('Dww.ws.sub2')}
         </DialogContentText>
 
         <Box component="form" sx={{ mt: 2 }}>
@@ -75,7 +91,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
                 control={
                   <Radio sx={styles.largeInput} />
                 }
-                label={<span>{t('Dww.fullPass')} €{basePrices.fullPass}</span>}
+                label={<span>{t('Dww.fullPass')} €{fullPassPrice()}</span>}
               />
               <FormControlLabel
                 value="single"
@@ -106,9 +122,14 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
       </DialogContent>
 
       <DialogActions sx={styles.bottomBar}>
-        <Typography variant="body1" sx={styles.total}>Total: €0</Typography>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onClose} variant="outlined">Submit</Button>
+        <Typography variant="body1" sx={styles.total}>Total: €{total}</Typography>
+        <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
+        <Button
+          disabled={!total}
+          onClick={onClose}
+          variant="outlined">
+          {t('Dww.submitBtn')}
+        </Button>
       </DialogActions>
     </Dialog>
   );

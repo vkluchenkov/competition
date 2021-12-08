@@ -35,7 +35,9 @@ export const UserProvider: React.FC = ({ children }) => {
     if (username === validUsername && password === validPassword) {
       setActiveUser({
         id: "001",
-        username: "Vasya",
+        firstName: "Vasya",
+        lastName: "Pupkin",
+        birthDate: "1990-12-12",
         email: "user@example.com",
         avatar: avatar,
       });
