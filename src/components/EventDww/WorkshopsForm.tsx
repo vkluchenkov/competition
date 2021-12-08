@@ -98,7 +98,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose }) =
 
             {/* Синглы по дате */}
             <Collapse in={(sorting === "date")}>
-              <WorkshopsByDate onChange={handleSingles} />
+              <WorkshopsByDate />
             </Collapse>
           </Collapse>
 
