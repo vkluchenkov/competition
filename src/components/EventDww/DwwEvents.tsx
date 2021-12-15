@@ -7,11 +7,11 @@ import { styles } from "./styles";
 import { LangSwitch } from "../langSwitch";
 
 
-interface EventsListProps {
+interface DwwEventsProps {
   ageGroup?: string | undefined;
 }
 
-export const EventsList: React.FC<EventsListProps> = ({ ageGroup }) => {
+export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup }) => {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);

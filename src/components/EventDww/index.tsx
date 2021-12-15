@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { AgeGroup } from "./AgeGroup";
-import { EventsList } from "./EventsList"
+import { DwwEvents } from "./DwwEvents"
 import { useForm, SubmitHandler, FormProvider, useFormContext } from "react-hook-form";
 import { workshopsList } from "./workshopsList";
 import { FormFields } from './types';
@@ -43,7 +43,7 @@ export const Dww: React.FC = () => {
 
   return (
     <FormProvider {...methods}>
-      <EventsList
+      <DwwEvents
         ageGroup={ageGroup} />
     </FormProvider>
   );

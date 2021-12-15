@@ -5,7 +5,7 @@ export const styles = createStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     height: "calc(100vh - 55px)",
     boxSizing: "border-box",
     padding: "25px",

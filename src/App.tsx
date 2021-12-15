@@ -12,6 +12,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import LuxonUtils from '@date-io/luxon';
 import { styles } from "./pages/Main/styles";
 import { StylesProvider } from "@material-ui/styles";
+import { Dww } from "./components/EventDww";
 
 function App() {
   return (
@@ -24,6 +25,10 @@ function App() {
               <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
                 <Routes>
                   <Route path="/" element={<Main />} />
+                  <Route path="/festivals/danceweekend" element={
+                    <section css={styles.section}>
+                      <Dww />
+                    </section>} />
                   <Route path="/login" element={
                     <section css={styles.section}>
                       <Login />
