@@ -4,20 +4,9 @@ import { Link } from "react-router-dom";
 import { DateTime } from "luxon";
 import { styles } from "./styles"
 import clsx from "clsx";
+import { Festival } from "../../models/festival";
 
-interface EventCardProps {
-  id: number;
-  title: string;
-  type: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  description: string;
-  img: string;
-  past?: boolean;
-}
-
-export const EventCard: React.FC<EventCardProps> = ({ id, title, type, startDate, endDate, location, description, img, past }) => {
+export const EventCard: React.FC<Festival> = ({ id, title, type, startDate, endDate, location, description, img, past }) => {
 
   return (
 

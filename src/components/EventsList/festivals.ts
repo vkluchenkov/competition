@@ -1,15 +1,5 @@
 import cardCover from "../../images/DW21_group_cover_FB.jpg";
-
-interface Festival {
-  id: number;
-  title: string;
-  type: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  description: string;
-  img: string;
-}
+import { Festival } from "../../models/festival";
 
 export const festivals: Festival[] = [
   {
