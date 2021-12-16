@@ -2,9 +2,15 @@ import { Typography, Box } from "@mui/material";
 import { DateTime } from "luxon";
 import React from "react";
 import { EventCard } from "./EventCard";
-import { festivals } from "./festivals";
+// import { festivals } from "./festivals";
+import { GetFestivals } from "../../api";
+import { Festival } from "../../models/festival";
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 export const EventsList = () => {
+  const queryClient = new QueryClient()
+  const festivals: Festival[] = GetFestivals();
+
   const today = DateTime.local();
 
   const futureFestivals = festivals.filter(festival => DateTime.fromISO(festival.startDate) >= today);
@@ -46,17 +52,19 @@ export const EventsList = () => {
   }
 
   return (
-    <Box>
-      <Typography variant="h5">
-        Your future events
-      </Typography>
-      {futureCards()}
+    <QueryClientProvider client={queryClient}>
+      <Box>
+        <Typography variant="h5">
+          Your future events
+        </Typography>
+        {futureCards()}
 
-      <Typography variant="h5">
-        Your past events
-      </Typography>
-      {pastCards()}
-    </Box>
+        <Typography variant="h5">
+          Your past events
+        </Typography>
+        {pastCards()}
+      </Box>
+    </QueryClientProvider>
   )
 
 }
