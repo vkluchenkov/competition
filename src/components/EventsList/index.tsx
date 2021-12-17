@@ -1,23 +1,32 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, CircularProgress } from "@mui/material";
 import { DateTime } from "luxon";
 import React from "react";
 import { EventCard } from "./EventCard";
 // import { festivals } from "./festivals";
-import { GetFestivals } from "../../api";
+import { getFestivals } from "../../api";
 import { Festival } from "../../models/festival";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 export const EventsList = () => {
-  const queryClient = new QueryClient()
-  const festivals: Festival[] = GetFestivals();
+
+  const { isLoading, isError, data, error } = useQuery('festivals', getFestivals)
+
+  if (isLoading) {
+    return <CircularProgress />
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
 
   const today = DateTime.local();
+  console.log(data)
 
-  const futureFestivals = festivals.filter(festival => DateTime.fromISO(festival.startDate) >= today);
-  const pastFestivals = festivals.filter(festival => DateTime.fromISO(festival.startDate) < today);
+  const futureFestivals = data.filter((festival: Festival) => DateTime.fromISO(festival.startDate) >= today);
+  const pastFestivals = data.filter((festival: Festival) => DateTime.fromISO(festival.startDate) < today);
 
   const futureCards = () => {
-    return futureFestivals.map(festival => {
+    return futureFestivals.map((festival: Festival) => {
       return (
         <EventCard
           key={festival.id}
@@ -34,7 +43,7 @@ export const EventsList = () => {
   }
 
   const pastCards = () => {
-    return pastFestivals.map(festival => {
+    return pastFestivals.map((festival: Festival) => {
       return (
         <EventCard
           key={festival.id}
@@ -52,19 +61,17 @@ export const EventsList = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Box>
-        <Typography variant="h5">
-          Your future events
-        </Typography>
-        {futureCards()}
+    <Box>
+      <Typography variant="h5">
+        Your future events
+      </Typography>
+      {futureCards()}
 
-        <Typography variant="h5">
-          Your past events
-        </Typography>
-        {pastCards()}
-      </Box>
-    </QueryClientProvider>
+      <Typography variant="h5">
+        Your past events
+      </Typography>
+      {pastCards()}
+    </Box>
   )
 
 }
