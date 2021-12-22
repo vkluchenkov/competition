@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import { workshopsList } from "./workshopsList";
 import { styles } from "./styles";
 import {
   Typography,
@@ -17,10 +16,10 @@ import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hoo
 import { FormFields } from './types';
 import { useTranslation } from "react-i18next";
 
-
 const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours');
 
 export const WorkshopsByDate: React.FC = () => {
+
   const { t } = useTranslation();
   const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
   const { fields, append } = useFieldArray({

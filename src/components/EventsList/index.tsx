@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 export const EventsList = () => {
 
-  const { isLoading, isError, data, error } = useQuery('festivals', getFestivals)
+  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', getFestivals)
 
   if (isLoading) {
     return <CircularProgress />
@@ -20,7 +20,6 @@ export const EventsList = () => {
   }
 
   const today = DateTime.local();
-  console.log(data)
 
   const futureFestivals = data.filter((festival: Festival) => DateTime.fromISO(festival.startDate) >= today);
   const pastFestivals = data.filter((festival: Festival) => DateTime.fromISO(festival.startDate) < today);
@@ -63,12 +62,12 @@ export const EventsList = () => {
   return (
     <Box>
       <Typography variant="h5">
-        Your future events
+        Your future festivals
       </Typography>
       {futureCards()}
 
       <Typography variant="h5">
-        Your past events
+        Your past festivals
       </Typography>
       {pastCards()}
     </Box>

@@ -1,5 +1,18 @@
-import { Workshop } from "./workshopsList";
+interface Teacher {
+  id: number;
+  name: string;
+  sort_order: number;
+}
+
+export interface Workshop {
+  teacher: Teacher;
+  topic: string;
+  start: string;
+  end: string;
+  price: number;
+  id: number;
+}
 
 export interface FormFields {
-    workshops: (Workshop & { selected: boolean })[];
+  workshops: (Workshop & { selected: boolean })[];
 }
