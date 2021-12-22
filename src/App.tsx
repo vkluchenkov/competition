@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
 import { Suspense } from "react";
 import "./App.css";
 import { Main } from "./pages/Main";
@@ -13,7 +12,7 @@ import LuxonUtils from '@date-io/luxon';
 import { styles } from "./pages/Main/styles";
 import { StylesProvider } from "@material-ui/styles";
 import { Dww } from "./components/EventDww";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App() {
   const queryClient = new QueryClient()

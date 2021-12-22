@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { DateTime } from "luxon";
 import { InputCheckbox } from "../../ui-kit/input";
-import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hook-form";
+import { useFormContext, useFieldArray } from "react-hook-form";
 import { FormFields } from './types';
 import { useTranslation } from "react-i18next";
 
@@ -21,12 +21,12 @@ interface WorkshopsByTeacherProps {
 
 const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTime.fromISO(start), 'hours')
 
-export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = ({ onChange }) => {
+export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = () => {
   const { t } = useTranslation();
 
-  const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
+  const { control, watch, setValue } = useFormContext<FormFields>();
 
-  const { fields, append } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "workshops",
   });

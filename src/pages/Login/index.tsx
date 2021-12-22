@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useUser } from "../../store/User";
-import qs from "query-string";
+// import qs from "query-string";
 import { Button, Typography, Box, Paper, Avatar, CircularProgress } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { Grid } from "@material-ui/core";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation } from "react-i18next";
 import { LangSwitch } from "../../components/langSwitch";
@@ -21,7 +21,7 @@ interface FormFields {
 export const Login: React.FC = () => {
   const { t } = useTranslation();
 
-  const { handleSubmit, control, reset, formState: { errors }, setError } = useForm<FormFields>();
+  const { handleSubmit, control, formState: { errors }, setError } = useForm<FormFields>();
 
   const CHECK_USER = gql`
   query checkUser($password: String, $email: String) {
@@ -32,18 +32,18 @@ export const Login: React.FC = () => {
 
   const [checkUser, { loading, error, data }] = useLazyQuery(CHECK_USER);
 
-  const currentUrl = useLocation();
-  const parsedUrl = qs.parse(currentUrl.search);
-  const navigate = useNavigate();
+  // const currentUrl = useLocation();
+  // const parsedUrl = qs.parse(currentUrl.search);
+  // const navigate = useNavigate();
 
-  const mustBeString = (value: any): value is string => {
-    if (typeof value !== 'string') {
-      return false;
-    }
-    return true;
-  }
+  // const mustBeString = (value: any): value is string => {
+  //   if (typeof value !== 'string') {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
-  const [{ currentUser }, { checkCredentials, setActiveUser }] = useUser();
+  const [{ currentUser }, { setActiveUser }] = useUser();
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -64,7 +64,7 @@ export const Login: React.FC = () => {
       });
     }
 
-    if (data && data.users.length != 0) {
+    if (data && data.users.length !== 0) {
       setActiveUser({
         firstName: "Ivan",
         lastName: "Ivanov",

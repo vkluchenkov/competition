@@ -21,7 +21,7 @@ import { styles } from "./styles"
 import { WorkshopsByTeacher } from "./WorkshopsByTeacher"
 import { WorkshopsByDate } from "./WorkshopsByDate"
 import { Filters } from "./WorkshopsFilters";
-import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { FormFields } from './types';
 
 interface WorkshopsFormProps {
@@ -33,7 +33,7 @@ interface WorkshopsFormProps {
 type WorkshopsType = "fullPass" | "single";
 
 export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup }) => {
-  const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
+  const { watch } = useFormContext<FormFields>();
 
   const [singles, setSingles] = useState({});
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);

@@ -8,11 +8,10 @@ import {
   FormControl,
   FormControlLabel,
   Box,
-  SwitchProps,
 } from "@mui/material";
 import { DateTime } from "luxon";
 import { InputCheckbox } from "../../ui-kit/input";
-import { useForm, SubmitHandler, useFormContext, useFieldArray } from "react-hook-form";
+import { useFormContext, useFieldArray } from "react-hook-form";
 import { FormFields } from './types';
 import { useTranslation } from "react-i18next";
 
@@ -21,8 +20,8 @@ const length = (start: string, end: string) => DateTime.fromISO(end).diff(DateTi
 export const WorkshopsByDate: React.FC = () => {
 
   const { t } = useTranslation();
-  const { handleSubmit, control, reset, setError, formState: { errors }, watch, setValue } = useFormContext<FormFields>();
-  const { fields, append } = useFieldArray({
+  const { control, watch, setValue } = useFormContext<FormFields>();
+  const { fields } = useFieldArray({
     control,
     name: "workshops",
   });

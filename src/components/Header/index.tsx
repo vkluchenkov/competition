@@ -1,11 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import { styles } from "./styles";
 import { useUser } from "../../store/User";
-import { Link, useLocation } from "react-router-dom";
-import logo from "../../images/logo.svg"
 
-import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,20 +14,23 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+
 import avatar from "../../images/media.webp";
 
 const pages = ['My events', 'Menu2', 'Menu3'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const Header: React.FC = () => {
+  const [{ currentUser }, { removeActiveUser }] = useUser();
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const logout = () => {
     removeActiveUser();
   };
-  const [{ currentUser }, { removeActiveUser }] = useUser();
+
   const userIcon = () => {
     return (
-
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -62,11 +61,7 @@ export const Header: React.FC = () => {
         </Menu>
       </Box>
     );
-
   };
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -85,7 +80,6 @@ export const Header: React.FC = () => {
 
   return (
     <header>
-
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>

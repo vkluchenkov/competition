@@ -5,7 +5,7 @@ import { EventCard } from "./EventCard";
 // import { festivals } from "./festivals";
 import { getFestivals } from "../../api";
 import { Festival } from "../../models/festival";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 export const EventsList = () => {
 

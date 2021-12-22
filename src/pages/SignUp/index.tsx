@@ -6,7 +6,7 @@ import { LangSwitch } from "../../components/langSwitch";
 import { FormInputField } from "../../ui-kit/input";
 
 import { Link } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useMutation, gql } from "@apollo/client";
 
@@ -17,7 +17,7 @@ interface FormFields {
 
 export const Signup: React.FC = () => {
   const { t } = useTranslation();
-  const { handleSubmit, control, reset, setError, formState: { errors } } = useForm<FormFields>();
+  const { handleSubmit, control, setError, formState: { errors } } = useForm<FormFields>();
 
   const ADD_USER = gql`
   mutation addUser($password: String, $email: String) {
