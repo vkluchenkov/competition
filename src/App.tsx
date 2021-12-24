@@ -28,7 +28,7 @@ function App() {
                 <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
                   <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path="/festivals/danceweekend" element={
+                    <Route path="/festivals/:festival_slug/register" element={
                       <section css={styles.section}>
                         <Dww />
                       </section>} />

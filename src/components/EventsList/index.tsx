@@ -37,6 +37,7 @@ export const EventsList = () => {
           location={festival.location}
           description={festival.description}
           img={festival.img}
+          url_slug={festival.url_slug}
         />)
     })
   }
@@ -54,6 +55,7 @@ export const EventsList = () => {
           location={festival.location}
           description={festival.description}
           img={festival.img}
+          url_slug={festival.url_slug}
           past
         />)
     })

@@ -7,5 +7,6 @@ export interface Festival {
   location: string;
   description: string;
   img: string;
+  url_slug: string;
   past?: boolean;
 }
