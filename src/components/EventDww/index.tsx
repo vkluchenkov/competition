@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AgeGroup } from "./AgeGroup";
 import { DwwEvents } from "./DwwEvents"
 import { useForm, FormProvider } from "react-hook-form";
@@ -9,8 +9,13 @@ import { useUser } from "../../store/User";
 import { User } from "../../models/user";
 import avatar from "../../images/media.webp";
 import { useQuery } from 'react-query'
-import { getWorkshops } from "../../api";
+import { getWorkshops, getFestival } from "../../api";
 import { CircularProgress } from "@mui/material";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+
+interface DwwProps {
+  festivalId: number;
+}
 
 // Мок юзера
 const userData: User = {
@@ -22,20 +27,14 @@ const userData: User = {
   avatar: avatar,
 }
 
-export const Dww: React.FC = () => {
+export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
 
   const [{ currentUser }, { setActiveUser }] = useUser();
 
-  // Для тестирования ставим сразу активного юзера из мока
-  useEffect(() => {
-    if (!currentUser) {
-      setActiveUser(userData)
-    }
-  })
-
   const eventDate = "2022-08-18"
 
-  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => getWorkshops(1))
+
+  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => getWorkshops(festivalId))
 
   const methods = useForm<FormFields>({ defaultValues: { workshops: [] } });
 

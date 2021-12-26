@@ -11,7 +11,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import LuxonUtils from '@date-io/luxon';
 import { styles } from "./pages/Main/styles";
 import { StylesProvider } from "@material-ui/styles";
-import { Dww } from "./components/EventDww";
+import { Register } from "./components/Register";
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App() {
@@ -28,9 +28,9 @@ function App() {
                 <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
                   <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path="/festivals/:festival_slug/register" element={
+                    <Route path="/festivals/:festivalUrl/register" element={
                       <section css={styles.section}>
-                        <Dww />
+                        <Register />
                       </section>} />
                     <Route path="/login" element={
                       <section css={styles.section}>
