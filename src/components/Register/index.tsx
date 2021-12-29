@@ -16,19 +16,21 @@ export const Register: React.FC = () => {
   const { festivalUrl } = useParams();
 
   //Нашли ID фестиваля по запросу с адресом, вернули если есть
-  const { isLoading, isError, data, error } = useQuery<any, any>('isFestival', () => getFestival('1'), {
+  const { isLoading, isError, data, error } = useQuery<any, any>('isFestival', () => getFestival(festivalUrl), {
     onError: () => {
+      console.log('123')
       if (error?.status === 404) {
         return <Navigate to={'/'} />
       }
     }
   })
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setFestivalId(data.id)
-  //   }
-  // }, [data])
+  console.log(data)
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+      setFestivalId(data.id)
+    }
+  }, [data])
 
   if (isLoading) {
     return <CircularProgress />
