@@ -14,7 +14,7 @@ import { useLazyQuery, gql } from "@apollo/client";
 import avatar from "../../images/media.webp";
 import { useMutation, useQuery } from "react-query";
 import { login } from "../../api";
-
+import { User } from "../../models/user"
 interface FormFields {
   email: string,
   password: string
@@ -25,19 +25,7 @@ export const Login: React.FC = () => {
 
   const { handleSubmit, control, formState: { errors }, setError, getValues } = useForm<FormFields>();
 
-  // const CHECK_USER = gql`
-  // query checkUser($password: String, $email: String) {
-  //   users(where: {email: {_eq: $email}, _and: {password: {_eq: $password}}}) {
-  //     email
-  //   }
-  // }`
-
-  // const [checkUser, { loading, error, data }] = useLazyQuery(CHECK_USER);
-  // const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => login("badmonday@ya.ru", "123456As"))
-
-  // useEffect(() => console.log(data), [data])
-
-  const loginMutation = useMutation(login);
+  const loginMutation = useMutation<User>(login);
 
   // const currentUrl = useLocation();
   // const parsedUrl = qs.parse(currentUrl.search);
@@ -53,7 +41,6 @@ export const Login: React.FC = () => {
   const [{ currentUser }, { setActiveUser }] = useUser();
 
   const onSubmit = handleSubmit(async (values) => {
-
     try {
       await loginMutation.mutateAsync(values);
     } catch (error: any) {
@@ -69,11 +56,11 @@ export const Login: React.FC = () => {
   useEffect(() => {
     if (loginMutation.data) {
       setActiveUser({
-        firstName: "Ivan",
-        lastName: "Ivanov",
-        email: "user@example.com",
-        id: "1",
-        birthDate: "1990-12-12",
+        // firstName: "Ivan",
+        // lastName: "Ivanov",
+        email: loginMutation.data.email,
+        id: loginMutation.data.id,
+        // birthDate: "1990-12-12",
         avatar: avatar,
       });
     }

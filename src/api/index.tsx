@@ -1,3 +1,5 @@
+import { User } from "../models/user";
+
 const BACKEND = "http://localhost:3001"
 
 const axios = require('axios').default;
@@ -28,8 +30,18 @@ export const getFestivals = () => {
     })
 }
 
-export const login = (user: LoginPayload) => {
+export const login = (user: LoginPayload): Promise<User> => {
   return axios.post(`${BACKEND}/users/login`, {
+    "email": user.email,
+    "password": user.password,
+  })
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+export const signUp = (user: LoginPayload) => {
+  return axios.post(`${BACKEND}/users`, {
     "email": user.email,
     "password": user.password,
   })
