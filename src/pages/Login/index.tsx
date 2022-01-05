@@ -25,7 +25,7 @@ export const Login: React.FC = () => {
 
   const { handleSubmit, control, formState: { errors }, setError, getValues } = useForm<FormFields>();
 
-  const loginMutation = useMutation<User>(login);
+  const loginMutation = useMutation<User, any, any, any>(login);
 
   // const currentUrl = useLocation();
   // const parsedUrl = qs.parse(currentUrl.search);
