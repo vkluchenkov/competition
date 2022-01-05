@@ -4,11 +4,13 @@ import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid,
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { LangSwitch } from "../../components/langSwitch";
 import { FormInputField } from "../../ui-kit/input";
-
+import { User } from "../../models/user"
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "react-query";
+import { signUp } from "../../api";
+
 
 interface FormFields {
   email: string,
@@ -17,40 +19,33 @@ interface FormFields {
 
 export const Signup: React.FC = () => {
   const { t } = useTranslation();
-  const { handleSubmit, control, setError, formState: { errors } } = useForm<FormFields>();
+  const { handleSubmit, control, setError, formState: { errors }, getValues } = useForm<FormFields>();
 
-  const ADD_USER = gql`
-  mutation addUser($password: String, $email: String) {
-    insert_users_one(object: { email: $email, password: $password })
-      {
-        email
-        password
-      }
-  }`
-
-  const [addUser, { data, loading, error }] = useMutation(ADD_USER);
+  const signUpMutation = useMutation<User, any, any, any>(signUp);
 
   const onSubmit = handleSubmit(async (values) => {
     try {
-      await addUser({ variables: { email: values.email, password: values.password } });
+      await signUpMutation.mutateAsync(values);
     } catch (error: any) {
-      setError("email", {
-        type: "manual",
-        message: error.message,
-      });
+      if (error?.response?.status === 409) {
+        setError("email", {
+          type: "manual",
+          message: "User with this email already exists. Try login instead",
+        });
+      }
     }
   });
 
   const [checked, setChecked] = useState(false);
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
 
-  if (loading) {
+  if (signUpMutation.isLoading) {
     return (
       <CircularProgress />
     )
   }
 
-  if (data) {
+  if (signUpMutation.data) {
     return (
       <Box
         sx={{
@@ -71,7 +66,7 @@ export const Signup: React.FC = () => {
             Veryfy your email!
           </Typography>
           <Typography variant="body1">
-            Please check your mailbox {data.insert_users_one.email} for email confirmation link.
+            Please check your mailbox {getValues().email} for email confirmation link.
           </Typography>
         </Paper>
       </Box>

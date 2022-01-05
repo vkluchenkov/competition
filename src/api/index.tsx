@@ -46,6 +46,7 @@ export const signUp = (user: LoginPayload) => {
     "password": user.password,
   })
     .then((result: any) => {
-      return result.data
+      console.log(result)
+      return result.status
     })
 }
