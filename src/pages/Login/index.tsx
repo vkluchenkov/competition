@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next";
 import { LangSwitch } from "../../components/langSwitch";
 import { useLazyQuery, gql } from "@apollo/client";
 import avatar from "../../images/media.webp";
+import { useMutation, useQuery } from "react-query";
+import { login } from "../../api";
 
 interface FormFields {
   email: string,
@@ -21,16 +23,21 @@ interface FormFields {
 export const Login: React.FC = () => {
   const { t } = useTranslation();
 
-  const { handleSubmit, control, formState: { errors }, setError } = useForm<FormFields>();
+  const { handleSubmit, control, formState: { errors }, setError, getValues } = useForm<FormFields>();
 
-  const CHECK_USER = gql`
-  query checkUser($password: String, $email: String) {
-    users(where: {email: {_eq: $email}, _and: {password: {_eq: $password}}}) {
-      email
-    }
-  }`
+  // const CHECK_USER = gql`
+  // query checkUser($password: String, $email: String) {
+  //   users(where: {email: {_eq: $email}, _and: {password: {_eq: $password}}}) {
+  //     email
+  //   }
+  // }`
 
-  const [checkUser, { loading, error, data }] = useLazyQuery(CHECK_USER);
+  // const [checkUser, { loading, error, data }] = useLazyQuery(CHECK_USER);
+  // const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => login("badmonday@ya.ru", "123456As"))
+
+  // useEffect(() => console.log(data), [data])
+
+  const loginMutation = useMutation(login);
 
   // const currentUrl = useLocation();
   // const parsedUrl = qs.parse(currentUrl.search);
@@ -46,25 +53,21 @@ export const Login: React.FC = () => {
   const [{ currentUser }, { setActiveUser }] = useUser();
 
   const onSubmit = handleSubmit(async (values) => {
+
     try {
-      await checkUser({ variables: { email: values.email, password: values.password } });
+      await loginMutation.mutateAsync(values);
     } catch (error: any) {
-      setError("email", {
-        type: "manual",
-        message: error.message,
-      });
+      if (error?.response?.status === 404) {
+        setError("email", {
+          type: "manual",
+          message: "Incorrect email or password",
+        });
+      }
     }
   });
 
   useEffect(() => {
-    if (data && data.users.length === 0) {
-      setError("email", {
-        type: "manual",
-        message: "Incorrect email or password",
-      });
-    }
-
-    if (data && data.users.length !== 0) {
+    if (loginMutation.data) {
       setActiveUser({
         firstName: "Ivan",
         lastName: "Ivanov",
@@ -74,9 +77,9 @@ export const Login: React.FC = () => {
         avatar: avatar,
       });
     }
-  }, [data]);
+  }, [loginMutation.data]);
 
-  if (loading) {
+  if (loginMutation.isLoading) {
     return (
       <CircularProgress />
     )

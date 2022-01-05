@@ -33,7 +33,6 @@ export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
 
   const eventDate = "2022-08-18"
 
-
   const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => getWorkshops(festivalId))
 
   const methods = useForm<FormFields>({ defaultValues: { workshops: [] } });
