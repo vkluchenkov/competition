@@ -18,19 +18,22 @@ export const Register: React.FC = () => {
   //Нашли ID фестиваля по запросу с адресом, вернули если есть
   const { isLoading, isError, data, error } = useQuery<any, any>('isFestival', () => getFestival(festivalUrl), {
     onError: () => {
-      console.log('123')
       if (error?.status === 404) {
         return <Navigate to={'/'} />
       }
     }
   })
-  console.log(data)
   useEffect(() => {
     if (data) {
       console.log(data)
       setFestivalId(data.id)
     }
   }, [data])
+
+  if (isError) {
+    console.log(error)
+    navigate('/')
+  }
 
   if (isLoading) {
     return <CircularProgress />

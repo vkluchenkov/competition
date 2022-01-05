@@ -3,9 +3,8 @@ const BACKEND = "http://localhost:3001"
 const axios = require('axios').default;
 
 export const getFestival = (festivalUrl: string | undefined) => {
-  axios.get(`${BACKEND}/festivals/${festivalUrl}`)
+  return axios.get(`${BACKEND}/festivals/${festivalUrl}`)
     .then((result: any) => {
-      console.log(result.data)
       return result.data
     })
 }
