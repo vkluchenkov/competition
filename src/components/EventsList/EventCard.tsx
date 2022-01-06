@@ -39,7 +39,7 @@ export const EventCard: React.FC<Festival> = ({ id, title, type, startDate, endD
       <CardActions>
         <Button
           component={Link}
-          to={`festivals/${url_slug}/register`}
+          to={`/festivals/${url_slug}/register`}
           size="small"
         >
           Learn More

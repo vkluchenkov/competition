@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../../store/User";
 import { Button, Typography, Box, Paper, Avatar, CircularProgress } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
@@ -37,8 +37,6 @@ export const Login: React.FC = () => {
   // }
 
   const [{ currentUser }, { setActiveUser }] = useUser();
-
-  const navigate = useNavigate()
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -164,7 +162,6 @@ export const Login: React.FC = () => {
       </Box>
     );
   } else {
-    navigate('/');
-    return <></>
+    return <Navigate to="/" />
   }
 };

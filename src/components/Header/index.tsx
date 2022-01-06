@@ -16,6 +16,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useTranslation } from "react-i18next";
 import avatar from "../../images/media.webp";
+import { Language } from "@mui/icons-material";
 
 const pages = ['My events', 'Menu2', 'Menu3'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -31,13 +32,28 @@ export const Header: React.FC = () => {
     removeActiveUser();
   };
 
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   const userIcon = () => {
     if (currentUser) {
       return (
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Vasya Pupkin" src={avatar} />
+            <IconButton onClick={handleOpenUserMenu} sx={{ padding: "0 0 0 10px" }}>
+              <Avatar alt={currentUser.email} src={avatar} />
             </IconButton>
           </Tooltip>
           <Menu
@@ -124,7 +140,8 @@ export const Header: React.FC = () => {
         <Button
           id="Russian"
           onClick={() => i18n.changeLanguage("ru")}
-          sx={{ my: 2, color: 'white', display: 'block' }}
+          sx={{ my: 2, color: 'white' }}
+          startIcon={<Language />}
         >
           RU
         </Button>
@@ -135,28 +152,14 @@ export const Header: React.FC = () => {
         <Button
           id="English"
           onClick={() => i18n.changeLanguage("en")}
-          sx={{ my: 2, color: 'white', display: 'block' }}
+          sx={{ my: 2, color: 'white' }}
+          startIcon={<Language />}
         >
           EN
         </Button>
       )
     }
   }
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   return (
     <header>

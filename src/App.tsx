@@ -14,6 +14,7 @@ import { StylesProvider } from "@material-ui/styles";
 import { Register } from "./components/Register";
 import { QueryClient, QueryClientProvider } from 'react-query'
 import GuardedRoute from "./components/GuardedRoute";
+import { EventsList } from "./components/EventsList";
 
 function App() {
   const queryClient = new QueryClient()
@@ -33,6 +34,13 @@ function App() {
                       <GuardedRoute>
                         <section css={styles.section}>
                           <Register />
+                        </section>
+                      </GuardedRoute>
+                    } />
+                    <Route path="my-festivals" element={
+                      <GuardedRoute>
+                        <section css={styles.section}>
+                          <EventsList />
                         </section>
                       </GuardedRoute>
                     } />

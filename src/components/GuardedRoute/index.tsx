@@ -7,10 +7,8 @@ interface GuardedRouteProps {
 }
 
 const GuardedRoute: React.FC<GuardedRouteProps> = ({ children }) => {
-
   const [{ currentUser }, { }] = useUser();
-
-  return currentUser ? children : <Navigate to="/" />
-
+  return currentUser ? children : <Navigate to="/login" />
 }
+
 export default GuardedRoute;
