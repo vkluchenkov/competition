@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import "./App.css";
 import { Main } from "./pages/Main";
 import { Header } from "./components/Header";
-import { UserProvider } from "./store/User";
+import { UserProvider, useUser } from "./store/User";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/SignUp";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -13,6 +13,7 @@ import { styles } from "./pages/Main/styles";
 import { StylesProvider } from "@material-ui/styles";
 import { Register } from "./components/Register";
 import { QueryClient, QueryClientProvider } from 'react-query'
+import GuardedRoute from "./components/GuardedRoute";
 
 function App() {
   const queryClient = new QueryClient()
@@ -29,9 +30,12 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Main />} />
                     <Route path="/festivals/:festivalUrl/register" element={
-                      <section css={styles.section}>
-                        <Register />
-                      </section>} />
+                      <GuardedRoute>
+                        <section css={styles.section}>
+                          <Register />
+                        </section>
+                      </GuardedRoute>
+                    } />
                     <Route path="/login" element={
                       <section css={styles.section}>
                         <Login />
