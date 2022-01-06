@@ -14,54 +14,134 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-
+import { useTranslation } from "react-i18next";
 import avatar from "../../images/media.webp";
 
 const pages = ['My events', 'Menu2', 'Menu3'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const Header: React.FC = () => {
   const [{ currentUser }, { removeActiveUser }] = useUser();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+  const { i18n } = useTranslation();
+
   const logout = () => {
     removeActiveUser();
   };
 
   const userIcon = () => {
-    return (
-      <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="Open settings">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Vasya Pupkin" src={avatar} />
-          </IconButton>
-        </Tooltip>
+    if (currentUser) {
+      return (
+        <Box sx={{ flexGrow: 0 }}>
+          <Tooltip title="Open settings">
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="Vasya Pupkin" src={avatar} />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: '45px' }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            <MenuItem onClick={logout}>
+              <Typography textAlign="center">Logout</Typography>
+            </MenuItem>
+          </Menu>
+        </Box>
+      );
+    }
+  };
+
+  const userMenuMobile = () => {
+    if (currentUser) {
+      return (
         <Menu
-          sx={{ mt: '45px' }}
           id="menu-appbar"
-          anchorEl={anchorElUser}
+          anchorEl={anchorElNav}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: 'bottom',
+            horizontal: 'left',
           }}
           keepMounted
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'right',
+            horizontal: 'left',
           }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
+          open={Boolean(anchorElNav)}
+          onClose={handleCloseNavMenu}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+          }}
         >
-          {settings.map((setting) => (
-            <MenuItem key={setting} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center">{setting}</Typography>
+          {pages.map((page) => (
+            <MenuItem key={page} onClick={handleCloseNavMenu}>
+              <Typography textAlign="center">{page}</Typography>
             </MenuItem>
           ))}
         </Menu>
-      </Box>
-    );
-  };
+      )
+    }
+  }
+
+  const userMenu = () => {
+    if (currentUser) {
+      return (
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {pages.map((page) => (
+            <Button
+              key={page}
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              {page}
+            </Button>
+          ))}
+        </Box>
+      )
+    } else {
+      return (
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
+      )
+    }
+  }
+
+  const langMenu = () => {
+    if (i18n.language === "en") {
+      return (
+        <Button
+          id="Russian"
+          onClick={() => i18n.changeLanguage("ru")}
+          sx={{ my: 2, color: 'white', display: 'block' }}
+        >
+          RU
+        </Button>
+      )
+    }
+    if (i18n.language === "ru") {
+      return (
+        <Button
+          id="English"
+          onClick={() => i18n.changeLanguage("en")}
+          sx={{ my: 2, color: 'white', display: 'block' }}
+        >
+          EN
+        </Button>
+      )
+    }
+  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -93,6 +173,7 @@ export const Header: React.FC = () => {
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -103,30 +184,7 @@ export const Header: React.FC = () => {
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+              {userMenuMobile()}
             </Box>
             <Typography
               variant="h6"
@@ -136,17 +194,8 @@ export const Header: React.FC = () => {
             >
               LOGO
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
+            {userMenu()}
+            {langMenu()}
             {userIcon()}
           </Toolbar>
         </Container>

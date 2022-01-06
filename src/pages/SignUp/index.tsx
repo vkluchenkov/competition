@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { LangSwitch } from "../../components/langSwitch";
 import { FormInputField } from "../../ui-kit/input";
 import { User } from "../../models/user"
 import { Link } from "react-router-dom";
@@ -172,7 +171,6 @@ export const Signup: React.FC = () => {
           </Grid>
         </Grid>
       </Paper>
-      <LangSwitch />
     </Box>
   )
 }

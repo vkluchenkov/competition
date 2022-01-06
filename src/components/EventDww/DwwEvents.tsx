@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WorkshopsForm } from "./WorkshopsForm";
 import { styles } from "./styles";
-import { LangSwitch } from "../langSwitch";
-
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
@@ -55,7 +53,6 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup }) => {
       </List>
 
       <WorkshopsForm open={open} onClose={handleClose} ageGroup={ageGroup} />
-      <LangSwitch />
     </Box>
 
   )

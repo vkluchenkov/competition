@@ -9,9 +9,8 @@ import { useUser } from "../../store/User";
 import { User } from "../../models/user";
 import avatar from "../../images/media.webp";
 import { useQuery } from 'react-query'
-import { getWorkshops, getFestival } from "../../api";
+import { getWorkshops } from "../../api";
 import { CircularProgress } from "@mui/material";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 interface DwwProps {
   festivalId: number;

@@ -1,20 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../store/User";
-// import qs from "query-string";
 import { Button, Typography, Box, Paper, Avatar, CircularProgress } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { Grid } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation } from "react-i18next";
-import { LangSwitch } from "../../components/langSwitch";
-import { useLazyQuery, gql } from "@apollo/client";
 import avatar from "../../images/media.webp";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { login } from "../../api";
 import { User } from "../../models/user"
+
 interface FormFields {
   email: string,
   password: string
@@ -39,6 +37,8 @@ export const Login: React.FC = () => {
   // }
 
   const [{ currentUser }, { setActiveUser }] = useUser();
+
+  const navigate = useNavigate()
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -161,35 +161,10 @@ export const Login: React.FC = () => {
             </Grid>
           </Grid>
         </Paper>
-        <LangSwitch />
       </Box>
     );
   } else {
-    return (
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 450,
-        }}>
-        <Paper
-          elevation={3}
-          sx={{
-            padding: "25px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: 3,
-          }}>
-
-          <Typography variant="h3" component="h1" gutterBottom>
-            Hi there!
-          </Typography>
-          <Typography variant="body1">
-            Nice to see you again
-          </Typography>
-        </Paper>
-
-      </Box>
-    );
+    navigate('/');
+    return <></>
   }
 };
