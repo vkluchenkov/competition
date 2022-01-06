@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useTranslation } from "react-i18next";
 import avatar from "../../images/media.webp";
 import { Language } from "@mui/icons-material";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const pages = ['My events', 'Menu2', 'Menu3'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -31,6 +32,8 @@ export const Header: React.FC = () => {
   const logout = () => {
     removeActiveUser();
   };
+
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -116,15 +119,12 @@ export const Header: React.FC = () => {
     if (currentUser) {
       return (
         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-          {pages.map((page) => (
-            <Button
-              key={page}
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              {page}
-            </Button>
-          ))}
+          <Button
+            onClick={() => navigate('/my-festivals')}
+            sx={{ my: 2, color: 'white', display: 'block' }}
+          >
+            My festivals
+          </Button>
         </Box>
       )
     } else {
