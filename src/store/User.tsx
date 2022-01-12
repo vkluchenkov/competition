@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { User } from "../models/user";
 import { Video } from "../models/video";
-import avatar from "../images/media.webp";
+import { getUserData } from "../api"
 
 interface UserStore {
   currentUser: User | null;
   favorites: Video[];
+  authToken: string;
 }
 
 interface UserStoreActions {
   setActiveUser: (user: User) => void;
   checkCredentials: (username: string, password: string) => void;
   removeActiveUser: () => void;
+  setAuthToken: (token: string) => void;
   addFavorite: (video: Video) => void;
   removeFavorite: (video: Video) => void;
 }
@@ -24,26 +26,55 @@ export const UserProvider: React.FC = ({ children }) => {
   const [state, setState] = React.useState<UserStore>({
     currentUser: null,
     favorites: [],
+    authToken: '',
   });
+
+  const authKey = window.localStorage;
+
+  useEffect(() => {
+    if (authKey.jwt) {
+      setAuthToken(authKey.jwt)
+    }
+
+    if (!state.authToken) {
+      authKey.removeItem('jwt')
+    } else {
+      authKey.setItem('jwt', state.authToken)
+      const userData = getUserData();
+      setActiveUser({
+        id: userData.id,
+        email: userData.email
+      })
+    }
+  }, [state.authToken])
+
+  const setAuthToken: UserStoreActions["setAuthToken"] = (token) => {
+    setState((prev) => {
+      return {
+        ...prev,
+        authToken: token,
+      };
+    })
+  }
 
   const checkCredentials: UserStoreActions["checkCredentials"] = (
     username,
     password
   ) => {
-    const validUsername = "user@example.com";
-    const validPassword = "pass";
-    if (username === validUsername && password === validPassword) {
-      setActiveUser({
-        id: "001",
-        firstName: "Vasya",
-        lastName: "Pupkin",
-        birthDate: "1990-12-12",
-        email: "user@example.com",
-        avatar: avatar,
-      });
-    } else {
-      throw new Error("User not found");
-    }
+    // const validUsername = "user@example.com";
+    // const validPassword = "pass";
+    // if (username === validUsername && password === validPassword) {
+    //   setActiveUser({
+    //     id: "001",
+    //     firstName: "Vasya",
+    //     lastName: "Pupkin",
+    //     birthDate: "1990-12-12",
+    //     email: "user@example.com",
+    //     avatar: avatar,
+    //   });
+    // } else {
+    //   throw new Error("User not found");
+    // }
   };
 
   const setActiveUser: UserStoreActions["setActiveUser"] = (user) => {
@@ -56,10 +87,12 @@ export const UserProvider: React.FC = ({ children }) => {
   };
 
   const removeActiveUser: UserStoreActions["removeActiveUser"] = () => {
+    localStorage.removeItem('jwt')
     setState((prev) => {
       return {
         ...prev,
         currentUser: null,
+        authToken: '',
       };
     });
   };
@@ -102,6 +135,7 @@ export const UserProvider: React.FC = ({ children }) => {
           removeActiveUser,
           addFavorite,
           removeFavorite,
+          setAuthToken,
         },
       ]}
     >

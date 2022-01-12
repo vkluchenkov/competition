@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useUser } from "../../store/User";
 import { Button, Typography, Box, Paper, Avatar, CircularProgress } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
@@ -8,10 +8,8 @@ import { Grid } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation } from "react-i18next";
-import avatar from "../../images/media.webp";
 import { useMutation } from "react-query";
 import { login } from "../../api";
-import { User } from "../../models/user"
 
 interface FormFields {
   email: string,
@@ -23,7 +21,7 @@ export const Login: React.FC = () => {
 
   const { handleSubmit, control, formState: { errors }, setError, getValues } = useForm<FormFields>();
 
-  const loginMutation = useMutation<User, any, any, any>(login);
+  const loginMutation = useMutation<string, any, any, any>(login);
 
   // const currentUrl = useLocation();
   // const parsedUrl = qs.parse(currentUrl.search);
@@ -36,7 +34,7 @@ export const Login: React.FC = () => {
   //   return true;
   // }
 
-  const [{ currentUser }, { setActiveUser }] = useUser();
+  const [{ currentUser }, { setActiveUser, setAuthToken }] = useUser();
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -53,14 +51,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (loginMutation.data) {
-      setActiveUser({
-        // firstName: "Ivan",
-        // lastName: "Ivanov",
-        email: loginMutation.data.email,
-        id: loginMutation.data.id,
-        // birthDate: "1990-12-12",
-        avatar: avatar,
-      });
+      setAuthToken(loginMutation.data)
     }
   }, [loginMutation.data]);
 

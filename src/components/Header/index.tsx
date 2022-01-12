@@ -31,6 +31,7 @@ export const Header: React.FC = () => {
 
   const logout = () => {
     removeActiveUser();
+    setAnchorElUser(null);
   };
 
   const navigate = useNavigate();
