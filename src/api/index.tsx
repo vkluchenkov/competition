@@ -54,12 +54,11 @@ export const login = (user: LoginPayload) => {
 }
 
 export const signUp = (user: LoginPayload) => {
-  return axios.post(`${BACKEND}/users`, {
+  return axios.post(`${BACKEND}/auth`, {
     "email": user.email,
     "password": user.password,
   })
     .then((result: any) => {
-      console.log(result)
-      return result.status
+      return result.data.access_token
     })
 }

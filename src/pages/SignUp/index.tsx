@@ -1,14 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FormInputField } from "../../ui-kit/input";
 import { User } from "../../models/user"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
 import { signUp } from "../../api";
+import { useUser } from "../../store/User";
 
 
 interface FormFields {
@@ -18,9 +19,11 @@ interface FormFields {
 
 export const Signup: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { handleSubmit, control, setError, formState: { errors }, getValues } = useForm<FormFields>();
+  const [{ currentUser }, { setActiveUser, setAuthToken }] = useUser();
 
-  const signUpMutation = useMutation<User, any, any, any>(signUp);
+  const signUpMutation = useMutation<string, any, any, any>(signUp);
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -38,40 +41,18 @@ export const Signup: React.FC = () => {
   const [checked, setChecked] = useState(false);
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
 
+  useEffect(() => {
+    if (signUpMutation.data) {
+      setAuthToken(signUpMutation.data)
+      navigate('/')
+    }
+  }, [signUpMutation.data]);
+
   if (signUpMutation.isLoading) {
     return (
       <CircularProgress />
     )
   }
-
-  if (signUpMutation.data) {
-    return (
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 450,
-        }}>
-        <Paper
-          elevation={3}
-          sx={{
-            padding: "25px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: 3,
-          }}>
-
-          <Typography variant="h3" component="h1" gutterBottom>
-            Veryfy your email!
-          </Typography>
-          <Typography variant="body1">
-            Please check your mailbox {getValues().email} for email confirmation link.
-          </Typography>
-        </Paper>
-      </Box>
-    )
-  }
-
   return (
     <Box
       component="form"
