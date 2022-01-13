@@ -16,16 +16,6 @@ interface DwwProps {
   festivalId: number;
 }
 
-// Мок юзера
-const userData: User = {
-  firstName: "Ivan",
-  lastName: "Ivanov",
-  email: "user@example.com",
-  id: "1",
-  birthDate: "2015-12-12",
-  avatar: avatar,
-}
-
 export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
 
   const [{ currentUser }, { setActiveUser }] = useUser();

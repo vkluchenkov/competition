@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FormInputField } from "../../ui-kit/input";
-import { User } from "../../models/user"
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

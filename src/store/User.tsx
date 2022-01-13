@@ -11,7 +11,6 @@ interface UserStore {
 
 interface UserStoreActions {
   setActiveUser: (user: User) => void;
-  checkCredentials: (username: string, password: string) => void;
   removeActiveUser: () => void;
   setAuthToken: (token: string) => void;
   addFavorite: (video: Video) => void;
@@ -29,22 +28,36 @@ export const UserProvider: React.FC = ({ children }) => {
     authToken: '',
   });
 
-  const authKey = window.localStorage;
+  const localStorage = window.localStorage;
 
-  useEffect(() => {
-    if (authKey.jwt) {
-      setAuthToken(authKey.jwt)
-    }
-
-    if (!state.authToken) {
-      authKey.removeItem('jwt')
-    } else {
-      authKey.setItem('jwt', state.authToken)
-      const userData = getUserData();
+  const setUser = async () => {
+    try {
+      const userData = await getUserData()
+      console.log(userData)
       setActiveUser({
         id: userData.id,
         email: userData.email
       })
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        removeActiveUser()
+      }
+    }
+  }
+
+  // Восстановление сессии для вернувшихся юзеров
+  useEffect(() => {
+    if (localStorage.jwt) {
+      setAuthToken(localStorage.jwt)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!state.authToken) {
+      localStorage.removeItem('jwt')
+    } else {
+      localStorage.setItem('jwt', state.authToken)
+      setUser();
     }
   }, [state.authToken])
 
@@ -56,26 +69,6 @@ export const UserProvider: React.FC = ({ children }) => {
       };
     })
   }
-
-  const checkCredentials: UserStoreActions["checkCredentials"] = (
-    username,
-    password
-  ) => {
-    // const validUsername = "user@example.com";
-    // const validPassword = "pass";
-    // if (username === validUsername && password === validPassword) {
-    //   setActiveUser({
-    //     id: "001",
-    //     firstName: "Vasya",
-    //     lastName: "Pupkin",
-    //     birthDate: "1990-12-12",
-    //     email: "user@example.com",
-    //     avatar: avatar,
-    //   });
-    // } else {
-    //   throw new Error("User not found");
-    // }
-  };
 
   const setActiveUser: UserStoreActions["setActiveUser"] = (user) => {
     setState((prev) => {
@@ -131,7 +124,6 @@ export const UserProvider: React.FC = ({ children }) => {
         state,
         {
           setActiveUser,
-          checkCredentials,
           removeActiveUser,
           addFavorite,
           removeFavorite,
