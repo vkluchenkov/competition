@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FormInputField } from "../../ui-kit/input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
@@ -21,8 +21,8 @@ export const Signup: React.FC = () => {
   // Hooks
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { handleSubmit, control, setError, formState: { errors }, getValues } = useForm<FormFields>();
-  const [{ currentUser }, { setActiveUser, setAuthToken }] = useUser();
+  const { handleSubmit, control, setError, formState: { errors } } = useForm<FormFields>();
+  const [{ currentUser }, { setAuthToken }] = useUser();
 
   const requestMutation = useMutation<string, any, any, any>(signUpRequest);
   const validateCodeMutation = useMutation<string, any, any, any>(signUpValidateCode);
@@ -233,53 +233,57 @@ export const Signup: React.FC = () => {
     return <></>
   }
 
-  return (
-    <Box
-      component="form"
-      onSubmit={onSubmit}
-      css={styles.formBox}>
-      <Paper elevation={3} sx={styles.formPaper}>
+  if (!currentUser) {
+    return (
+      <Box
+        component="form"
+        onSubmit={onSubmit}
+        css={styles.formBox}>
+        <Paper elevation={3} sx={styles.formPaper}>
 
-        <Typography variant="h3" component="h1" gutterBottom>
-          {t('SignUp.title')}
-        </Typography>
+          <Typography variant="h3" component="h1" gutterBottom>
+            {t('SignUp.title')}
+          </Typography>
 
-        <Avatar sx={styles.formIcon}>
-          <LockOutlinedIcon />
-        </Avatar>
+          <Avatar sx={styles.formIcon}>
+            <LockOutlinedIcon />
+          </Avatar>
 
-        <Typography variant="body1" gutterBottom sx={{ mb: 2 }}>
-          {t('SignUp.subtitle')}
-        </Typography>
+          <Typography variant="body1" gutterBottom sx={{ mb: 2 }}>
+            {t('SignUp.subtitle')}
+          </Typography>
 
-        <Grid container spacing={2}>
-          {emailField()}
-          {codeField()}
-          {passField()}
-          {checkBox()}
-        </Grid>
-
-        <Button
-          sx={styles.formButton}
-          type="submit"
-          variant="contained"
-          size="large"
-          disableElevation
-          fullWidth
-          disabled={!checked}
-        >
-          {status.submitButtonText}
-        </Button>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Link to="/login">
-              <Typography variant="body1">
-                {t('SignUp.signIn')}
-              </Typography>
-            </Link>
+          <Grid container spacing={2}>
+            {emailField()}
+            {codeField()}
+            {passField()}
+            {checkBox()}
           </Grid>
-        </Grid>
-      </Paper>
-    </Box>
-  )
+
+          <Button
+            sx={styles.formButton}
+            type="submit"
+            variant="contained"
+            size="large"
+            disableElevation
+            fullWidth
+            disabled={!checked}
+          >
+            {status.submitButtonText}
+          </Button>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Link to="/login">
+                <Typography variant="body1">
+                  {t('SignUp.signIn')}
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Box>
+    )
+  } else {
+    return <Navigate to="/" />
+  }
 }
