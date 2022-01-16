@@ -119,7 +119,7 @@ export const Login: React.FC = () => {
                 error={!!errors.password}
                 helperText={errors?.password?.message}
               />
-              <Link to="#">
+              <Link to="/restore">
                 <Typography variant="body1">
                   {t('Login.passwordHint')}
                 </Typography>

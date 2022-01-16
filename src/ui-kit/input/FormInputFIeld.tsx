@@ -8,7 +8,7 @@ type FormInputFieldProps = InputFieldProps & {
   rules?: UseControllerProps["rules"];
 }
 
-export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, rules, ...props }) => {
+export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, rules, inputProps, ...props }) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController(
@@ -31,7 +31,7 @@ export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, r
       value={value}
       name={name}
       inputRef={ref}
-      InputProps={{ required: false }}
+      inputProps={inputProps}
     />
   )
 }

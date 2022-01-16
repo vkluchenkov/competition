@@ -15,6 +15,7 @@ import { Register } from "./components/Register";
 import { QueryClient, QueryClientProvider } from 'react-query'
 import GuardedRoute from "./components/GuardedRoute";
 import { EventsList } from "./components/EventsList";
+import { PasswordReset } from "./pages/PasswordReset";
 
 function App() {
   const queryClient = new QueryClient()
@@ -47,6 +48,11 @@ function App() {
                     <Route path="/login" element={
                       <section css={styles.section}>
                         <Login />
+                      </section>
+                    } />
+                    <Route path="/restore" element={
+                      <section css={styles.section}>
+                        <PasswordReset />
                       </section>
                     } />
                     <Route path="/signup" element={
