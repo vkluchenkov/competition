@@ -32,6 +32,7 @@ export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, r
       name={name}
       inputRef={ref}
       inputProps={inputProps}
+      InputProps={{ required: false }}
     />
   )
 }

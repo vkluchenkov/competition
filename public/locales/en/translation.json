@@ -2,13 +2,21 @@
   "SignUp": {
     "title": "Welcome!",
     "subtitle": "Let's create your profile",
+    "emailTitle": "Enter your email",
     "incorretEmail": "Incorrect email",
+    "checkMail": "Check your mailbox and enter sign up code from the email",
+    "codeFromMail": "Sign up code from email",
+    "emailExists": "User with this email already exists",
+    "invalidCode": "Ivalid code",
     "password": "Password",
+    "passwordTitle": "Create your password",
     "passwordHint": "Password must be at least 8 characters long and contain digits, UPPERCASE and lowercase letters",
     "switchLabel1": "I accept ",
     "switchLabel2": "terms and conditions",
     "signIn": "Already have an account? Log in",
-    "submitBtn": "Sign up"
+    "submitBtnNext": "Next",
+    "submitBtnValidate": "Validate code",
+    "submitBtn": "Create account"
   },
   "Login": {
     "title": "Log In",
@@ -17,6 +25,18 @@
     "passwordHint": "Forgot your password?",
     "signup": "Do not have an account? Sign up",
     "submitBtn": "Log in"
+  },
+  "Reset": {
+    "title": "Reset password",
+    "emailTitle": "Enter your email",
+    "checkMail": "Check your mailbox and enter recovery code from the email",
+    "codeFromMail": "Recovery code from email",
+    "invalidCode": "Ivalid code",
+    "passwordTitle": "Create new password",
+    "submitBtnNext": "Next",
+    "submitBtnValidate": "Validate code",
+    "submitBtn": "Set new password",
+    "backToLogin": "Back to login"
   },
   "Dww": {
     "eventsList": {

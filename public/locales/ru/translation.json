@@ -2,12 +2,20 @@
   "SignUp": {
     "title": "Привет!",
     "subtitle": "Давай создадим твой профиль",
+    "emailTitle": "Введи свой email",
     "incorretEmail": "Неправильный email",
+    "checkMail": "Проверь почтовый ящик и введи ниже код из письма",
+    "codeFromMail": "Код из письма",
+    "emailExists": "Пользователь с таким адресом уже существует",
+    "invalidCode": "Неверный код",
     "password": "Пароль",
+    "passwordTitle": "Создай свой пароль",
     "passwordHint": "Не менее 8 символов, должны быть БОЛЬШИЕ и малые буквы латинского алфавита и цифры",
     "switchLabel1": "Я принимаю ",
     "switchLabel2": "правила и условия",
     "signIn": "Уже есть аккаунт? Войти",
+    "submitBtnNext": "Далее",
+    "submitBtnValidate": "Проверить код",
     "submitBtn": "Создать профиль"
   },
   "Login": {
@@ -17,6 +25,18 @@
     "passwordHint": "Забыли пароль?",
     "signup": "Еще нету аккаунта? Регистрация",
     "submitBtn": "Войти"
+  },
+  "Reset": {
+    "title": "Сброс пароля",
+    "emailTitle": "Введи свой email",
+    "checkMail": "Проверь почтовый ящик и введи ниже код из письма",
+    "codeFromMail": "Код из письма",
+    "invalidCode": "Неверный код",
+    "passwordTitle": "Создай новый пароль",
+    "submitBtnNext": "Далее",
+    "submitBtnValidate": "Проверить код",
+    "submitBtn": "Сохранить новый пароль",
+    "backToLogin": "Вернуться ко входу"
   },
   "Dww": {
     "eventsList": {

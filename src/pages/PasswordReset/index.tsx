@@ -44,7 +44,7 @@ export const PasswordReset: React.FC = () => {
         if (error?.response?.status === 400) {
           setError("code", {
             type: "manual",
-            message: "Ivalid code",
+            message: t('Reset.invalidCode'),
           });
         }
       }
@@ -55,7 +55,7 @@ export const PasswordReset: React.FC = () => {
   const [status, setStatus] = useState({
     requestSubmitted: false,
     codeSubmitted: false,
-    submitButtonText: 'Request password reset',
+    submitButtonText: t('Reset.submitBtnNext'),
     onSubmit: handleCodeRequest
   });
 
@@ -67,7 +67,7 @@ export const PasswordReset: React.FC = () => {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: false,
-        submitButtonText: 'Validate code',
+        submitButtonText: t('Reset.submitBtnValidate'),
         onSubmit: handleCodeCheck
       })
     }
@@ -78,7 +78,7 @@ export const PasswordReset: React.FC = () => {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: true,
-        submitButtonText: 'Set new password',
+        submitButtonText: t('Reset.submitBtn'),
         onSubmit: handleSetPass
       })
     }
@@ -109,7 +109,7 @@ export const PasswordReset: React.FC = () => {
       if (!status.requestSubmitted) {
         return (
           <Typography variant="h5" gutterBottom sx={styles.hint}>
-            Enter your email
+            {t('Reset.emailTitle')}
           </Typography>
         )
       }
@@ -145,7 +145,7 @@ export const PasswordReset: React.FC = () => {
       if (status.requestSubmitted && !status.codeSubmitted) {
         return (
           <Typography variant="h5" gutterBottom sx={styles.hint}>
-            Check your mailbox and enter recovery code from the email
+            {t('Reset.checkMail')}
           </Typography>
         )
       }
@@ -158,7 +158,7 @@ export const PasswordReset: React.FC = () => {
           {hint()}
           <FormInputField
             name="code"
-            label="Recovery code from email"
+            label={t('Reset.codeFromMail')}
             placeholder="123456"
             inputProps={{ minLength: 6, maxLength: 6 }}
             control={control}
@@ -185,7 +185,7 @@ export const PasswordReset: React.FC = () => {
       return (
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom sx={styles.hint}>
-            Enter new password
+            {t('Reset.passwordTitle')}
           </Typography>
           <FormInputField
             name="password"
@@ -216,7 +216,7 @@ export const PasswordReset: React.FC = () => {
         <Paper elevation={3} sx={styles.formPaper}>
 
           <Typography variant="h3" component="h1" gutterBottom>
-            Password reset
+            {t('Reset.title')}
           </Typography>
 
           <Avatar sx={styles.formIcon}>
@@ -243,7 +243,7 @@ export const PasswordReset: React.FC = () => {
             <Grid item>
               <Link to="/login">
                 <Typography variant="body1">
-                  Back to login
+                  {t('Reset.backToLogin')}
                 </Typography>
               </Link>
             </Grid>

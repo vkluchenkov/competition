@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FormInputField } from "../../ui-kit/input";
@@ -19,7 +19,7 @@ interface FormFields {
 
 export const Signup: React.FC = () => {
   // Hooks
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { handleSubmit, control, setError, formState: { errors } } = useForm<FormFields>();
   const [{ currentUser }, { setAuthToken }] = useUser();
@@ -36,7 +36,7 @@ export const Signup: React.FC = () => {
       if (error?.response?.status === 409) {
         setError("email", {
           type: "manual",
-          message: "User with this email already exists. Try login instead",
+          message: t('SignUp.emailExists'),
         });
       }
     }
@@ -53,7 +53,7 @@ export const Signup: React.FC = () => {
         if (error?.response?.status === 400) {
           setError("code", {
             type: "manual",
-            message: "Ivalid code",
+            message: t('SignUp.invalidCode'),
           });
         }
       }
@@ -64,7 +64,7 @@ export const Signup: React.FC = () => {
   const [status, setStatus] = useState({
     requestSubmitted: false,
     codeSubmitted: false,
-    submitButtonText: 'Next',
+    submitButtonText: t('SignUp.submitBtnNext'),
     onSubmit: handleCodeRequest
   });
 
@@ -74,12 +74,24 @@ export const Signup: React.FC = () => {
   const [checked, setChecked] = useState(true);
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
 
+  const submitBtnText = useMemo(() => {
+    if (requestMutation.data) {
+      return t('SignUp.submitBtnValidate')
+    }
+    else if (validateCodeMutation.data) {
+      return t('SignUp.submitBtn')
+    }
+    else return t('SignUp.submitBtnNext')
+  }, [])
+
+  console.log(submitBtnText);
+
   useEffect(() => {
     if (requestMutation.data) {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: false,
-        submitButtonText: 'Validate code',
+        submitButtonText: t('SignUp.submitBtnValidate'),
         onSubmit: handleCodeCheck
       })
     }
@@ -90,7 +102,7 @@ export const Signup: React.FC = () => {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: true,
-        submitButtonText: 'Create account',
+        submitButtonText: t('SignUp.submitBtn'),
         onSubmit: handleSetUser
       })
       setChecked(false);
@@ -121,7 +133,7 @@ export const Signup: React.FC = () => {
       if (!status.requestSubmitted) {
         return (
           <Typography variant="h5" gutterBottom sx={styles.hint}>
-            Enter your email
+            {t('SignUp.emailTitle')}
           </Typography>
         )
       }
@@ -157,7 +169,7 @@ export const Signup: React.FC = () => {
       if (status.requestSubmitted && !status.codeSubmitted) {
         return (
           <Typography variant="h5" gutterBottom sx={styles.hint}>
-            Check your mailbox and enter sign up code from the email
+            {t('SignUp.checkMail')}
           </Typography>
         )
       }
@@ -170,7 +182,7 @@ export const Signup: React.FC = () => {
           {hint()}
           <FormInputField
             name="code"
-            label="Sign up code from email"
+            label={t('SignUp.codeFromMail')}
             placeholder="123456"
             inputProps={{ minLength: 6, maxLength: 6 }}
             control={control}
@@ -197,7 +209,7 @@ export const Signup: React.FC = () => {
       return (
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom sx={styles.hint}>
-            Create your password
+            {t('SignUp.passwordTitle')}
           </Typography>
           <FormInputField
             name="password"
