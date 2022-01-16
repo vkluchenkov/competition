@@ -17,7 +17,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { useTranslation } from "react-i18next";
 import avatar from "../../images/media.webp";
 import { Language } from "@mui/icons-material";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { styles } from "./styles";
 
 const pages = ['My events', 'Menu2', 'Menu3'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -167,14 +168,16 @@ export const Header: React.FC = () => {
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-            >
-              LOGO
-            </Typography>
+            <Link to="/" css={styles.header_logo}>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+              >
+                LOGO
+              </Typography>
+            </Link>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 

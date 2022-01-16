@@ -32,7 +32,8 @@ export const styles = createStyles({
   },
 
   header_logo: {
-    width: "110px",
+    color: "white",
+    textDecoration: "none",
   },
 
   header_search_input: {
