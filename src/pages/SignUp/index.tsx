@@ -20,6 +20,7 @@ interface FormFields {
 export const Signup: React.FC = () => {
   // Hooks
   const { t, i18n } = useTranslation();
+
   const navigate = useNavigate();
   const { handleSubmit, control, setError, formState: { errors } } = useForm<FormFields>();
   const [{ currentUser }, { setAuthToken }] = useUser();
@@ -64,7 +65,6 @@ export const Signup: React.FC = () => {
   const [status, setStatus] = useState({
     requestSubmitted: false,
     codeSubmitted: false,
-    submitButtonText: t('SignUp.submitBtnNext'),
     onSubmit: handleCodeRequest
   });
 
@@ -82,16 +82,13 @@ export const Signup: React.FC = () => {
       return t('SignUp.submitBtn')
     }
     else return t('SignUp.submitBtnNext')
-  }, [])
-
-  console.log(submitBtnText);
+  }, [i18n.language])
 
   useEffect(() => {
     if (requestMutation.data) {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: false,
-        submitButtonText: t('SignUp.submitBtnValidate'),
         onSubmit: handleCodeCheck
       })
     }
@@ -102,7 +99,6 @@ export const Signup: React.FC = () => {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: true,
-        submitButtonText: t('SignUp.submitBtn'),
         onSubmit: handleSetUser
       })
       setChecked(false);
@@ -281,7 +277,7 @@ export const Signup: React.FC = () => {
             fullWidth
             disabled={!checked}
           >
-            {status.submitButtonText}
+            {submitBtnText}
           </Button>
           <Grid container justifyContent="center">
             <Grid item>

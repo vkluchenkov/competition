@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../../store/User";
 import { Button, Typography, Box, Paper, Avatar, CircularProgress, Modal } from "@mui/material";
@@ -20,7 +20,7 @@ interface FormFields {
 
 export const PasswordReset: React.FC = () => {
   // Hooks
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const { handleSubmit, control, formState: { errors }, setError, getValues } = useForm<FormFields>();
@@ -55,19 +55,28 @@ export const PasswordReset: React.FC = () => {
   const [status, setStatus] = useState({
     requestSubmitted: false,
     codeSubmitted: false,
-    submitButtonText: t('Reset.submitBtnNext'),
     onSubmit: handleCodeRequest
   });
 
   const onSubmit = status.onSubmit();
 
   // State
+  const submitBtnText = useMemo(() => {
+    if (requestMutation.data) {
+      return t('Reset.submitBtnValidate')
+    }
+    else if (validateCodeMutation.data) {
+      return t('Reset.submitBtn')
+    }
+    else return t('Reset.submitBtnNext')
+  }, [i18n.language])
+
+
   useEffect(() => {
     if (requestMutation.data) {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: false,
-        submitButtonText: t('Reset.submitBtnValidate'),
         onSubmit: handleCodeCheck
       })
     }
@@ -78,7 +87,6 @@ export const PasswordReset: React.FC = () => {
       setStatus({
         requestSubmitted: true,
         codeSubmitted: true,
-        submitButtonText: t('Reset.submitBtn'),
         onSubmit: handleSetPass
       })
     }
@@ -237,7 +245,7 @@ export const PasswordReset: React.FC = () => {
             disableElevation
             fullWidth
           >
-            {status.submitButtonText}
+            {submitBtnText}
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
