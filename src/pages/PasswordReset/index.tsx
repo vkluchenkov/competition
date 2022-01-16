@@ -10,7 +10,6 @@ import { FormInputField } from "../../ui-kit/input";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
 import { requestPassReset, setNewPassword, validateResetCode } from "../../api";
-import { css } from "@emotion/react";
 import { styles } from "./styles"
 
 interface FormFields {
@@ -93,19 +92,15 @@ export const PasswordReset: React.FC = () => {
   }, [setPassMutation.data]);
 
   // Render
-
   const loader = () => {
     return (
-      <Box
-        css={styles.loaderContainer}
-      >
+      <Box sx={styles.loaderContainer}>
         <CircularProgress />
       </Box>
     )
   }
 
   const emailField = () => {
-
     if (requestMutation.isLoading) {
       return loader()
     }
@@ -113,7 +108,7 @@ export const PasswordReset: React.FC = () => {
     const hint = () => {
       if (!status.requestSubmitted) {
         return (
-          <Typography variant="h5" gutterBottom sx={{ mb: 2, mt: 2, textAlign: "center" }}>
+          <Typography variant="h5" gutterBottom sx={styles.hint}>
             Enter your email
           </Typography>
         )
@@ -130,6 +125,9 @@ export const PasswordReset: React.FC = () => {
           control={control}
           rules={{
             required: t<string>('Common.required'),
+            validate: (value: string) => {
+              return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || t<string>('SignUp.incorrectEmail')
+            },
           }}
           error={!!errors.email}
           helperText={errors?.email?.message}
@@ -146,7 +144,7 @@ export const PasswordReset: React.FC = () => {
     const hint = () => {
       if (status.requestSubmitted && !status.codeSubmitted) {
         return (
-          <Typography variant="h5" gutterBottom sx={{ mb: 2, mt: 2, textAlign: "center" }}>
+          <Typography variant="h5" gutterBottom sx={styles.hint}>
             Check your mailbox and enter recovery code from the email
           </Typography>
         )
@@ -166,9 +164,7 @@ export const PasswordReset: React.FC = () => {
             control={control}
             rules={{
               required: t<string>('Common.required'),
-              validate: (value: string) => {
-                return /([0-9]{6,6})/.test(value)
-              },
+              validate: (value: string) => /([0-9]{6,6})/.test(value),
             }}
             error={!!errors.code}
             helperText={errors?.code?.message}
@@ -180,13 +176,15 @@ export const PasswordReset: React.FC = () => {
   }
 
   const passField = () => {
+
     if (setPassMutation.isLoading) {
       return loader()
     }
+
     if (status.codeSubmitted) {
       return (
         <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom sx={{ mb: 2, mt: 2, textAlign: "center" }}>
+          <Typography variant="h5" gutterBottom sx={styles.hint}>
             Enter new password
           </Typography>
           <FormInputField
@@ -211,44 +209,28 @@ export const PasswordReset: React.FC = () => {
 
   if (!currentUser) {
     return (
-
       <Box
         component="form"
         onSubmit={onSubmit}
-        sx={{
-          width: "100%",
-          maxWidth: 450,
-        }}>
-        <Paper
-          elevation={3}
-          sx={{
-            padding: "25px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: 3,
-          }}>
+        css={styles.formBox}>
+        <Paper elevation={3} sx={styles.formPaper}>
+
           <Typography variant="h3" component="h1" gutterBottom>
             Password reset
           </Typography>
 
-          <Avatar sx={{ mb: 2, bgcolor: 'secondary.main' }}>
+          <Avatar sx={styles.formIcon}>
             <LockOpenOutlinedIcon />
           </Avatar>
 
           <Grid container spacing={2}>
-
             {emailField()}
             {codeField()}
             {passField()}
-
           </Grid>
 
           <Button
-            sx={{
-              mt: 3,
-              mb: 2,
-            }}
+            sx={styles.formButton}
             type="submit"
             variant="contained"
             size="large"
