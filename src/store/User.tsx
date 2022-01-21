@@ -36,7 +36,9 @@ export const UserProvider: React.FC = ({ children }) => {
       console.log(userData)
       setActiveUser({
         id: userData.id,
-        email: userData.email
+        email: userData.email,
+        name: userData.name,
+        birthDate: userData.birthDate,
       })
     } catch (error: any) {
       if (error?.response?.status === 401) {

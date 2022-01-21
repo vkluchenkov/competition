@@ -10,11 +10,15 @@ import { useMutation } from "react-query";
 import { signUpRequest, signUpValidateCode, signUpCreate } from "../../api";
 import { useUser } from "../../store/User";
 import { styles } from "./styles"
+import { FormDatePicker } from "../../ui-kit/input/FormInputDatePicker";
+import { DateTime } from "luxon";
 
 interface FormFields {
   email: string,
   code: string,
   password: string,
+  name: string,
+  birthDate: string,
 }
 
 export const Signup: React.FC = () => {
@@ -60,7 +64,10 @@ export const Signup: React.FC = () => {
       }
     });
 
-  const handleSetUser = () => handleSubmit(async (values) => await createMutation.mutateAsync(values));
+  const handleSetUser = () => handleSubmit(async (values) => {
+    console.log(values)
+    await createMutation.mutateAsync(values)
+  });
 
   const [status, setStatus] = useState({
     requestSubmitted: false,
@@ -203,29 +210,73 @@ export const Signup: React.FC = () => {
 
     if (status.codeSubmitted) {
       return (
-        <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom sx={styles.hint}>
-            {t('SignUp.passwordTitle')}
-          </Typography>
-          <FormInputField
-            name="password"
-            label={t<string>('SignUp.password')}
-            type="password"
-            control={control}
-            rules={{
-              required: t<string>('Common.required'),
-              validate: (value: string) => {
-                return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value) || t<string>('SignUp.passwordHint')
-              },
-            }}
-            error={!!errors.password}
-            helperText={errors?.password?.message || t<string>('SignUp.passwordHint')}
-          />
-        </Grid>
+        <>
+          <Grid item xs={12}>
+            <Typography variant="h5" gutterBottom sx={styles.hint}>
+              {t('SignUp.passwordTitle')}
+            </Typography>
+            <FormInputField
+              name="password"
+              label={t<string>('SignUp.password')}
+              control={control}
+              rules={{
+                required: t<string>('Common.required'),
+                validate: (value: string) => {
+                  return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value) || t<string>('SignUp.passwordHint')
+                },
+              }}
+              error={!!errors.password}
+              helperText={errors?.password?.message || t<string>('SignUp.passwordHint')}
+            />
+          </Grid>
+          {nameField()}
+          {birthdayField()}
+        </>
 
       )
     }
     return <></>
+  }
+
+  const nameField = () => {
+    return (
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom sx={styles.hint}>
+          And a little bit more about you
+        </Typography>
+        <FormInputField
+          name="name"
+          label="Name or stage name"
+          control={control}
+          rules={{
+            required: t<string>('Common.required'),
+            validate: (value: string) => {
+              return /^(?=.*[a-z])(?=.*[A-Z]).{2,}$/.test(value) || "Only Latin characters allowed"
+            },
+          }}
+          error={!!errors.name}
+          helperText={errors?.name?.message || "This name will be used for your festival and competition entries, diplomas and so on. Only Latin characters allowed."}
+        />
+      </Grid>
+    )
+  }
+
+  const birthdayField = () => {
+    return (
+      <Grid item xs={12}>
+        <FormDatePicker
+          disableFuture
+          openTo="year"
+          format="dd.MM.yyyy"
+          name="birthDate"
+          label="Date of birth"
+          views={["year", "month", "date"]}
+          control={control}
+          error={!!errors.name}
+          helperText={errors?.birthDate?.message || "Your age is required for festival and competition entries"}
+        />
+      </Grid>
+    )
   }
 
   const checkBox = () => {

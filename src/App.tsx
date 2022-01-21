@@ -16,6 +16,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import GuardedRoute from "./components/GuardedRoute";
 import { EventsList } from "./components/EventsList";
 import { PasswordReset } from "./pages/PasswordReset";
+import { Profile } from "./pages/Profile";
 
 function App() {
   const queryClient = new QueryClient()
@@ -31,6 +32,7 @@ function App() {
                 <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
                   <Routes>
                     <Route path="/" element={<Main />} />
+
                     <Route path="/festivals/:festivalUrl/register" element={
                       <GuardedRoute>
                         <section css={styles.section}>
@@ -38,6 +40,7 @@ function App() {
                         </section>
                       </GuardedRoute>
                     } />
+
                     <Route path="my-festivals" element={
                       <GuardedRoute>
                         <section css={styles.section}>
@@ -45,21 +48,33 @@ function App() {
                         </section>
                       </GuardedRoute>
                     } />
+
+                    <Route path="profile" element={
+                      <GuardedRoute>
+                        <section css={styles.section}>
+                          <Profile />
+                        </section>
+                      </GuardedRoute>
+                    } />
+
                     <Route path="/login" element={
                       <section css={styles.section}>
                         <Login />
                       </section>
                     } />
+
                     <Route path="/restore" element={
                       <section css={styles.section}>
                         <PasswordReset />
                       </section>
                     } />
+
                     <Route path="/signup" element={
                       <section css={styles.section}>
                         <Signup />
                       </section>
                     } />
+
                     <Route
                       path="*"
                       element={

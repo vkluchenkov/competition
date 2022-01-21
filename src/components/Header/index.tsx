@@ -29,13 +29,17 @@ export const Header: React.FC = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const logout = () => {
     removeActiveUser();
     setAnchorElUser(null);
   };
 
-  const navigate = useNavigate();
+  const profile = () => {
+    navigate("/profile");
+    setAnchorElUser(null);
+  };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -58,7 +62,7 @@ export const Header: React.FC = () => {
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ padding: "0 0 0 10px" }}>
-              <Avatar alt={currentUser.email} src={avatar} />
+              <Avatar alt={currentUser.name} src={avatar} />
             </IconButton>
           </Tooltip>
           <Menu
@@ -77,9 +81,13 @@ export const Header: React.FC = () => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
+            <MenuItem onClick={profile}>
+              <Typography textAlign="center">My profile</Typography>
+            </MenuItem>
             <MenuItem onClick={logout}>
               <Typography textAlign="center">Logout</Typography>
             </MenuItem>
+
           </Menu>
         </Box>
       );
@@ -145,7 +153,7 @@ export const Header: React.FC = () => {
           sx={{ my: 2, color: 'white' }}
           startIcon={<Language />}
         >
-          RU
+          Русский
         </Button>
       )
     }
@@ -157,7 +165,7 @@ export const Header: React.FC = () => {
           sx={{ my: 2, color: 'white' }}
           startIcon={<Language />}
         >
-          EN
+          English
         </Button>
       )
     }

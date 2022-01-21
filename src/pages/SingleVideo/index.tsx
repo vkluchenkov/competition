@@ -49,7 +49,7 @@ export const SingleVideo: React.FC = () => {
 
   const submitComment = (comment: string) => {
     const date = new Date()
-    setComments([...comments, { text: comment, date: date, user: currentUser?.firstName }])
+    setComments([...comments, { text: comment, date: date, user: currentUser?.name }])
   }
 
   const submitForm = (event: any) => {
