@@ -2,9 +2,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../../store/User";
-import { Button, Typography, Box, Paper, Avatar, CircularProgress, Modal } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, CircularProgress, Modal, Grid } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
-import { Grid } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation } from "react-i18next";

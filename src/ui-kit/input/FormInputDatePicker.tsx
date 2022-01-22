@@ -1,8 +1,12 @@
 import React from "react"
-import { DatePicker, DatePickerProps } from "@material-ui/pickers"
 import { Control, useController, UseControllerProps } from "react-hook-form"
+import { DateTime } from "luxon";
+import { DatePicker, DatePickerProps } from "@mui/lab";
+import { TextField } from "@mui/material"
+import { InputField } from ".";
 
-interface FormDatePickerProps extends Omit<DatePickerProps, 'value' | 'onChange'> {
+
+type FormDatePickerProps = DatePickerProps & {
   control: Control<any>;
   name: string;
   rules?: UseControllerProps["rules"];
@@ -20,15 +24,24 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({ control, name, r
     }
   );
 
+  // const formattedValue = DateTime.fromISO(value);
+
   return (
     <DatePicker
-      {...props}
-      required={!!rules?.required}
+      mask="__.__.____"
+      // onChange={(date) => onChange(date?.toISODate())}
       onChange={onChange}
-      onBlur={onBlur}
+      // value={formattedValue.isValid ? formattedValue : null}
       value={value}
-      name={name}
       inputRef={ref}
+      renderInput={(props) => <InputField
+        {...props}
+        required={!!rules?.required}
+        variant="outlined"
+        fullWidth
+        onBlur={onBlur}
+        name={name}
+      />}
     />
   )
 }

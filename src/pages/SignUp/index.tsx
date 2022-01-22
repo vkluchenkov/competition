@@ -43,6 +43,9 @@ export const Signup: React.FC = () => {
           type: "manual",
           message: t('SignUp.emailExists'),
         });
+      } else {
+        throw error;
+
       }
     }
   });
@@ -65,7 +68,6 @@ export const Signup: React.FC = () => {
     });
 
   const handleSetUser = () => handleSubmit(async (values) => {
-    console.log(values)
     await createMutation.mutateAsync(values)
   });
 
@@ -82,14 +84,14 @@ export const Signup: React.FC = () => {
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked);
 
   const submitBtnText = useMemo(() => {
-    if (requestMutation.data) {
-      return t('SignUp.submitBtnValidate')
-    }
-    else if (validateCodeMutation.data) {
+    if (validateCodeMutation.data) {
       return t('SignUp.submitBtn')
     }
+    else if (requestMutation.data) {
+      return t('SignUp.submitBtnValidate')
+    }
     else return t('SignUp.submitBtnNext')
-  }, [i18n.language])
+  }, [i18n.language, requestMutation.data, validateCodeMutation.data])
 
   useEffect(() => {
     if (requestMutation.data) {
@@ -189,6 +191,7 @@ export const Signup: React.FC = () => {
             placeholder="123456"
             inputProps={{ minLength: 6, maxLength: 6 }}
             control={control}
+            type="number"
             rules={{
               required: t<string>('Common.required'),
               validate: (value: string) => /([0-9]{6,6})/.test(value),
@@ -219,6 +222,7 @@ export const Signup: React.FC = () => {
               name="password"
               label={t<string>('SignUp.password')}
               control={control}
+              type="password"
               rules={{
                 required: t<string>('Common.required'),
                 validate: (value: string) => {

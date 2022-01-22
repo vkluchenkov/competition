@@ -7,8 +7,6 @@ import { UserProvider, useUser } from "./store/User";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/SignUp";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import LuxonUtils from '@date-io/luxon';
 import { styles } from "./pages/Main/styles";
 import { StylesProvider } from "@material-ui/styles";
 import { Register } from "./components/Register";
@@ -17,6 +15,9 @@ import GuardedRoute from "./components/GuardedRoute";
 import { EventsList } from "./components/EventsList";
 import { PasswordReset } from "./pages/PasswordReset";
 import { Profile } from "./pages/Profile";
+import AdapterLuxon from "@mui/lab/AdapterLuxon"
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
 
 function App() {
   const queryClient = new QueryClient()
@@ -24,8 +25,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback="loading">
-        <StylesProvider injectFirst>
-          <MuiPickersUtilsProvider utils={LuxonUtils}>
+        <LocalizationProvider dateAdapter={AdapterLuxon}>
+          <StylesProvider injectFirst>
             <UserProvider>
               <Router>
                 <Header />
@@ -87,8 +88,8 @@ function App() {
                 </main>
               </Router>
             </UserProvider>
-          </MuiPickersUtilsProvider>
-        </StylesProvider>
+          </StylesProvider>
+        </LocalizationProvider>
       </Suspense>
     </QueryClientProvider>
   );
