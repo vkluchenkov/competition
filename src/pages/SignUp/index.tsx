@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo, useState } from "react";
-import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress, Link } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FormInputField } from "../../ui-kit/input";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
@@ -268,17 +268,7 @@ export const Signup: React.FC = () => {
   const birthdayField = () => {
     return (
       <Grid item xs={12}>
-        <FormDatePicker
-          disableFuture
-          openTo="year"
-          format="dd.MM.yyyy"
-          name="birthDate"
-          label="Date of birth"
-          views={["year", "month", "date"]}
-          control={control}
-          error={!!errors.name}
-          helperText={errors?.birthDate?.message || "Your age is required for festival and competition entries"}
-        />
+
       </Grid>
     )
   }
@@ -288,7 +278,7 @@ export const Signup: React.FC = () => {
       return (
         <Grid item xs={12}>
           <FormControlLabel control={<Switch onChange={handleCheck} />}
-            label={<span>{t('SignUp.switchLabel1')}{<Link to="#">{t('SignUp.switchLabel2')}</Link>} *</span>}
+            label={<span>{t('SignUp.switchLabel1')}{<Link component={RouterLink} to="#">{t('SignUp.switchLabel2')}</Link>} *</span>}
           />
         </Grid>
       )
@@ -336,7 +326,7 @@ export const Signup: React.FC = () => {
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link to="/login">
+              <Link component={RouterLink} to="/login">
                 <Typography variant="body1">
                   {t('SignUp.signIn')}
                 </Typography>

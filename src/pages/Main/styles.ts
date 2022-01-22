@@ -6,7 +6,7 @@ export const styles = createStyles({
     flexDirection: "column",
     alignItems: "center",
     // justifyContent: "center",
-    height: "calc(100vh - 55px)",
+    height: "calc(100vh - 72px)",
     boxSizing: "border-box",
     padding: "25px",
     overflowY: "scroll",

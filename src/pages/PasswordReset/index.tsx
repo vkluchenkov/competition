@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../../store/User";
-import { Button, Typography, Box, Paper, Avatar, CircularProgress, Modal, Grid } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, CircularProgress, Modal, Grid, Link } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { useForm } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
@@ -248,7 +248,7 @@ export const PasswordReset: React.FC = () => {
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link to="/login">
+              <Link component={RouterLink} to="/login">
                 <Typography variant="body1">
                   {t('Reset.backToLogin')}
                 </Typography>

@@ -8,7 +8,6 @@ import { Login } from "./pages/Login";
 import { Signup } from "./pages/SignUp";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { styles } from "./pages/Main/styles";
-import { StylesProvider } from "@material-ui/styles";
 import { Register } from "./components/Register";
 import { QueryClient, QueryClientProvider } from 'react-query'
 import GuardedRoute from "./components/GuardedRoute";
@@ -17,6 +16,8 @@ import { PasswordReset } from "./pages/PasswordReset";
 import { Profile } from "./pages/Profile";
 import AdapterLuxon from "@mui/lab/AdapterLuxon"
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { Box, StyledEngineProvider, ThemeProvider } from "@mui/material";
+import { theme } from "./ui-kit/mui-theme/mui-theme";
 
 
 function App() {
@@ -26,69 +27,71 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Suspense fallback="loading">
         <LocalizationProvider dateAdapter={AdapterLuxon}>
-          <StylesProvider injectFirst>
-            <UserProvider>
-              <Router>
-                <Header />
-                <main css={{ display: "flex", backgroundColor: "#f8f8f8" }}>
-                  <Routes>
-                    <Route path="/" element={<Main />} />
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <UserProvider>
+                <Router>
+                  <Header />
+                  <Box>
+                    <Routes>
+                      <Route path="/" element={<Main />} />
 
-                    <Route path="/festivals/:festivalUrl/register" element={
-                      <GuardedRoute>
+                      <Route path="/festivals/:festivalUrl/register" element={
+                        <GuardedRoute>
+                          <section css={styles.section}>
+                            <Register />
+                          </section>
+                        </GuardedRoute>
+                      } />
+
+                      <Route path="my-festivals" element={
+                        <GuardedRoute>
+                          <section css={styles.section}>
+                            <EventsList />
+                          </section>
+                        </GuardedRoute>
+                      } />
+
+                      <Route path="profile" element={
+                        <GuardedRoute>
+                          <section css={styles.section}>
+                            <Profile />
+                          </section>
+                        </GuardedRoute>
+                      } />
+
+                      <Route path="/login" element={
                         <section css={styles.section}>
-                          <Register />
+                          <Login />
                         </section>
-                      </GuardedRoute>
-                    } />
+                      } />
 
-                    <Route path="my-festivals" element={
-                      <GuardedRoute>
+                      <Route path="/restore" element={
                         <section css={styles.section}>
-                          <EventsList />
+                          <PasswordReset />
                         </section>
-                      </GuardedRoute>
-                    } />
+                      } />
 
-                    <Route path="profile" element={
-                      <GuardedRoute>
+                      <Route path="/signup" element={
                         <section css={styles.section}>
-                          <Profile />
+                          <Signup />
                         </section>
-                      </GuardedRoute>
-                    } />
+                      } />
 
-                    <Route path="/login" element={
-                      <section css={styles.section}>
-                        <Login />
-                      </section>
-                    } />
-
-                    <Route path="/restore" element={
-                      <section css={styles.section}>
-                        <PasswordReset />
-                      </section>
-                    } />
-
-                    <Route path="/signup" element={
-                      <section css={styles.section}>
-                        <Signup />
-                      </section>
-                    } />
-
-                    <Route
-                      path="*"
-                      element={
-                        <div style={{ padding: "1rem" }}>
-                          <p>There's nothing here!</p>
-                        </div>
-                      }
-                    />
-                  </Routes>
-                </main>
-              </Router>
-            </UserProvider>
-          </StylesProvider>
+                      <Route
+                        path="*"
+                        element={
+                          <div style={{ padding: "1rem" }}>
+                            <p>There's nothing here!</p>
+                          </div>
+                        }
+                      />
+                    </Routes>
+                  </Box>
+                </Router>
+              </UserProvider>
+            </ThemeProvider>
+          </StyledEngineProvider>
         </LocalizationProvider>
       </Suspense>
     </QueryClientProvider>

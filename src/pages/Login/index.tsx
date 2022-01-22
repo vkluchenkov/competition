@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link as RouterLink, Navigate } from "react-router-dom";
 import { useUser } from "../../store/User";
-import { Button, Typography, Box, Paper, Avatar, CircularProgress, Grid } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, CircularProgress, Grid, Link } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 // import { Grid } from "@material-ui";
 import { useForm } from "react-hook-form";
@@ -119,7 +119,7 @@ export const Login: React.FC = () => {
                 error={!!errors.password}
                 helperText={errors?.password?.message}
               />
-              <Link to="/restore">
+              <Link component={RouterLink} to="/restore">
                 <Typography variant="body1">
                   {t('Login.passwordHint')}
                 </Typography>
@@ -142,7 +142,7 @@ export const Login: React.FC = () => {
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link to="/signup">
+              <Link component={RouterLink} to="/signup">
                 <Typography variant="body1">
                   {t('Login.signup')}
                 </Typography>
