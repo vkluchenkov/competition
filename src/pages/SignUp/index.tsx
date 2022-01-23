@@ -19,7 +19,7 @@ interface FormFields {
   code: string,
   password: string,
   name: string,
-  birthDate: string,
+  birth_date: string,
 }
 
 export const Signup: React.FC = () => {
@@ -272,13 +272,13 @@ export const Signup: React.FC = () => {
         <FormDatePicker
           openTo="year"
           label="Birth date"
-          name="birthDate"
+          name="birth_date"
           control={control}
-          error={!!errors.birthDate}
+          error={!!errors.birth_date}
           rules={{
             required: t<string>('Common.required'),
           }}
-          helperText={errors?.birthDate?.message || "You age is required to register for festials and competitions"}
+          helperText={errors?.birth_date?.message || "You age is required to register for festials and competitions"}
         />
       </Grid>
     )
