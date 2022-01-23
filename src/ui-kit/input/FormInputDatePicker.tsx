@@ -20,13 +20,24 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({ control, name, r
       name,
       control,
       rules: rules,
-      defaultValue: "",
+      defaultValue: "01.01.2000",
     }
   );
 
   // const formattedValue = DateTime.fromISO(value);
 
   return (
-    <></>
+    <DatePicker
+      {...props}
+      inputFormat="dd.mm.yyyy"
+      mask="__.__.____"
+      value={value}
+      onChange={onChange}
+      renderInput={(params) => <TextField
+        {...params}
+        name={name}
+        fullWidth
+      />}
+    />
   )
 }

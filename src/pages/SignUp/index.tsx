@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo, useState } from "react";
-import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress, Link } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress, Link, TextField } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FormInputField } from "../../ui-kit/input";
 import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import { useUser } from "../../store/User";
 import { styles } from "./styles"
 import { FormDatePicker } from "../../ui-kit/input/FormInputDatePicker";
 import { DateTime } from "luxon";
+import { DatePicker } from "@mui/lab";
 
 interface FormFields {
   email: string,
@@ -234,7 +235,7 @@ export const Signup: React.FC = () => {
             />
           </Grid>
           {nameField()}
-          {birthdayField()}
+          {/* {birthdayField()} */}
         </>
 
       )
@@ -268,7 +269,13 @@ export const Signup: React.FC = () => {
   const birthdayField = () => {
     return (
       <Grid item xs={12}>
-
+        <FormDatePicker
+          openTo="year"
+          label="Birth date"
+          name="birthDate"
+          control={control}
+          error={!!errors.birthDate}
+        />
       </Grid>
     )
   }
@@ -310,6 +317,7 @@ export const Signup: React.FC = () => {
             {emailField()}
             {codeField()}
             {passField()}
+            {birthdayField()}
             {checkBox()}
           </Grid>
 
