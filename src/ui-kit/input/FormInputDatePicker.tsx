@@ -3,16 +3,18 @@ import { Control, useController, UseControllerProps } from "react-hook-form"
 import { DateTime } from "luxon";
 import { DatePicker, DatePickerProps } from "@mui/lab";
 import { TextField } from "@mui/material"
-import { InputField } from ".";
+import { FormInputField, InputField } from ".";
 
 
-type FormDatePickerProps = DatePickerProps & {
+interface FormDatePickerProps extends Omit<DatePickerProps, "value" | "onChange" | "renderInput"> {
   control: Control<any>;
   name: string;
   rules?: UseControllerProps["rules"];
+  error: any;
+  helperText: string;
 }
 
-export const FormDatePicker: React.FC<FormDatePickerProps> = ({ control, name, rules, ...props }) => {
+export const FormDatePicker: React.FC<FormDatePickerProps> = ({ control, name, rules, error, helperText, ...props }) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController(
@@ -20,22 +22,27 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({ control, name, r
       name,
       control,
       rules: rules,
-      defaultValue: "01.01.2000",
+      defaultValue: "",
     }
   );
 
-  // const formattedValue = DateTime.fromISO(value);
+  const formattedValue = DateTime.fromISO(value);
 
   return (
     <DatePicker
       {...props}
-      inputFormat="dd.mm.yyyy"
-      mask="__.__.____"
-      value={value}
-      onChange={onChange}
-      renderInput={(params) => <TextField
+      inputFormat="dd.MM.yyyy"
+      value={formattedValue.isValid ? formattedValue : null}
+      onChange={(date: DateTime) => onChange(date.toISODate())}
+      views={['year', 'month', 'day']}
+      renderInput={(params) => <InputField
         {...params}
+        required={!!rules?.required}
         name={name}
+        error={error}
+        // inputRef={ref}
+        onBlur={onBlur}
+        helperText={helperText}
         fullWidth
       />}
     />

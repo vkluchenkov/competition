@@ -36,6 +36,7 @@ export const Signup: React.FC = () => {
 
   // Submit handlers
   const handleCodeRequest = () => handleSubmit(async (values) => {
+    console.log(values)
     try {
       await requestMutation.mutateAsync(values.email)
     } catch (error: any) {
@@ -275,6 +276,10 @@ export const Signup: React.FC = () => {
           name="birthDate"
           control={control}
           error={!!errors.birthDate}
+          rules={{
+            required: t<string>('Common.required'),
+          }}
+          helperText={errors?.password?.message || "You age is required to register for festials and competitions"}
         />
       </Grid>
     )
