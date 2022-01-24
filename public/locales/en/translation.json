@@ -59,7 +59,8 @@
       "Teacher": "Teacher",
       "Date": "Date",
       "h": "h",
-      "tip": "Tip: you need to take at least 3 workshops to take part in competition"
+      "tip": "Tip: you need to take at least 3 workshops to take part in competition",
+      "spotsLeft": "Available spots:"
     },
     "wsList": {
       "Marta": "Marta Korzun",

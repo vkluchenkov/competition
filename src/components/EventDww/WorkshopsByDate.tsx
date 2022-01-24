@@ -52,6 +52,18 @@ export const WorkshopsByDate: React.FC = () => {
       const wsLength = length(ws.start, ws.end).hours;
       const wsDateTime = DateTime.fromISO(ws.start).toFormat("H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + t('Dww.ws.h') + ")";
 
+      const wsSpotsLeft = () => {
+        const spots = ws.limit - ws.counter;
+
+        if (ws.limit) {
+          return (
+            <Typography variant="body2">
+              {t('Dww.ws.spotsLeft')} {spots}
+            </Typography>
+          )
+        }
+      };
+
       return (
         <FormControlLabel
           key={ws.id}
@@ -73,6 +85,7 @@ export const WorkshopsByDate: React.FC = () => {
               <Typography variant="body2">
                 {wsDateTime}
               </Typography>
+              {wsSpotsLeft()}
             </>
           } />
       )

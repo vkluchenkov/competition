@@ -11,6 +11,8 @@ export interface Workshop {
   end: string;
   price: number;
   id: number;
+  limit: number;
+  counter: number;
 }
 
 export interface FormFields {
