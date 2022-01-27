@@ -7,9 +7,10 @@ import { styles } from "./styles";
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
+  festivalId: number;
 }
 
-export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup }) => {
+export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) => {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -52,7 +53,12 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup }) => {
 
       </List>
 
-      <WorkshopsForm open={open} onClose={handleClose} ageGroup={ageGroup} />
+      <WorkshopsForm
+        open={open}
+        onClose={handleClose}
+        ageGroup={ageGroup}
+        festivalId={festivalId}
+      />
     </Box>
 
   )

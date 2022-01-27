@@ -36,6 +36,11 @@ export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
 
   const ageGroup = useMemo(() => AgeGroup(eventDate, currentUser?.birthDate), [currentUser?.birthDate])
 
+
+  // const onSubmit = () => {
+  //   methods.handleSubmit((values) => console.log(values))
+  // }
+
   if (isLoading) {
     return <CircularProgress />
   }
@@ -47,7 +52,8 @@ export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
   return (
     <FormProvider {...methods}>
       <DwwEvents
-        ageGroup={ageGroup} />
+        ageGroup={ageGroup}
+        festivalId={festivalId} />
     </FormProvider>
   );
 };

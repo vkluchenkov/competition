@@ -33,7 +33,6 @@ export const UserProvider: React.FC = ({ children }) => {
   const setUser = async () => {
     try {
       const userData = await getUserData()
-      console.log(userData)
       setActiveUser({
         id: userData.id,
         email: userData.email,

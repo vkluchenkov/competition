@@ -31,6 +31,12 @@ interface SetUserPayload {
   password: string;
 }
 
+interface SetOrderPayload {
+  workshops: number[],
+  isFullPass: boolean;
+  festivalId: number;
+}
+
 // Festivals
 export const getFestival = (festivalUrl: string | undefined) => {
   return axios.get(`${BACKEND}/festivals/${festivalUrl}`)
@@ -125,6 +131,13 @@ export const setNewPassword = (data: SetUserPayload) => {
 // Order
 export const getOrder = (id: string) => {
   return axios.get(`${BACKEND}/orders/${id}`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+export const setOrder = (data: SetOrderPayload) => {
+  return axios.post(`${BACKEND}/festivals/register`, data)
     .then((result: any) => {
       return result.data
     })

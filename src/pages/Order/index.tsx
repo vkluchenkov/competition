@@ -10,7 +10,7 @@ import { Festival } from "../../models/festival";
 export const Order = () => {
 
   // Временно
-  const orderId = '43';
+  const orderId = '44';
 
   const { isLoading, isError, data, error } = useQuery<any, any>('orderId', () => getOrder(orderId))
 
@@ -43,7 +43,7 @@ export const Order = () => {
       })
 
       const fullPassOrWorkshops = () => {
-        if (fullPass === "true") {
+        if (fullPass) {
           return (
             <Typography variant="body1" sx={{ paddingLeft: "8px" }}>
               Workshops: Full Pass

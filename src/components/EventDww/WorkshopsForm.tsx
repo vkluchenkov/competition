@@ -23,22 +23,27 @@ import { WorkshopsByDate } from "./WorkshopsByDate"
 import { Filters } from "./WorkshopsFilters";
 import { useFormContext } from "react-hook-form";
 import { FormFields } from './types';
+import { useMutation } from "react-query";
+import { setOrder } from "../../api";
 
 interface WorkshopsFormProps {
   open: boolean;
   onClose: () => void;
   ageGroup: string | undefined;
+  festivalId: number;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup }) => {
-  const { watch } = useFormContext<FormFields>();
-
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId }) => {
+  // Hooks
+  const { t } = useTranslation();
+  const { watch, handleSubmit } = useFormContext<FormFields>();
   const [singles, setSingles] = useState({});
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
   const [sorting, setSorting] = React.useState('teacher');
 
+  // Calculations
   const fullPassPrice = () => {
     if (ageGroup === "baby" || ageGroup === "kids") {
       return basePrices.fullPass / 2
@@ -46,7 +51,11 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     return basePrices.fullPass
   }
 
+  const SubmitMutation = useMutation<string, any, any, any>(setOrder);
+
+  // States
   const selected = watch("workshops").filter((ws) => ws.selected);
+
   const total = useMemo(() => {
     if (workshopsType === "fullPass") {
       return fullPassPrice()
@@ -57,6 +66,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     return selected.reduce(((prev, current) => prev + current.price), 0)
   }, [selected])
 
+  // Handlers
   const handleSingles = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSingles({
       ...singles,
@@ -64,9 +74,29 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     });
   };
 
-  const handleSorting = (event: React.MouseEvent<HTMLElement>, newSort: string,) => setSorting(newSort);
+  const onSubmit = handleSubmit(async () => {
+    const isFullPass = !!(workshopsType === "fullPass")
 
-  const { t } = useTranslation();
+    const workshops = () => {
+      if (!isFullPass && selected) {
+        return selected.map((ws) => ws.id)
+      } else {
+        return []
+      }
+    }
+    const payloadWorkshops = workshops()
+
+    const submitPayload = {
+      workshops: payloadWorkshops,
+      isFullPass,
+      festivalId
+    }
+
+    await SubmitMutation.mutateAsync(submitPayload);
+    onClose()
+  })
+
+  const handleSorting = (event: React.MouseEvent<HTMLElement>, newSort: string,) => setSorting(newSort);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -126,7 +156,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
         <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
         <Button
           disabled={!total}
-          onClick={onClose}
+          onClick={onSubmit}
           variant="outlined">
           {t('Dww.submitBtn')}
         </Button>
