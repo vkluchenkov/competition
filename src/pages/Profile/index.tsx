@@ -11,7 +11,6 @@ export const Profile: React.FC = () => {
 
   if (currentUser) {
     const birthDay = DateTime.fromISO(currentUser.birthDate).toFormat("dd.LL.y")
-    console.log(currentUser)
 
     return (
       <Box sx={{ width: "100%", maxWidth: "600px", }}>

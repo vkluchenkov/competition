@@ -39,6 +39,13 @@ export const getFestival = (festivalUrl: string | undefined) => {
     })
 }
 
+export const getFestivalById = (festivalId: string) => {
+  return axios.get(`${BACKEND}/festivals/${festivalId}/data`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
 export const getWorkshops = (festivalId: number) => {
   return axios.get(`${BACKEND}/festivals/${festivalId}/workshops`)
     .then((result: any) => {
@@ -112,5 +119,13 @@ export const setNewPassword = (data: SetUserPayload) => {
   return axios.post(`${BACKEND}/auth/setpass`, data)
     .then((result: any) => {
       return result.data.access_token
+    })
+}
+
+// Order
+export const getOrder = (id: string) => {
+  return axios.get(`${BACKEND}/orders/${id}`)
+    .then((result: any) => {
+      return result.data
     })
 }

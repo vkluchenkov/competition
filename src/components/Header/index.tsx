@@ -36,8 +36,8 @@ export const Header: React.FC = () => {
     setAnchorElUser(null);
   };
 
-  const profile = () => {
-    navigate("/profile");
+  const navigation = (link: string) => {
+    navigate(link);
     setAnchorElUser(null);
   };
 
@@ -81,7 +81,10 @@ export const Header: React.FC = () => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            <MenuItem onClick={profile}>
+            <MenuItem onClick={() => navigation("/my-order")}>
+              <Typography textAlign="center">My order</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigation("/profile")}>
               <Typography textAlign="center">My profile</Typography>
             </MenuItem>
             <MenuItem onClick={logout}>

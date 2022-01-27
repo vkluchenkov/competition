@@ -18,6 +18,7 @@ import AdapterLuxon from "@mui/lab/AdapterLuxon"
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Box, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { theme } from "./ui-kit/mui-theme/mui-theme";
+import { Order } from "./pages/Order";
 
 
 function App() {
@@ -50,6 +51,14 @@ function App() {
                             <EventsList />
                           </section>
                         </GuardedRoute>
+                      } />
+
+                      <Route path="my-order" element={
+                        // <GuardedRoute>
+                        <section css={styles.section}>
+                          <Order />
+                        </section>
+                        // </GuardedRoute>
                       } />
 
                       <Route path="profile" element={
