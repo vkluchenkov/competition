@@ -1,5 +1,5 @@
-import { getWorkshops, getFestival } from "../../api";
-import { useLocation, useParams, useNavigate, Navigate } from "react-router-dom";
+import { getFestival } from "../../api";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Dww } from "../EventDww";
@@ -16,7 +16,7 @@ export const Register: React.FC = () => {
   const { festivalUrl } = useParams();
 
   //Нашли ID фестиваля по запросу с адресом, вернули если есть
-  const { isLoading, isError, data, error } = useQuery<any, any>('isFestival', () => getFestival(festivalUrl), {
+  const { isLoading, data } = useQuery<any, any>('isFestival', () => getFestival(festivalUrl), {
     onError: (error) => {
       if (error?.response?.status === 404) {
         navigate('/')

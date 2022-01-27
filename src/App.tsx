@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import "./App.css";
 import { Main } from "./pages/Main";
 import { Header } from "./components/Header";
-import { UserProvider, useUser } from "./store/User";
+import { UserProvider } from "./store/User";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/SignUp";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";

@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../../store/User";
-import { Button, Typography, Box, Paper, Avatar, CircularProgress, Modal, Grid, Link } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, CircularProgress, Grid, Link } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { useForm } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
@@ -19,11 +19,11 @@ interface FormFields {
 
 export const PasswordReset: React.FC = () => {
   // Hooks
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { handleSubmit, control, formState: { errors }, setError, getValues } = useForm<FormFields>();
-  const [{ currentUser }, { setActiveUser, setAuthToken }] = useUser();
+  const { handleSubmit, control, formState: { errors }, setError } = useForm<FormFields>();
+  const [{ currentUser }, { setAuthToken }] = useUser();
 
   const requestMutation = useMutation<string, any, any, any>(requestPassReset);
   const validateCodeMutation = useMutation<string, any, any, any>(validateResetCode);
@@ -68,7 +68,7 @@ export const PasswordReset: React.FC = () => {
       return t('Reset.submitBtn')
     }
     else return t('Reset.submitBtnNext')
-  }, [i18n.language])
+  }, [requestMutation.data, t, validateCodeMutation.data])
 
 
   useEffect(() => {

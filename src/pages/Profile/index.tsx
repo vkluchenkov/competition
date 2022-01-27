@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Grid, IconButton, List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Grid, IconButton, List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import React from "react";
 import { useUser } from "../../store/User";
@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 
 export const Profile: React.FC = () => {
 
-  const [{ currentUser }, { }] = useUser();
+  const [{ currentUser }] = useUser();
 
   if (currentUser) {
     const birthDay = DateTime.fromISO(currentUser.birthDate).toFormat("dd.LL.y")

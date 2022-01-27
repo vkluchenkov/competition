@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import { Route, Navigate } from "react-router-dom";
+import React from "react";
+import { Navigate } from "react-router-dom";
 import { useUser } from "../../store/User";
 
 interface GuardedRouteProps {
@@ -7,7 +7,7 @@ interface GuardedRouteProps {
 }
 
 const GuardedRoute: React.FC<GuardedRouteProps> = ({ children }) => {
-  const [{ currentUser }, { }] = useUser();
+  const [{ currentUser }] = useUser();
   return currentUser ? children : <Navigate to="/login" />
 }
 

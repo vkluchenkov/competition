@@ -1,13 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { AgeGroup } from "./AgeGroup";
 import { DwwEvents } from "./DwwEvents"
 import { useForm, FormProvider } from "react-hook-form";
 import { Workshop } from "./types";
 import { FormFields } from './types';
 import { useUser } from "../../store/User";
-import { User } from "../../models/user";
-import avatar from "../../images/media.webp";
 import { useQuery } from 'react-query'
 import { getWorkshops } from "../../api";
 import { CircularProgress } from "@mui/material";
@@ -18,7 +16,7 @@ interface DwwProps {
 
 export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
 
-  const [{ currentUser }, { setActiveUser }] = useUser();
+  const [{ currentUser }] = useUser();
 
   const eventDate = "2022-08-18"
 
@@ -26,13 +24,13 @@ export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
 
   const methods = useForm<FormFields>({ defaultValues: { workshops: [] } });
 
+  const { setValue } = methods;
+
   useEffect(() => {
     if (data) {
       setValue("workshops", data.map((ws: Workshop) => ({ ...ws, selected: false })))
     }
-  }, [data])
-
-  const { setValue } = methods;
+  }, [data, setValue])
 
   const ageGroup = useMemo(() => AgeGroup(eventDate, currentUser?.birthDate), [currentUser?.birthDate])
 

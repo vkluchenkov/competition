@@ -3,9 +3,8 @@ import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContain
 import { DateTime } from "luxon";
 import React from "react";
 import { useQuery } from "react-query";
-import { getFestivalById, getOrder } from "../../api";
+import { getOrder } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
-import { Festival } from "../../models/festival";
 
 export const Order = () => {
 

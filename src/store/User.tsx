@@ -51,7 +51,7 @@ export const UserProvider: React.FC = ({ children }) => {
     if (localStorage.jwt) {
       setAuthToken(localStorage.jwt)
     }
-  }, [])
+  }, [localStorage.jwt])
 
   useEffect(() => {
     if (!state.authToken) {
@@ -60,7 +60,7 @@ export const UserProvider: React.FC = ({ children }) => {
       localStorage.setItem('jwt', state.authToken)
       setUser();
     }
-  }, [state.authToken])
+  }, [state.authToken, localStorage])
 
   const setAuthToken: UserStoreActions["setAuthToken"] = (token) => {
     setState((prev) => {

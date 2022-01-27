@@ -19,7 +19,7 @@ interface FormFields {
 export const Login: React.FC = () => {
   const { t } = useTranslation();
 
-  const { handleSubmit, control, formState: { errors }, setError, getValues } = useForm<FormFields>();
+  const { handleSubmit, control, formState: { errors }, setError } = useForm<FormFields>();
 
   const loginMutation = useMutation<string, any, any, any>(login);
 
@@ -34,7 +34,7 @@ export const Login: React.FC = () => {
   //   return true;
   // }
 
-  const [{ currentUser }, { setActiveUser, setAuthToken }] = useUser();
+  const [{ currentUser }, { setAuthToken }] = useUser();
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -53,7 +53,7 @@ export const Login: React.FC = () => {
     if (loginMutation.data) {
       setAuthToken(loginMutation.data)
     }
-  }, [loginMutation.data]);
+  }, [loginMutation.data, setAuthToken]);
 
   if (loginMutation.isLoading) {
     return (

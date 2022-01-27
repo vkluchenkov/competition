@@ -15,7 +15,7 @@ interface FormDatePickerProps extends Omit<DatePickerProps, "value" | "onChange"
 
 export const FormDatePicker: React.FC<FormDatePickerProps> = ({ control, name, rules, error, helperText, ...props }) => {
   const {
-    field: { onChange, onBlur, value, ref },
+    field: { onChange, onBlur, value },
   } = useController(
     {
       name,

@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useTranslation } from "react-i18next";
 import avatar from "../../images/media.webp";
 import { Language } from "@mui/icons-material";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styles } from "./styles";
 
 const pages = ['My events', 'Menu2', 'Menu3'];

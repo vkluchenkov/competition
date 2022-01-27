@@ -14,7 +14,7 @@ import {
   Typography,
   Collapse,
 } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { basePrices } from "./prices";
 import { styles } from "./styles"
@@ -44,12 +44,12 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   const [sorting, setSorting] = React.useState('teacher');
 
   // Calculations
-  const fullPassPrice = () => {
+  const fullPassPrice = useCallback(() => {
     if (ageGroup === "baby" || ageGroup === "kids") {
       return basePrices.fullPass / 2
     }
     return basePrices.fullPass
-  }
+  }, [ageGroup])
 
   const SubmitMutation = useMutation<string, any, any, any>(setOrder);
 
@@ -64,7 +64,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
         return 0
       }
     return selected.reduce(((prev, current) => prev + current.price), 0)
-  }, [selected])
+  }, [selected, workshopsType, fullPassPrice])
 
   // Handlers
   const handleSingles = (event: React.ChangeEvent<HTMLInputElement>) => {

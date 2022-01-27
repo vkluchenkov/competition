@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo, useState } from "react";
-import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress, Link, TextField } from "@mui/material";
+import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress, Link } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FormInputField } from "../../ui-kit/input";
 import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
@@ -11,8 +11,6 @@ import { signUpRequest, signUpValidateCode, signUpCreate } from "../../api";
 import { useUser } from "../../store/User";
 import { styles } from "./styles"
 import { FormDatePicker } from "../../ui-kit/input/FormInputDatePicker";
-import { DateTime } from "luxon";
-import { DatePicker } from "@mui/lab";
 
 interface FormFields {
   email: string,
@@ -24,7 +22,7 @@ interface FormFields {
 
 export const Signup: React.FC = () => {
   // Hooks
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const { handleSubmit, control, setError, formState: { errors } } = useForm<FormFields>();
@@ -92,7 +90,7 @@ export const Signup: React.FC = () => {
       return t('SignUp.submitBtnValidate')
     }
     else return t('SignUp.submitBtnNext')
-  }, [i18n.language, requestMutation.data, validateCodeMutation.data])
+  }, [t, requestMutation.data, validateCodeMutation.data])
 
   useEffect(() => {
     if (requestMutation.data) {
