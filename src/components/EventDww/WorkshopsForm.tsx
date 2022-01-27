@@ -84,10 +84,8 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
         return []
       }
     }
-    const payloadWorkshops = workshops()
-
     const submitPayload = {
-      workshops: payloadWorkshops,
+      workshops: workshops(),
       isFullPass,
       festivalId
     }
