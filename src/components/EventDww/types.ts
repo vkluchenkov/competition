@@ -18,6 +18,7 @@ export interface Workshop {
 export interface ContestCategory {
   id: number;
   title: string;
+  priceFullPass: number;
   price: number;
 }
 

@@ -78,12 +78,55 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
       if (!selected) {
         return 0
       }
-    return selected.reduce(((prev, current) => prev + current.price), 0)
+    return selected.reduce(((prev, current) => {
+      if (isFullPass) {
+        return prev + current.priceFullPass
+      }
+      return prev + current.price
+    }), 0)
   }, [selected])
 
   // Categories mapping
   const categories = controlledFields.map((cat) => {
-    const price = soloPass ? null : cat.price;
+    const price = () => {
+      if (soloPass) {
+        return null;
+      }
+      if (isFullPass) {
+        return cat.priceFullPass
+      }
+      return cat.price
+    };
+
+    const titlePrice = () => {
+      if (price()) {
+        return ` €${price()}`
+      }
+    }
+
+    const subtitle = () => {
+      const myPrice = price();
+      if (myPrice && isFullPass) {
+        return (
+          <Typography variant="body2">
+            free with Solo Pass
+          </Typography>
+        )
+      }
+      if (myPrice) {
+        return (
+          <>
+            <Typography variant="body2">
+              €{cat.priceFullPass} with Full Pass
+            </Typography>
+            <Typography variant="body2">
+              free with Solo Pass
+            </Typography>
+          </>
+        )
+      }
+      return null
+    };
 
     return (
       <FormControlLabel
@@ -97,9 +140,8 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
         }
         label={
           <>
-            <Typography variant="body1">
-              {cat.title}: {price ? `€${price} (free with Solo Pass)` : "free with Solo Pass"}
-            </Typography>
+            <Typography variant="body1"><strong>{cat.title}</strong>{titlePrice()}</Typography>
+            {subtitle()}
           </>
         } />
     )
@@ -109,8 +151,11 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Competition sign up for {ageGroup}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText gutterBottom>
           Solo pass gives you the right to dance unlimited times in all solo categories, except live tabla solo. With Solo Pass you save if dance more than 2 times.
+        </DialogContentText>
+        <DialogContentText variant="body2">
+          <strong>Tip:</strong> Get Full Pass to get access to all the workshops and enjoy discounts on competition as well!
         </DialogContentText>
         <Box component="form" sx={{ mt: 2 }}>
           <Typography variant="h6" css={styles.title}>
