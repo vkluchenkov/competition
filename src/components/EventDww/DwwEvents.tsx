@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WorkshopsForm } from "./WorkshopsForm";
 import { styles } from "./styles";
+import { ContestForm } from "./ContestForm";
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
@@ -13,9 +14,13 @@ interface DwwEventsProps {
 export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) => {
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [wsOpen, setWsOpen] = useState(false);
+  const handleWsOpen = () => setWsOpen(true);
+  const handleWsClose = () => setWsOpen(false);
+
+  const [contestOpen, setContestOpen] = useState(false);
+  const handleContestOpen = () => setContestOpen(true);
+  const handleContestClose = () => setContestOpen(false);
 
   return (
     <Box sx={{ width: "100%", maxWidth: "600px" }}>
@@ -26,7 +31,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) =>
             primary={t('Dww.workshops')}
             secondary={t('Dww.eventsList.wsSecondary')}
           />
-          <Button variant="outlined" onClick={handleClickOpen} sx={styles.listButton}>
+          <Button variant="outlined" onClick={handleWsOpen} sx={styles.listButton}>
             {t('Dww.eventsList.checkIn')}
           </Button>
         </ListItem>
@@ -36,7 +41,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) =>
             primary={t('Dww.competition')}
             secondary={t('Dww.eventsList.competitionSecondary')}
           />
-          <Button disabled variant="outlined" sx={styles.listButton}>
+          <Button onClick={handleContestOpen} variant="outlined" sx={styles.listButton}>
             {t('Dww.eventsList.checkIn')}
           </Button>
         </ListItem>
@@ -54,10 +59,18 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) =>
       </List>
 
       <WorkshopsForm
-        open={open}
-        onClose={handleClose}
+        open={wsOpen}
+        onClose={handleWsClose}
         ageGroup={ageGroup}
         festivalId={festivalId}
+      />
+
+      <ContestForm
+        open={contestOpen}
+        onClose={handleContestClose}
+        ageGroup={ageGroup}
+        festivalId={festivalId}
+        isFullPass={false}
       />
     </Box>
 

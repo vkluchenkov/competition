@@ -57,9 +57,9 @@ export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = () => {
     const wsList = wsByTeacherFilter(id).map(ws => {
       const wsLength = length(ws.start, ws.end).hours;
       const wsDateTime = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + t('Dww.ws.h') + ")";
+
       const wsSpotsLeft = () => {
         const spots = ws.limit - ws.counter;
-
         // Надо прописать все ситуации – нету лимита, все распродано, оверселл. Пока только наличие лимита.
         if (ws.limit) {
           return (

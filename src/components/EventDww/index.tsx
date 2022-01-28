@@ -9,29 +9,34 @@ import { useUser } from "../../store/User";
 import { useQuery } from 'react-query'
 import { getWorkshops } from "../../api";
 import { CircularProgress } from "@mui/material";
+import { Festival } from "../../models/festival";
+import { contestCats } from "./contestDataMock"
 
 interface DwwProps {
-  festivalId: number;
+  festival: Festival;
 }
 
-export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
-
+export const Dww: React.FC<DwwProps> = (festival) => {
   const [{ currentUser }] = useUser();
 
-  const eventDate = "2022-08-18"
-
-  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => getWorkshops(festivalId))
-
-  const methods = useForm<FormFields>({ defaultValues: { workshops: [] } });
-
+  // Form setup
+  const methods = useForm<FormFields>({ defaultValues: { workshops: [], contest: [] } });
   const { setValue } = methods;
 
+  // Workshops data
+  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => getWorkshops(festival.festival.id))
   useEffect(() => {
     if (data) {
       setValue("workshops", data.map((ws: Workshop) => ({ ...ws, selected: false })))
     }
   }, [data, setValue])
 
+  // Competition data mock
+  useEffect(() => {
+    setValue("contest", contestCats.map((cat) => ({ ...cat, selected: false })))
+  }, [contestCats])
+
+  const eventDate = festival.festival.startDate;
   const ageGroup = useMemo(() => AgeGroup(eventDate, currentUser?.birthDate), [currentUser?.birthDate])
 
   if (isLoading) {
@@ -46,7 +51,7 @@ export const Dww: React.FC<DwwProps> = ({ festivalId }) => {
     <FormProvider {...methods}>
       <DwwEvents
         ageGroup={ageGroup}
-        festivalId={festivalId} />
+        festivalId={festival.festival.id} />
     </FormProvider>
   );
 };

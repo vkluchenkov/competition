@@ -4,18 +4,16 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Dww } from "../EventDww";
 import { CircularProgress } from "@mui/material";
+import { Festival } from "../../models/festival";
 
 
 export const Register: React.FC = () => {
-
-  const [festivalId, setFestivalId] = useState(null);
-
   const navigate = useNavigate()
-
-  //Взяли адрес фестиваля из параметров роутера
   const { festivalUrl } = useParams();
 
-  //Нашли ID фестиваля по запросу с адресом, вернули если есть
+  const [festival, setFestival] = useState(null);
+
+
   const { isLoading, data } = useQuery<any, any>('isFestival', () => getFestival(festivalUrl), {
     onError: (error) => {
       if (error?.response?.status === 404) {
@@ -23,9 +21,10 @@ export const Register: React.FC = () => {
       }
     }
   })
+
   useEffect(() => {
     if (data) {
-      setFestivalId(data.id)
+      setFestival(data)
     }
   }, [data])
 
@@ -33,8 +32,8 @@ export const Register: React.FC = () => {
     return <CircularProgress />
   }
 
-  if (festivalId) {
-    return <Dww festivalId={festivalId} />
+  if (festival) {
+    return <Dww festival={festival} />
   }
 
   return <></>

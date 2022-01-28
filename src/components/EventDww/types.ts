@@ -15,6 +15,13 @@ export interface Workshop {
   counter: number;
 }
 
+export interface ContestCategory {
+  id: number;
+  title: string;
+  price: number;
+}
+
 export interface FormFields {
   workshops: (Workshop & { selected: boolean })[];
+  contest: (ContestCategory & { selected: boolean })[];
 }
