@@ -25,6 +25,7 @@ export const Dww: React.FC<DwwProps> = (festival) => {
 
   // Workshops data
   const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => getWorkshops(festival.festival.id))
+
   useEffect(() => {
     if (data) {
       setValue("workshops", data.map((ws: Workshop) => ({ ...ws, selected: false })))
