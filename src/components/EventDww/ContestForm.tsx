@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { FormFields } from './types';
+import { FormFields, Registration } from './types';
 import {
   Dialog,
   DialogActions,
@@ -23,11 +23,11 @@ interface ContestFormProps {
   open: boolean;
   onClose: () => void;
   ageGroup: string | undefined;
-  festivalId: number;
+  registration: Registration | null;
   isFullPass: boolean;
 };
 
-export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, festivalId, isFullPass }) => {
+export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, isFullPass }) => {
 
   // Hooks
   const { t } = useTranslation();
@@ -46,12 +46,16 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     };
   });
 
-  console.log(fields)
-
   const [soloPass, setSoloPass] = useState(false)
 
   // States
   const selected = watch("contest").filter((cats) => cats.selected);
+
+  useEffect(() => {
+    if (registration?.is_soloPass) {
+      setSoloPass(true)
+    }
+  })
 
   // Handlers
   const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setSoloPass(event.target.checked)
@@ -65,6 +69,9 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
 
   // Calculations
   const soloPassPrice = () => {
+    if (registration?.is_soloPass) {
+      return 0
+    }
     if (isFullPass) {
       return 80
     }
@@ -136,6 +143,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
           <InputCheckbox
             onChange={handleChange.bind(null, cat.id)}
             checked={cat.selected}
+            disabled={cat.disabled}
           />
         }
         label={
@@ -170,11 +178,12 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
                 <InputCheckbox
                   onChange={handleSoloPass}
                   checked={soloPass}
+                  disabled={registration?.is_soloPass}
                 />
               }
               label={
                 <Typography variant="body1">
-                  I want to take Solo Pass €{soloPassPrice()}
+                  I want to take Solo Pass {soloPassPrice() > 0 ? `€${soloPassPrice()}` : ""}
                 </Typography>
               } />
           </FormControl>

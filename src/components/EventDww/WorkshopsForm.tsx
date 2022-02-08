@@ -14,7 +14,7 @@ import {
   Typography,
   Collapse,
 } from "@mui/material";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { basePrices } from "./prices";
 import { styles } from "./styles"
@@ -25,26 +25,32 @@ import { useFormContext } from "react-hook-form";
 import { FormFields } from './types';
 import { useMutation } from "react-query";
 import { setOrder } from "../../api";
+import { Registration } from "./types";
 
 interface WorkshopsFormProps {
   open: boolean;
   onClose: () => void;
   ageGroup: string | undefined;
   festivalId: number;
+  registration: Registration | null;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId }) => {
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration }) => {
   // Hooks
   const { t } = useTranslation();
   const { watch, handleSubmit } = useFormContext<FormFields>();
   const [singles, setSingles] = useState({});
+  const [radioDisabled, setRadioDisabled] = useState(false);
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
   const [sorting, setSorting] = React.useState('teacher');
 
   // Calculations
   const fullPassPrice = useCallback(() => {
+    if (registration?.is_fullPass) {
+      return 0
+    }
     if (ageGroup === "baby" || ageGroup === "kids") {
       return basePrices.fullPass / 2
     }
@@ -56,9 +62,21 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   // States
   const selected = watch("workshops").filter((ws) => ws.selected);
 
+  // Устанавливаем блокировки на выбор фулл пасса если есть классы в регистрации
+  useEffect(() => {
+    if (registration && registration?.is_fullPass) {
+      setWorkshopsType("fullPass")
+      setRadioDisabled(true)
+    }
+    if (registration && registration?.workshops.length > 0) {
+      setWorkshopsType("single")
+      setRadioDisabled(true)
+    }
+  }, [])
+
   const total = useMemo(() => {
     if (workshopsType === "fullPass") {
-      return fullPassPrice()
+      return registration?.is_fullPass ? 0 : fullPassPrice()
     } else
       if (!selected) {
         return 0
@@ -120,13 +138,16 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
                   <Radio sx={styles.largeInput} />
                 }
                 label={<span>{t('Dww.fullPass')} €{fullPassPrice()}</span>}
+                disabled={radioDisabled}
               />
               <FormControlLabel
                 value="single"
                 control={
                   <Radio sx={styles.largeInput} />
                 }
-                label={<span>{t('Dww.Step2.singleWS')} </span>} />
+                label={<span>{t('Dww.Step2.singleWS')} </span>}
+                disabled={radioDisabled}
+              />
             </RadioGroup>
           </FormControl>
 

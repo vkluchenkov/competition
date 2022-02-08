@@ -78,6 +78,7 @@ export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = () => {
             <InputCheckbox
               onChange={handleChange.bind(null, ws.id)}
               checked={ws.selected}
+              disabled={ws.disabled}
             />
           }
           label={

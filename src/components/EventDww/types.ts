@@ -23,6 +23,14 @@ export interface ContestCategory {
 }
 
 export interface FormFields {
-  workshops: (Workshop & { selected: boolean })[];
-  contest: (ContestCategory & { selected: boolean })[];
+  workshops: (Workshop & { selected: boolean; disabled: boolean })[];
+  contest: (ContestCategory & { selected: boolean; disabled: boolean })[];
+}
+
+export interface Registration {
+  festivalId: number;
+  is_fullPass: boolean;
+  is_soloPass: boolean;
+  workshops: Array<number>;
+  contest: Array<number>;
 }

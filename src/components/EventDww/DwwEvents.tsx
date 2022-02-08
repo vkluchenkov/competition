@@ -5,13 +5,15 @@ import { useTranslation } from "react-i18next";
 import { WorkshopsForm } from "./WorkshopsForm";
 import { styles } from "./styles";
 import { ContestForm } from "./ContestForm";
+import { Registration } from "./types";
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
   festivalId: number;
+  registration: Registration | null;
 }
 
-export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) => {
+export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration }) => {
   const { t } = useTranslation();
 
   const [wsOpen, setWsOpen] = useState(false);
@@ -63,13 +65,14 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) =>
         onClose={handleWsClose}
         ageGroup={ageGroup}
         festivalId={festivalId}
+        registration={registration}
       />
 
       <ContestForm
         open={contestOpen}
         onClose={handleContestClose}
         ageGroup={ageGroup}
-        festivalId={festivalId}
+        registration={registration}
         isFullPass={false}
       />
     </Box>

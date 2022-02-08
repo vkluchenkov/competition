@@ -1,3 +1,5 @@
+import { LoginPayload, ValidateEmailPayload, ValidateCodePayload, SetUserPayload, SetOrderPayload } from "./types";
+
 const BACKEND = "http://localhost:3001"
 
 const axios = require('axios').default;
@@ -11,31 +13,6 @@ axios.interceptors.request.use((config: any) => {
   return config;
 })
 
-interface LoginPayload {
-  email: string;
-  password: string;
-}
-
-interface ValidateCodePayload {
-  email: string;
-  code: string;
-}
-
-interface ValidateEmailPayload {
-  email: string;
-}
-
-interface SetUserPayload {
-  email: string;
-  code: string;
-  password: string;
-}
-
-interface SetOrderPayload {
-  workshops: number[],
-  isFullPass: boolean;
-  festivalId: number;
-}
 
 // Festivals
 export const getFestival = (festivalUrl: string | undefined) => {
@@ -136,8 +113,23 @@ export const getOrder = (id: string) => {
     })
 }
 
+export const getOrderByUser = (id: string) => {
+  return axios.get(`${BACKEND}/orders`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
 export const setOrder = (data: SetOrderPayload) => {
   return axios.post(`${BACKEND}/festivals/register`, data)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+// Registration
+export const getRegistrationByFestival = (festivalId: number) => {
+  return axios.get(`${BACKEND}/festivals/${festivalId}/registration`)
     .then((result: any) => {
       return result.data
     })

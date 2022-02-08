@@ -1,22 +1,24 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AgeGroup } from "./AgeGroup";
 import { DwwEvents } from "./DwwEvents"
 import { useForm, FormProvider } from "react-hook-form";
-import { Workshop } from "./types";
+import { ContestCategory, Registration, Workshop } from "./types";
 import { FormFields } from './types';
 import { useUser } from "../../store/User";
 import { useQuery } from 'react-query'
-import { getWorkshops } from "../../api";
+import { getRegistrationByFestival, getWorkshops } from "../../api";
 import { CircularProgress } from "@mui/material";
 import { Festival } from "../../models/festival";
 import { contestCats } from "./contestDataMock"
+import { truncate } from "fs";
 
 interface DwwProps {
   festival: Festival;
+  registration: Registration | null;
 }
 
-export const Dww: React.FC<DwwProps> = (festival) => {
+export const Dww: React.FC<DwwProps> = ({ festival, registration }) => {
   const [{ currentUser }] = useUser();
 
   // Form setup
@@ -24,35 +26,56 @@ export const Dww: React.FC<DwwProps> = (festival) => {
   const { setValue } = methods;
 
   // Workshops data
-  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', () => getWorkshops(festival.festival.id))
+  const workshops = useQuery<any, any>('workshops', () => getWorkshops(festival.id))
 
   useEffect(() => {
-    if (data) {
-      setValue("workshops", data.map((ws: Workshop) => ({ ...ws, selected: false })))
+    if (workshops.data && registration) {
+      setValue(
+        "workshops", workshops.data.map((ws: Workshop) => {
+          if (registration.workshops.some((value: number) => value === ws.id)) {
+            return { ...ws, selected: true, disabled: true, price: 0 }
+          }
+          return { ...ws, selected: false }
+        })
+      )
+    } else if (workshops.data) {
+      setValue("workshops", workshops.data.map((ws: Workshop) => ({ ...ws, selected: false })))
     }
-  }, [data, setValue])
+  }, [workshops.data, registration])
 
   // Competition data mock
   useEffect(() => {
-    setValue("contest", contestCats.map((cat) => ({ ...cat, selected: false })))
-  }, [contestCats])
+    if (contestCats && registration) {
+      setValue(
+        "contest", contestCats.map((cat: ContestCategory) => {
+          if (registration.contest.some((value: number) => value === cat.id)) {
+            return { ...cat, selected: true, disabled: true, price: 0 }
+          }
+          return { ...cat, selected: false, disabled: false }
+        })
+      )
+    } else if (contestCats) {
+      setValue("contest", contestCats.map((cat: ContestCategory) => ({ ...cat, selected: false, disabled: false })))
+    }
+  }, [workshops.data, registration])
 
-  const eventDate = festival.festival.startDate;
+  const eventDate = festival.startDate;
   const ageGroup = useMemo(() => AgeGroup(eventDate, currentUser?.birthDate), [currentUser?.birthDate])
 
-  if (isLoading) {
+  if (workshops.isLoading) {
     return <CircularProgress />
   }
 
-  if (isError) {
-    return <span>Error: {error.message}</span>
+  if (workshops.isError) {
+    return <span>Error: {workshops.error.message}</span>
   }
 
   return (
     <FormProvider {...methods}>
       <DwwEvents
         ageGroup={ageGroup}
-        festivalId={festival.festival.id} />
+        festivalId={festival.id}
+        registration={registration} />
     </FormProvider>
   );
 };
