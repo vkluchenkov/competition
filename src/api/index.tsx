@@ -1,3 +1,4 @@
+import { OrderProps } from "../pages/Order/types";
 import { LoginPayload, ValidateEmailPayload, ValidateCodePayload, SetUserPayload, SetOrderPayload } from "./types";
 
 const BACKEND = "http://localhost:3001"
@@ -106,14 +107,14 @@ export const setNewPassword = (data: SetUserPayload) => {
 }
 
 // Order
-export const getOrder = (id: string) => {
+export const getOrder = (id: string): OrderProps => {
   return axios.get(`${BACKEND}/orders/${id}`)
     .then((result: any) => {
       return result.data
     })
 }
 
-export const getOrderByUser = (id: string) => {
+export const getOrderByUser = (): OrderProps => {
   return axios.get(`${BACKEND}/orders`)
     .then((result: any) => {
       return result.data

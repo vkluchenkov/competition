@@ -5,6 +5,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { getOrder } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
+import { OrderFestival, OrderProps } from "./types";
 
 export const Order = () => {
 
@@ -21,10 +22,10 @@ export const Order = () => {
   }
 
   const festivals = () => {
-    return data.festivals.map((item: any) => {
-      const fullPass = item.isFullPass
+    return data.festivals.map((festival: OrderFestival) => {
+      const fullPass = festival.is_fullPass
 
-      const workshops = item.workshops.map((ws: Workshop) => {
+      const workshops = festival.workshops?.map((ws: Workshop) => {
         const start = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm")
         return (
           <Box sx={{ paddingLeft: "16px" }} key={"workshop" + ws.id}>
@@ -49,7 +50,7 @@ export const Order = () => {
             </Typography>
           )
         }
-        if (workshops && item.workshops.length > 0) {
+        if (workshops && festival.workshops.length > 0) {
           return (
             <>
               <Typography variant="body1" gutterBottom sx={{ paddingLeft: "8px" }}>
@@ -62,10 +63,10 @@ export const Order = () => {
       }
 
       return (
-        <TableRow key={"festival" + item.festival.id}>
+        <TableRow key={"festival" + festival.festival.id}>
           <TableCell>
             <Typography variant="body1" gutterBottom>
-              <strong>{item.festival.title}</strong>
+              <strong>{festival.festival.title}</strong>
             </Typography>
             {fullPassOrWorkshops()}
 

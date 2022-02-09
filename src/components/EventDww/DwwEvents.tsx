@@ -6,14 +6,16 @@ import { WorkshopsForm } from "./WorkshopsForm";
 import { styles } from "./styles";
 import { ContestForm } from "./ContestForm";
 import { Registration } from "./types";
+import { OrderFestival } from "../../pages/Order/types";
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
   festivalId: number;
   registration: Registration | null;
+  orderFestival: OrderFestival | null;
 }
 
-export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration }) => {
+export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration, orderFestival }) => {
   const { t } = useTranslation();
 
   const [wsOpen, setWsOpen] = useState(false);
@@ -66,6 +68,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
         ageGroup={ageGroup}
         festivalId={festivalId}
         registration={registration}
+        orderFestival={orderFestival}
       />
 
       <ContestForm
@@ -74,6 +77,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
         ageGroup={ageGroup}
         registration={registration}
         isFullPass={false}
+        orderFestival={orderFestival}
       />
     </Box>
 

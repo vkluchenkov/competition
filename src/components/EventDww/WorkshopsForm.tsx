@@ -26,6 +26,7 @@ import { FormFields } from './types';
 import { useMutation } from "react-query";
 import { setOrder } from "../../api";
 import { Registration } from "./types";
+import { OrderFestival } from "../../pages/Order/types";
 
 interface WorkshopsFormProps {
   open: boolean;
@@ -33,11 +34,12 @@ interface WorkshopsFormProps {
   ageGroup: string | undefined;
   festivalId: number;
   registration: Registration | null;
+  orderFestival: OrderFestival | null;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration }) => {
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration, orderFestival }) => {
   // Hooks
   const { t } = useTranslation();
   const { watch, handleSubmit } = useFormContext<FormFields>();
@@ -62,12 +64,21 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   // States
   const selected = watch("workshops").filter((ws) => ws.selected);
 
-  // Устанавливаем блокировки на выбор фулл пасса если есть классы в регистрации
+  // Устанавливаем выбор и/или блокировки на выбор фулл пасса если есть воркшопы в регистрации или ордере
   useEffect(() => {
+    if (orderFestival && orderFestival?.is_fullPass) {
+      setWorkshopsType("fullPass")
+      setRadioDisabled(false)
+    }
+    if (orderFestival && orderFestival?.workshops.length > 0) {
+      setWorkshopsType("single")
+      setRadioDisabled(false)
+    }
     if (registration && registration?.is_fullPass) {
       setWorkshopsType("fullPass")
       setRadioDisabled(true)
     }
+
     if (registration && registration?.workshops.length > 0) {
       setWorkshopsType("single")
       setRadioDisabled(true)

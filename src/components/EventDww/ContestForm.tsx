@@ -18,6 +18,7 @@ import {
 import { styles } from "./styles"
 import { useTranslation } from "react-i18next";
 import { InputCheckbox } from "../../ui-kit/input";
+import { OrderFestival } from "../../pages/Order/types";
 
 interface ContestFormProps {
   open: boolean;
@@ -25,9 +26,10 @@ interface ContestFormProps {
   ageGroup: string | undefined;
   registration: Registration | null;
   isFullPass: boolean;
+  orderFestival: OrderFestival | null;
 };
 
-export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, isFullPass }) => {
+export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, isFullPass, orderFestival }) => {
 
   // Hooks
   const { t } = useTranslation();
@@ -52,7 +54,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
   const selected = watch("contest").filter((cats) => cats.selected);
 
   useEffect(() => {
-    if (registration?.is_soloPass) {
+    if (registration?.is_soloPass || orderFestival?.is_soloPass) {
       setSoloPass(true)
     }
   })
