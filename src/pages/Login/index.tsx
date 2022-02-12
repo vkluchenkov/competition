@@ -4,7 +4,6 @@ import { Link as RouterLink, Navigate } from "react-router-dom";
 import { useUser } from "../../store/User";
 import { Button, Typography, Box, Paper, Avatar, CircularProgress, Grid, Link } from "@mui/material";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
-// import { Grid } from "@material-ui";
 import { useForm } from "react-hook-form";
 import { FormInputField } from "../../ui-kit/input";
 import { useTranslation } from "react-i18next";
@@ -22,17 +21,6 @@ export const Login: React.FC = () => {
   const { handleSubmit, control, formState: { errors }, setError } = useForm<FormFields>();
 
   const loginMutation = useMutation<string, any, any, any>(login);
-
-  // const currentUrl = useLocation();
-  // const parsedUrl = qs.parse(currentUrl.search);
-  // const navigate = useNavigate();
-
-  // const mustBeString = (value: any): value is string => {
-  //   if (typeof value !== 'string') {
-  //     return false;
-  //   }
-  //   return true;
-  // }
 
   const [{ currentUser }, { setAuthToken }] = useUser();
 

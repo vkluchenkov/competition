@@ -5,9 +5,9 @@ import React from "react";
 import { useQuery } from "react-query";
 import { getOrder } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
-import { OrderFestival, OrderProps } from "./types";
+import { OrderFestival, Order } from "./types";
 
-export const Order = () => {
+export const OrderPage = () => {
 
   // Временно
   const orderId = '44';
@@ -23,7 +23,7 @@ export const Order = () => {
 
   const festivals = () => {
     return data.festivals.map((festival: OrderFestival) => {
-      const fullPass = festival.is_fullPass
+      const fullPass = festival.isFullPass
 
       const workshops = festival.workshops?.map((ws: Workshop) => {
         const start = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm")

@@ -1,4 +1,6 @@
-import { OrderProps } from "../pages/Order/types";
+import { Registration } from "../components/EventDww/types";
+import { Festival } from "../models/festival";
+import { Order } from "../pages/Order/types";
 import { LoginPayload, ValidateEmailPayload, ValidateCodePayload, SetUserPayload, SetOrderPayload } from "./types";
 
 const BACKEND = "http://localhost:3001"
@@ -16,14 +18,14 @@ axios.interceptors.request.use((config: any) => {
 
 
 // Festivals
-export const getFestival = (festivalUrl: string | undefined) => {
+export const getFestival = (festivalUrl: string | undefined): Festival => {
   return axios.get(`${BACKEND}/festivals/${festivalUrl}`)
     .then((result: any) => {
       return result.data
     })
 }
 
-export const getFestivalById = (festivalId: string) => {
+export const getFestivalById = (festivalId: number) => {
   return axios.get(`${BACKEND}/festivals/${festivalId}/data`)
     .then((result: any) => {
       return result.data
@@ -107,14 +109,14 @@ export const setNewPassword = (data: SetUserPayload) => {
 }
 
 // Order
-export const getOrder = (id: string): OrderProps => {
+export const getOrder = (id: string): Order => {
   return axios.get(`${BACKEND}/orders/${id}`)
     .then((result: any) => {
       return result.data
     })
 }
 
-export const getOrderByUser = (): OrderProps => {
+export const getOrderByUser = (): Order => {
   return axios.get(`${BACKEND}/orders`)
     .then((result: any) => {
       return result.data
@@ -129,7 +131,7 @@ export const setOrder = (data: SetOrderPayload) => {
 }
 
 // Registration
-export const getRegistrationByFestival = (festivalId: number) => {
+export const getRegistrationByFestival = (festivalId: number): Registration => {
   return axios.get(`${BACKEND}/festivals/${festivalId}/registration`)
     .then((result: any) => {
       return result.data

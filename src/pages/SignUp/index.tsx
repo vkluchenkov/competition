@@ -11,14 +11,7 @@ import { signUpRequest, signUpValidateCode, signUpCreate } from "../../api";
 import { useUser } from "../../store/User";
 import { styles } from "./styles"
 import { FormDatePicker } from "../../ui-kit/input/FormInputDatePicker";
-
-interface FormFields {
-  email: string,
-  code: string,
-  password: string,
-  name: string,
-  birthDate: string,
-}
+import { FormFields } from "./types";
 
 export const Signup: React.FC = () => {
   // Hooks

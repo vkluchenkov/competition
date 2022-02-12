@@ -50,7 +50,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
 
   // Calculations
   const fullPassPrice = useCallback(() => {
-    if (registration?.is_fullPass) {
+    if (registration?.isFullPass) {
       return 0
     }
     if (ageGroup === "baby" || ageGroup === "kids") {
@@ -66,7 +66,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
 
   // Устанавливаем выбор и/или блокировки на выбор фулл пасса если есть воркшопы в регистрации или ордере
   useEffect(() => {
-    if (orderFestival && orderFestival?.is_fullPass) {
+    if (orderFestival && orderFestival?.isFullPass) {
       setWorkshopsType("fullPass")
       setRadioDisabled(false)
     }
@@ -74,7 +74,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
       setWorkshopsType("single")
       setRadioDisabled(false)
     }
-    if (registration && registration?.is_fullPass) {
+    if (registration && registration?.isFullPass) {
       setWorkshopsType("fullPass")
       setRadioDisabled(true)
     }
@@ -87,7 +87,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
 
   const total = useMemo(() => {
     if (workshopsType === "fullPass") {
-      return registration?.is_fullPass ? 0 : fullPassPrice()
+      return registration?.isFullPass ? 0 : fullPassPrice()
     } else
       if (!selected) {
         return 0

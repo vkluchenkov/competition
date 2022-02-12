@@ -18,7 +18,7 @@ import AdapterLuxon from "@mui/lab/AdapterLuxon"
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Box, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { theme } from "./ui-kit/mui-theme/mui-theme";
-import { Order } from "./pages/Order";
+import { OrderPage } from "./pages/Order";
 
 
 function App() {
@@ -56,7 +56,7 @@ function App() {
                       <Route path="my-order" element={
                         // <GuardedRoute>
                         <section css={styles.section}>
-                          <Order />
+                          <OrderPage />
                         </section>
                         // </GuardedRoute>
                       } />

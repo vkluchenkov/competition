@@ -48,19 +48,13 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     };
   });
 
-  const [soloPass, setSoloPass] = useState(false)
+  const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass) ? true : false)
 
   // States
   const selected = watch("contest").filter((cats) => cats.selected);
 
-  useEffect(() => {
-    if (registration?.is_soloPass || orderFestival?.is_soloPass) {
-      setSoloPass(true)
-    }
-  })
-
   // Handlers
-  const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setSoloPass(event.target.checked)
+  const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setIsSoloPass(event.target.checked)
 
   const handleChange = (catId: number, event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const catIndex = watchContest.findIndex((cat: any) => cat.id === catId);
@@ -71,7 +65,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
 
   // Calculations
   const soloPassPrice = () => {
-    if (registration?.is_soloPass) {
+    if (registration?.isSoloPass) {
       return 0
     }
     if (isFullPass) {
@@ -81,7 +75,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
   }
 
   const total = useMemo(() => {
-    if (soloPass) {
+    if (isSoloPass) {
       return soloPassPrice()
     } else
       if (!selected) {
@@ -98,7 +92,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
   // Categories mapping
   const categories = controlledFields.map((cat) => {
     const price = () => {
-      if (soloPass) {
+      if (isSoloPass) {
         return null;
       }
       if (isFullPass) {
@@ -179,8 +173,8 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
               control={
                 <InputCheckbox
                   onChange={handleSoloPass}
-                  checked={soloPass}
-                  disabled={registration?.is_soloPass}
+                  checked={isSoloPass}
+                  disabled={registration?.isSoloPass}
                 />
               }
               label={

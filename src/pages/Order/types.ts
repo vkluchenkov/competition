@@ -4,19 +4,19 @@ import { Festival } from "../../models/festival";
 
 export interface OrderFestival {
   festival: Festival;
-  is_fullPass: boolean;
-  workshops: Array<Workshop>;
-  contest: Array<number>;
-  is_soloPass?: boolean;
+  isFullPass: boolean;
+  workshops: Workshop[];
+  contest: number[];
+  isSoloPass?: boolean;
 }
 
-export interface OrderProps {
+export interface Order {
   id: string;
   status: string;
-  updated_at: DateTime | null;
-  paid_at: DateTime | null;
-  refunded_amount: number | null;
-  refunded_at: DateTime | null;
-  created_at: DateTime | null;
+  updatedAt: DateTime | null;
+  paidAt: DateTime | null;
+  refundedAmount: number | null;
+  refundedAt: DateTime | null;
+  createdAt: DateTime | null;
   festivals: OrderFestival[];
 }

@@ -1,7 +1,7 @@
 interface Teacher {
   id: number;
   name: string;
-  sort_order: number;
+  sortOrder: number;
 }
 
 export interface Workshop {
@@ -29,8 +29,8 @@ export interface FormFields {
 
 export interface Registration {
   festivalId: number;
-  is_fullPass: boolean;
-  is_soloPass: boolean;
-  workshops: Array<number>;
-  contest: Array<number>;
+  isFullPass: boolean;
+  isSoloPass: boolean;
+  workshops: number[];
+  contest: number[];
 }

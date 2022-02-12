@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { Dww } from "../EventDww";
 import { CircularProgress } from "@mui/material";
 import { Registration } from "../EventDww/types";
-import { OrderFestival, OrderProps } from "../../pages/Order/types";
+import { OrderFestival, Order } from "../../pages/Order/types";
 import { Festival } from "../../models/festival";
 
 
@@ -17,50 +17,50 @@ export const Register: React.FC = () => {
   const [registration, setRegistration] = useState<Registration | null>(null);
   const [orderFestival, setOrderFestival] = useState<OrderFestival | null>(null);
 
-  const orderData = useQuery<any, any>('isOrder', getOrderByUser)
+  const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderloading } = useQuery<any, any>('isOrder', getOrderByUser)
 
-  const festivalData = useQuery<any, any>('isFestival', () => getFestival(festivalUrl), {
-    onError: (error) => {
+  const { data: festivalData, isLoading: isFestivalloading } = useQuery('isFestival', () => getFestival(festivalUrl), {
+    onError: (error: any) => {
       if (error?.response?.status === 404) {
         navigate('/')
       }
     }
   })
 
-  const regData = useQuery<any, any>(
-    ['isRegistration', festivalData.data],
-    () => getRegistrationByFestival(festivalData.data.id),
+  const { data: regData, isFetched: isRegFetched, isLoading: isRegloading } = useQuery<any, any>(
+    ['isRegistration', festivalData],
+    () => festivalData ? getRegistrationByFestival(festivalData.id) : null,
     {
-      enabled: !!festivalData.data,
+      enabled: !!festivalData,
     }
   )
 
   useEffect(() => {
-    if (orderData.data) {
-      const isFestivalinOrder = orderData.data.festivals.find((f: OrderFestival) => f.festival.id === festival?.id)
+    if (orderData) {
+      const isFestivalinOrder = orderData.festivals.find((f: OrderFestival) => f.festival.id === festival?.id)
       if (festival && isFestivalinOrder) {
-        setOrderFestival(isFestivalinOrder);
+        setOrderFestival(isFestivalinOrder)
       }
     }
-  }, [orderData.data, festivalData.data])
+  }, [orderData, festivalData])
 
   useEffect(() => {
-    if (regData.data) {
-      setRegistration(regData.data);
+    if (regData) {
+      setRegistration(regData);
     }
-  }, [regData.data])
+  }, [regData])
 
   useEffect(() => {
-    if (festivalData.data) {
-      setFestival(festivalData.data)
+    if (festivalData) {
+      setFestival(festivalData)
     }
-  }, [festivalData.data])
+  }, [festivalData])
 
-  if (festivalData.isLoading || regData.isLoading || orderData.isLoading) {
+  if (isFestivalloading || isRegloading || isOrderloading) {
     return <CircularProgress />
   }
 
-  if (festival && regData.isFetched && orderData.isFetched) {
+  if (festival && isRegFetched && isOrderFetched) {
     return <Dww
       festival={festival}
       registration={registration}

@@ -11,7 +11,7 @@ import { getWorkshops } from "../../api";
 import { CircularProgress } from "@mui/material";
 import { Festival } from "../../models/festival";
 import { contestCats } from "./contestDataMock"
-import { OrderFestival, OrderProps } from "../../pages/Order/types";
+import { OrderFestival } from "../../pages/Order/types";
 
 interface DwwProps {
   festival: Festival;
@@ -20,6 +20,7 @@ interface DwwProps {
 }
 
 export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival }) => {
+
   const [{ currentUser }] = useUser();
 
   // Form setup
@@ -40,6 +41,7 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
           }
           // If workshop in order set checked, but not disable
           if (orderFestival?.workshops.some((orderWs: Workshop) => orderWs.id === ws.id)) {
+            console.log("workshop in order");
             return { ...ws, selected: true, disabled: false }
           }
           // If workshop not in reg or order set free to choose
@@ -60,12 +62,12 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
         "contest", contestCats.map((cat: ContestCategory) => {
 
           // If in reg and solo pass, set checked, but not disabled
-          if (registration.contest.some((value: number) => value === cat.id) && registration.is_soloPass) {
+          if (registration.contest.some((value: number) => value === cat.id) && registration.isSoloPass) {
             return { ...cat, selected: true, disabled: false, price: 0 }
           }
 
           // If in order and solo pass, set checked, but not disabled
-          if (orderFestival?.contest.some((value: number) => value === cat.id) && orderFestival.is_soloPass) {
+          if (orderFestival?.contest.some((value: number) => value === cat.id) && orderFestival.isSoloPass) {
             return { ...cat, selected: true, disabled: false }
           }
 
@@ -88,7 +90,7 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     } else if (contestCats) {
       setValue("contest", contestCats.map((cat: ContestCategory) => ({ ...cat, selected: false, disabled: false })))
     }
-  }, [workshops.data, registration])
+  }, [registration])
 
   // Age group setup
   const eventDate = festival.startDate;
