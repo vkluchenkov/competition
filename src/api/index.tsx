@@ -39,6 +39,13 @@ export const getWorkshops = (festivalId: number) => {
     })
 }
 
+export const getContestCats = (festivalId: number) => {
+  return axios.get(`${BACKEND}/festivals/${festivalId}/contest`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
 export const getFestivals = () => {
   return axios.get(`${BACKEND}/festivals`)
     .then((result: any) => {

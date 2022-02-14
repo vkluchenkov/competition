@@ -7,10 +7,9 @@ import { ContestCategory, Registration, Workshop } from "./types";
 import { FormFields } from './types';
 import { useUser } from "../../store/User";
 import { useQuery } from 'react-query'
-import { getWorkshops } from "../../api";
+import { getContestCats, getWorkshops } from "../../api";
 import { CircularProgress } from "@mui/material";
 import { Festival } from "../../models/festival";
-import { contestCats } from "./contestDataMock"
 import { OrderFestival } from "../../pages/Order/types";
 
 interface DwwProps {
@@ -27,13 +26,14 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
   const methods = useForm<FormFields>({ defaultValues: { workshops: [], contest: [] } });
   const { setValue } = methods;
 
-  // Workshops data
-  const workshops = useQuery<any, any>('workshops', () => getWorkshops(festival.id))
+  // Workshops and contest categories data
+  const { data: workshopsData, isLoading: isWorkshopsLoading, isError: isWorkshopsError, error: workshopsError } = useQuery<any, any>('workshops', () => getWorkshops(festival.id))
+  const { data: contestCatsData, isLoading: isContestCatsLoading, isError: isContestCatsError, error: contestCatsError } = useQuery<any, any>('contestCats', () => getContestCats(festival.id))
 
   useEffect(() => {
-    if (workshops.data && (registration || orderFestival)) {
+    if (workshopsData && (registration || orderFestival)) {
       setValue(
-        "workshops", workshops.data.map((ws: Workshop) => {
+        "workshops", workshopsData.map((ws: Workshop) => {
 
           // If workshop in reg set checked and disable
           if (registration?.workshops.some((value: number) => value === ws.id)) {
@@ -49,18 +49,17 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
         })
       )
     }
-    else if (workshops.data) {
-      setValue("workshops", workshops.data.map((ws: Workshop) => ({ ...ws, selected: false })))
+    else if (workshopsData) {
+      setValue("workshops", workshopsData.map((ws: Workshop) => ({ ...ws, selected: false })))
     }
-  }, [workshops.data, registration])
+  }, [workshopsData, registration])
 
   // Competition data mock
   useEffect(() => {
     // If there's reg
-    if (contestCats && registration) {
+    if (contestCatsData && registration) {
       setValue(
-        "contest", contestCats.map((cat: ContestCategory) => {
-
+        "contest", contestCatsData.map((cat: ContestCategory) => {
           // If in reg and solo pass, set checked, but not disabled
           if (registration.contest.some((value: number) => value === cat.id) && registration.isSoloPass) {
             return { ...cat, selected: true, disabled: false, price: 0 }
@@ -87,8 +86,8 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
       )
 
       // If there's no reg set free to choose
-    } else if (contestCats) {
-      setValue("contest", contestCats.map((cat: ContestCategory) => ({ ...cat, selected: false, disabled: false })))
+    } else if (contestCatsData) {
+      setValue("contest", contestCatsData.map((cat: ContestCategory) => ({ ...cat, selected: false, disabled: false })))
     }
   }, [registration])
 
@@ -97,12 +96,16 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
   const ageGroup = useMemo(() => AgeGroup(eventDate, currentUser?.birthDate), [currentUser?.birthDate])
 
   // Render
-  if (workshops.isLoading) {
+  if (isWorkshopsLoading || isContestCatsLoading) {
     return <CircularProgress />
   }
 
-  if (workshops.isError) {
-    return <span>Error: {workshops.error.message}</span>
+  if (isWorkshopsError) {
+    return <span>Error: {workshopsError.message}</span>
+  }
+
+  if (isContestCatsError) {
+    return <span>Error: {contestCatsError.message}</span>
   }
 
   return (

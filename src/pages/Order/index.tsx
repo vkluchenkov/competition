@@ -3,16 +3,13 @@ import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContain
 import { DateTime } from "luxon";
 import React from "react";
 import { useQuery } from "react-query";
-import { getOrder } from "../../api";
+import { getOrderByUser } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
 import { OrderFestival, Order } from "./types";
 
 export const OrderPage = () => {
 
-  // Временно
-  const orderId = '44';
-
-  const { isLoading, isError, data, error } = useQuery<any, any>('orderId', () => getOrder(orderId))
+  const { isLoading, isError, data, error } = useQuery<any, any>('order', getOrderByUser)
 
   if (isLoading) {
     return <CircularProgress />

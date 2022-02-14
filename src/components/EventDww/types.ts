@@ -20,6 +20,7 @@ export interface ContestCategory {
   title: string;
   priceFullPass: number;
   price: number;
+  festivalId?: number;
 }
 
 export interface FormFields {

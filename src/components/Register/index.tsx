@@ -1,11 +1,11 @@
 import { getFestival, getOrderByUser, getRegistrationByFestival } from "../../api";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Dww } from "../EventDww";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Link } from "@mui/material";
 import { Registration } from "../EventDww/types";
-import { OrderFestival, Order } from "../../pages/Order/types";
+import { OrderFestival } from "../../pages/Order/types";
 import { Festival } from "../../models/festival";
 
 
@@ -17,9 +17,9 @@ export const Register: React.FC = () => {
   const [registration, setRegistration] = useState<Registration | null>(null);
   const [orderFestival, setOrderFestival] = useState<OrderFestival | null>(null);
 
-  const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderloading } = useQuery<any, any>('isOrder', getOrderByUser)
+  const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderLoading } = useQuery<any, any>('isOrder', getOrderByUser)
 
-  const { data: festivalData, isLoading: isFestivalloading } = useQuery('isFestival', () => getFestival(festivalUrl), {
+  const { data: festivalData, isLoading: isFestivalLoading } = useQuery('isFestival', () => getFestival(festivalUrl), {
     onError: (error: any) => {
       if (error?.response?.status === 404) {
         navigate('/')
@@ -37,9 +37,9 @@ export const Register: React.FC = () => {
 
   useEffect(() => {
     if (orderData) {
-      const isFestivalinOrder = orderData.festivals.find((f: OrderFestival) => f.festival.id === festival?.id)
-      if (festival && isFestivalinOrder) {
-        setOrderFestival(isFestivalinOrder)
+      const isFestivalInOrder = orderData.festivals.find((f: OrderFestival) => f.festival.id === festival?.id)
+      if (festival && isFestivalInOrder) {
+        setOrderFestival(isFestivalInOrder)
       }
     }
   }, [orderData, festivalData])
@@ -56,17 +56,40 @@ export const Register: React.FC = () => {
     }
   }, [festivalData])
 
-  if (isFestivalloading || isRegloading || isOrderloading) {
+  if (isFestivalLoading || isRegloading || isOrderLoading) {
     return <CircularProgress />
   }
 
-  if (festival && isRegFetched && isOrderFetched) {
-    return <Dww
-      festival={festival}
-      registration={registration}
-      orderFestival={orderFestival}
-    />
+  const orderButton = () => {
+    if (orderFestival) {
+      return (
+        <Button
+          sx={{
+            mt: 3,
+            mb: 2,
+          }}
+          variant="contained"
+          size="large"
+          disableElevation
+          onClick={() => navigate('/my-order')}
+        >
+          View my order
+        </Button>
+      )
+    }
   }
 
+  if (festival && isRegFetched && isOrderFetched) {
+    return (
+      <>
+        <Dww
+          festival={festival}
+          registration={registration}
+          orderFestival={orderFestival}
+        />
+        {orderButton()}
+      </>
+    )
+  }
   return <></>
 }

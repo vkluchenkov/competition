@@ -48,7 +48,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     };
   });
 
-  const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass) ? true : false)
+  const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass))
 
   // States
   const selected = watch("contest").filter((cats) => cats.selected);
