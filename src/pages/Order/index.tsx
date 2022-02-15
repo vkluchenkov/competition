@@ -1,21 +1,35 @@
 /** @jsxImportSource @emotion/react */
 import { Box, Button, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { DateTime } from "luxon";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { getOrderByUser, payOrder } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
 import { OrderFestival, Order } from "./types";
 
 export const OrderPage = () => {
+  const [order, setOrder] = useState<Order | null>(null);
 
   const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser);
 
-  const payMutation = useMutation<string, any, any, any>(payOrder);
+  const payMutation = useMutation<Order, any, any, any>(payOrder);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (data) {
+      setOrder(data)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (payMutation.data) {
+      setOrder(payMutation.data)
+    }
+  }, [payMutation.data])
+
+  if (isLoading || payMutation.isLoading) {
     return <CircularProgress />
   }
+
   if (isError && error.message === "Request failed with status code 404") {
     return <span>You don't have an active order</span>
   }
@@ -29,7 +43,7 @@ export const OrderPage = () => {
   }
 
   const festivals = () => {
-    return data?.festivals.map((festival: OrderFestival) => {
+    return order?.festivals.map((festival: OrderFestival) => {
       const fullPass = festival.isFullPass
 
       const workshops = festival.workshops?.map((ws: Workshop) => {
@@ -85,7 +99,7 @@ export const OrderPage = () => {
   }
 
   const orderButton = () => {
-    if (data?.status === "new") {
+    if (order?.status === "new") {
       return (
         <Button
           sx={{
@@ -119,7 +133,7 @@ export const OrderPage = () => {
           </Typography>
 
           <Typography variant="h5">
-            Status: {data?.status}
+            Status: {order?.status}
           </Typography>
 
           <TableContainer sx={{ maxWidth: "600px" }}>
