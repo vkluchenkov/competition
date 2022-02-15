@@ -137,6 +137,13 @@ export const setOrder = (data: SetOrderPayload) => {
     })
 }
 
+export const payOrder = () => {
+  return axios.post(`${BACKEND}/orders/pay`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
 // Registration
 export const getRegistrationByFestival = (festivalId: number): Registration => {
   return axios.get(`${BACKEND}/festivals/${festivalId}/registration`)

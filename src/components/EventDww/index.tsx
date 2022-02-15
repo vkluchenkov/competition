@@ -52,7 +52,7 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     else if (workshopsData) {
       setValue("workshops", workshopsData.map((ws: Workshop) => ({ ...ws, selected: false })))
     }
-  }, [workshopsData, registration])
+  }, [workshopsData, registration, orderFestival])
 
   // Competition data mock
   useEffect(() => {
@@ -89,7 +89,7 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     } else if (contestCatsData) {
       setValue("contest", contestCatsData.map((cat: ContestCategory) => ({ ...cat, selected: false, disabled: false })))
     }
-  }, [registration])
+  }, [registration, contestCatsData, orderFestival])
 
   // Age group setup
   const eventDate = festival.startDate;

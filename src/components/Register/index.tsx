@@ -42,7 +42,7 @@ export const Register: React.FC = () => {
         setOrderFestival(isFestivalInOrder)
       }
     }
-  }, [orderData, festivalData])
+  }, [orderData, festival])
 
   useEffect(() => {
     if (regData) {

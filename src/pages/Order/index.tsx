@@ -1,15 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { DateTime } from "luxon";
 import React from "react";
-import { useQuery } from "react-query";
-import { getOrderByUser } from "../../api";
+import { useMutation, useQuery } from "react-query";
+import { getOrderByUser, payOrder } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
 import { OrderFestival, Order } from "./types";
 
 export const OrderPage = () => {
 
-  const { isLoading, isError, data, error } = useQuery<any, any>('order', getOrderByUser)
+  const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser);
+
+  const payMutation = useMutation<string, any, any, any>(payOrder);
 
   if (isLoading) {
     return <CircularProgress />
@@ -18,8 +20,16 @@ export const OrderPage = () => {
     return <span>You don't have an active order</span>
   }
 
+  const handlePayment = async () => {
+    try {
+      await payMutation.mutateAsync("")
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   const festivals = () => {
-    return data.festivals.map((festival: OrderFestival) => {
+    return data?.festivals.map((festival: OrderFestival) => {
       const fullPass = festival.isFullPass
 
       const workshops = festival.workshops?.map((ws: Workshop) => {
@@ -74,44 +84,66 @@ export const OrderPage = () => {
     })
   }
 
+  const orderButton = () => {
+    if (data?.status === "new") {
+      return (
+        <Button
+          sx={{
+            mt: 3,
+            mb: 2,
+          }}
+          variant="contained"
+          size="large"
+          disableElevation
+          onClick={handlePayment}
+        >
+          Pay
+        </Button>
+      )
+    }
+  }
+
   return (
-    <Box sx={{ width: "100%", maxWidth: "600px" }}>
-      <Paper
-        elevation={3}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "20px 10px 5px"
-        }}>
-        <Typography variant="h3">
-          Your order
-        </Typography>
+    <>
+      <Box sx={{ width: "100%", maxWidth: "600px" }}>
+        <Paper
+          elevation={3}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "20px 10px 5px"
+          }}>
+          <Typography variant="h3">
+            Your order
+          </Typography>
 
-        <Typography variant="h5">
-          Status: {data.status}
-        </Typography>
+          <Typography variant="h5">
+            Status: {data?.status}
+          </Typography>
 
-        <TableContainer sx={{ maxWidth: "600px" }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Item</TableCell>
-                <TableCell>Price</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {festivals()}
-              <TableRow sx={{ borderBottom: 0 }}>
-                <TableCell align="right" sx={{ borderBottom: 0 }}>
-                  <strong>Total:</strong>
-                </TableCell>
-                <TableCell sx={{ borderBottom: 0 }}>€XXX</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+          <TableContainer sx={{ maxWidth: "600px" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Item</TableCell>
+                  <TableCell>Price</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {festivals()}
+                <TableRow sx={{ borderBottom: 0 }}>
+                  <TableCell align="right" sx={{ borderBottom: 0 }}>
+                    <strong>Total:</strong>
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: 0 }}>€XXX</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Box>
+      {orderButton()}
+    </>
   )
 };
