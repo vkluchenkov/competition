@@ -76,8 +76,8 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
         onClose={handleContestClose}
         ageGroup={ageGroup}
         registration={registration}
-        isFullPass={false}
         orderFestival={orderFestival}
+        festivalId={festivalId}
       />
     </Box>
 

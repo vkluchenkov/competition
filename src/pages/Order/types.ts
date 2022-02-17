@@ -1,12 +1,12 @@
 import { DateTime } from "luxon";
-import { Workshop } from "../../components/EventDww/types";
+import { ContestCategory, Workshop } from "../../components/EventDww/types";
 import { Festival } from "../../models/festival";
 
 export interface OrderFestival {
   festival: Festival;
   isFullPass: boolean;
   workshops: Workshop[];
-  contest: number[];
+  contest: ContestCategory[];
   isSoloPass?: boolean;
 }
 

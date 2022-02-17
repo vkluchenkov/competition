@@ -32,6 +32,6 @@ export interface Registration {
   festivalId: number;
   isFullPass: boolean;
   isSoloPass: boolean;
-  workshops: number[];
-  contest: number[];
+  workshops: Workshop[];
+  contest: ContestCategory[];
 }

@@ -19,7 +19,9 @@ export interface SetUserPayload {
 }
 
 export interface SetOrderPayload {
-  workshops: number[];
+  workshops?: number[];
+  contest?: number[];
   isFullPass: boolean;
+  isSoloPass?: Boolean;
   festivalId: number;
 }

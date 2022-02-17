@@ -19,21 +19,25 @@ import { styles } from "./styles"
 import { useTranslation } from "react-i18next";
 import { InputCheckbox } from "../../ui-kit/input";
 import { OrderFestival } from "../../pages/Order/types";
+import { useMutation } from "react-query";
+import { setOrder } from "../../api";
 
 interface ContestFormProps {
   open: boolean;
   onClose: () => void;
   ageGroup: string | undefined;
   registration: Registration | null;
-  isFullPass: boolean;
   orderFestival: OrderFestival | null;
+  festivalId: number;
 };
 
-export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, isFullPass, orderFestival }) => {
+export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, orderFestival, festivalId }) => {
 
   // Hooks
   const { t } = useTranslation();
   const { control, watch, handleSubmit, setValue } = useFormContext<FormFields>();
+
+  const SubmitMutation = useMutation<string, any, any, any>(setOrder);
 
   const { fields } = useFieldArray({
     control,
@@ -50,6 +54,8 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
 
   const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass))
 
+  const [isFullPass, setIsFullPass] = useState(() => (registration?.isFullPass || orderFestival?.isFullPass))
+
   // States
   const selected = watch("contest").filter((cats) => cats.selected);
 
@@ -61,7 +67,18 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     setValue(`contest.${catIndex}.selected`, checked);
   }
 
-  const onSubmit = () => { }
+  const onSubmit = handleSubmit(async () => {
+    const contest = () => selected ? selected.map((category) => category.id) : []
+
+    const submitPayload = {
+      contest: contest(),
+      isSoloPass,
+      festivalId
+    }
+
+    await SubmitMutation.mutateAsync(submitPayload);
+    onClose()
+  })
 
   // Calculations
   const soloPassPrice = () => {

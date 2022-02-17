@@ -34,14 +34,13 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     if (workshopsData && (registration || orderFestival)) {
       setValue(
         "workshops", workshopsData.map((ws: Workshop) => {
-
+          console.log(registration?.workshops)
           // If workshop in reg set checked and disable
-          if (registration?.workshops.some((value: number) => value === ws.id)) {
+          if (registration?.workshops.some((regWs) => regWs.id === ws.id)) {
             return { ...ws, selected: true, disabled: true, price: 0 }
           }
           // If workshop in order set checked, but not disable
-          if (orderFestival?.workshops.some((orderWs: Workshop) => orderWs.id === ws.id)) {
-            console.log("workshop in order");
+          if (orderFestival?.workshops.some((orderWs) => orderWs.id === ws.id)) {
             return { ...ws, selected: true, disabled: false }
           }
           // If workshop not in reg or order set free to choose
@@ -57,26 +56,26 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
   // Competition data mock
   useEffect(() => {
     // If there's reg
-    if (contestCatsData && registration) {
+    if (contestCatsData && (registration || orderFestival)) {
       setValue(
         "contest", contestCatsData.map((cat: ContestCategory) => {
           // If in reg and solo pass, set checked, but not disabled
-          if (registration.contest.some((value: number) => value === cat.id) && registration.isSoloPass) {
+          if (registration?.contest.some((regCat) => regCat.id === cat.id) && registration.isSoloPass) {
             return { ...cat, selected: true, disabled: false, price: 0 }
           }
 
           // If in order and solo pass, set checked, but not disabled
-          if (orderFestival?.contest.some((value: number) => value === cat.id) && orderFestival.isSoloPass) {
+          if (orderFestival?.contest.some((orderCat) => orderCat.id === cat.id) && orderFestival.isSoloPass) {
             return { ...cat, selected: true, disabled: false }
           }
 
           // If in reg without solo pass set checked and disabled
-          else if (registration.contest.some((value: number) => value === cat.id)) {
+          else if (registration?.contest.some((regCat) => regCat.id === cat.id)) {
             return { ...cat, selected: true, disabled: true, price: 0 }
           }
 
           // If in order without solo pass set checked but not disabled
-          else if (orderFestival?.contest.some((value: number) => value === cat.id)) {
+          else if (orderFestival?.contest.some((orderCat) => orderCat.id === cat.id)) {
             return { ...cat, selected: true, disabled: false }
           }
 

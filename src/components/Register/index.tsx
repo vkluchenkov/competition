@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { Dww } from "../EventDww";
 import { Button, CircularProgress, Link } from "@mui/material";
 import { Registration } from "../EventDww/types";
-import { OrderFestival } from "../../pages/Order/types";
+import { Order, OrderFestival } from "../../pages/Order/types";
 import { Festival } from "../../models/festival";
 
 
@@ -17,14 +17,16 @@ export const Register: React.FC = () => {
   const [registration, setRegistration] = useState<Registration | null>(null);
   const [orderFestival, setOrderFestival] = useState<OrderFestival | null>(null);
 
-  const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderLoading } = useQuery<any, any>('isOrder', getOrderByUser)
+  const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderLoading } = useQuery<Order, any>('isOrder', getOrderByUser, { retry: 0 })
+
 
   const { data: festivalData, isLoading: isFestivalLoading } = useQuery('isFestival', () => getFestival(festivalUrl), {
     onError: (error: any) => {
       if (error?.response?.status === 404) {
         navigate('/')
       }
-    }
+    },
+    retry: 0
   })
 
   const { data: regData, isFetched: isRegFetched, isLoading: isRegloading } = useQuery<any, any>(
@@ -32,6 +34,7 @@ export const Register: React.FC = () => {
     () => festivalData ? getRegistrationByFestival(festivalData.id) : null,
     {
       enabled: !!festivalData,
+      retry: 0,
     }
   )
 
@@ -61,7 +64,7 @@ export const Register: React.FC = () => {
   }
 
   const orderButton = () => {
-    if (orderFestival) {
+    if (orderFestival && orderData?.status === "new") {
       return (
         <Button
           sx={{

@@ -10,7 +10,7 @@ import { OrderFestival, Order } from "./types";
 export const OrderPage = () => {
   const [order, setOrder] = useState<Order | null>(null);
 
-  const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser);
+  const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser, { retry: 0 });
 
   const payMutation = useMutation<Order, any, any, any>(payOrder);
 
@@ -43,10 +43,9 @@ export const OrderPage = () => {
   }
 
   const festivals = () => {
-    return order?.festivals.map((festival: OrderFestival) => {
-      const fullPass = festival.isFullPass
+    return order?.festivals.map((festival) => {
 
-      const workshops = festival.workshops?.map((ws: Workshop) => {
+      const workshops = festival.workshops?.map((ws) => {
         const start = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm")
         return (
           <Box sx={{ paddingLeft: "16px" }} key={"workshop" + ws.id}>
@@ -63,8 +62,41 @@ export const OrderPage = () => {
         )
       })
 
+
+
+      const contest = () => {
+        const contestCats = festival.contest?.map((cat) => {
+          return (
+            <Box sx={{ paddingLeft: "16px" }} key={"contest" + cat.id}>
+              <Typography variant="body2">
+                <strong>{cat.title}</strong>
+              </Typography>
+            </Box>
+          )
+        })
+        if (festival.isSoloPass) {
+          return (
+            <>
+              <Typography variant="body1" sx={{ paddingLeft: "8px" }}>
+                Competition: Solo Pass
+              </Typography>
+              {contestCats}
+            </>
+          )
+        }
+        if (contestCats && festival.contest.length > 0)
+          return (
+            <>
+              <Typography variant="body1" sx={{ paddingLeft: "8px" }}>
+                Competition:
+              </Typography>
+              {contestCats}
+            </>
+          )
+      }
+
       const fullPassOrWorkshops = () => {
-        if (fullPass) {
+        if (festival.isFullPass) {
           return (
             <Typography variant="body1" sx={{ paddingLeft: "8px" }}>
               Workshops: Full Pass
@@ -90,7 +122,7 @@ export const OrderPage = () => {
               <strong>{festival.festival.title}</strong>
             </Typography>
             {fullPassOrWorkshops()}
-
+            {contest()}
           </TableCell>
           <TableCell>€XX</TableCell>
         </TableRow>
