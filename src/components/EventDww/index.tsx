@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo, useState } from "react";
 import { AgeGroup } from "./AgeGroup";
 import { DwwEvents } from "./DwwEvents"

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { QueueVideoProps } from "./types";
 import { styles } from "./styles";

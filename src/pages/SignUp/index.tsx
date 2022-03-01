@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress, Link } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useUser } from "../../store/User";

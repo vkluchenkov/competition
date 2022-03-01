@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { useUser } from "../../store/User";
 
@@ -222,3 +221,5 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+
+Header.whyDidYouRender = true;

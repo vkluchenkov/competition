@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ListItemText, Button, List, ListItem, Box } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";

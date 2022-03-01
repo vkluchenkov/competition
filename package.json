@@ -114,6 +114,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
     "@types/luxon": "^2.0.7",
     "@welldone-software/why-did-you-render": "^6.2.3",
     "prettier": "^2.4.1"
