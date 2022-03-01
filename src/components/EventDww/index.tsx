@@ -34,7 +34,6 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     if (workshopsData && (registration || orderFestival)) {
       setValue(
         "workshops", workshopsData.map((ws: Workshop) => {
-          console.log(registration?.workshops)
           // If workshop in reg set checked and disable
           if (registration?.workshops.some((regWs) => regWs.id === ws.id)) {
             return { ...ws, selected: true, disabled: true, price: 0 }
@@ -51,7 +50,7 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     else if (workshopsData) {
       setValue("workshops", workshopsData.map((ws: Workshop) => ({ ...ws, selected: false })))
     }
-  }, [workshopsData, registration, orderFestival])
+  }, [workshopsData, registration, orderFestival, setValue])
 
   // Competition data mock
   useEffect(() => {
@@ -88,11 +87,11 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     } else if (contestCatsData) {
       setValue("contest", contestCatsData.map((cat: ContestCategory) => ({ ...cat, selected: false, disabled: false })))
     }
-  }, [registration, contestCatsData, orderFestival])
+  }, [registration, contestCatsData, orderFestival, setValue])
 
   // Age group setup
   const eventDate = festival.startDate;
-  const ageGroup = useMemo(() => AgeGroup(eventDate, currentUser?.birthDate), [currentUser?.birthDate])
+  const ageGroup = useMemo(() => AgeGroup(eventDate, currentUser?.birthDate), [currentUser?.birthDate, eventDate])
 
   // Render
   if (isWorkshopsLoading || isContestCatsLoading) {

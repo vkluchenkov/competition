@@ -57,7 +57,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
       return basePrices.fullPass / 2
     }
     return basePrices.fullPass
-  }, [ageGroup])
+  }, [ageGroup, registration?.isFullPass])
 
   const SubmitMutation = useMutation<string, any, any, any>(setOrder);
 
@@ -83,7 +83,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
       setWorkshopsType("single")
       setRadioDisabled(true)
     }
-  }, [])
+  }, [orderFestival, registration])
 
   const total = useMemo(() => {
     if (workshopsType === "fullPass") {

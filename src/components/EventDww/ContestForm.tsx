@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { FormFields, Registration } from './types';
 import {
@@ -81,7 +81,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
   })
 
   // Calculations
-  const soloPassPrice = () => {
+  const soloPassPrice = useCallback(() => {
     if (registration?.isSoloPass) {
       return 0
     }
@@ -89,7 +89,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
       return 80
     }
     return 100
-  }
+  }, [registration, isFullPass])
 
   const total = useMemo(() => {
     if (isSoloPass) {
@@ -104,7 +104,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
       }
       return prev + current.price
     }), 0)
-  }, [selected])
+  }, [selected, isSoloPass, isFullPass, soloPassPrice])
 
   // Categories mapping
   const categories = controlledFields.map((cat) => {

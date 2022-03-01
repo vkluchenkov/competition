@@ -8,6 +8,7 @@ import { Festival } from "../../models/festival";
 import { useQuery } from 'react-query'
 
 export const EventsList = () => {
+  console.log("festivals")
 
   const { isLoading, isError, data, error } = useQuery<any, any>('festivals', getFestivals)
 

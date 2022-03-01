@@ -23,6 +23,7 @@ import { OrderPage } from "./pages/Order";
 
 function App() {
   const queryClient = new QueryClient()
+  console.log("App")
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -35,6 +36,7 @@ function App() {
                   <Header />
                   <Box>
                     <Routes>
+
                       <Route path="/" element={<Main />} />
 
                       <Route path="/festivals/:festivalUrl/register" element={

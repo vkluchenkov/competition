@@ -1,15 +1,16 @@
 import { getFestival, getOrderByUser, getRegistrationByFestival } from "../../api";
-import { useParams, useNavigate, Link as RouterLink } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Dww } from "../EventDww";
-import { Button, CircularProgress, Link } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { Registration } from "../EventDww/types";
 import { Order, OrderFestival } from "../../pages/Order/types";
 import { Festival } from "../../models/festival";
 
 
 export const Register: React.FC = () => {
+  console.log("Registration")
   const navigate = useNavigate()
   const { festivalUrl } = useParams();
 

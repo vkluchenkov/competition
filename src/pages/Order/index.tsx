@@ -8,6 +8,7 @@ import { Workshop } from "../../components/EventDww/types";
 import { OrderFestival, Order } from "./types";
 
 export const OrderPage = () => {
+  console.log("Order")
   const [order, setOrder] = useState<Order | null>(null);
 
   const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser, { retry: 0 });
