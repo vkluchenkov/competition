@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./i18n"
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import { UserProvider, useUser } from "./store/User";
 
 Sentry.init({
   dsn: "https://9506a8fdc3ec40159fbab69be3ed8815@o1123240.ingest.sentry.io/6160949",
@@ -20,7 +21,9 @@ Sentry.init({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <UserProvider>
+      <App />
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

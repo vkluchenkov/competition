@@ -7,6 +7,7 @@ interface UserStore {
   currentUser: User | null;
   favorites: Video[];
   authToken: string;
+  initFlag: boolean;
 }
 
 interface UserStoreActions {
@@ -26,6 +27,7 @@ export const UserProvider: React.FC = ({ children }) => {
     currentUser: null,
     favorites: [],
     authToken: '',
+    initFlag: false,
   });
 
   const localStorage = window.localStorage;
@@ -56,9 +58,21 @@ export const UserProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!state.authToken) {
       localStorage.removeItem('jwt')
+      setState((prev) => {
+        return {
+          ...prev,
+          initFlag: false,
+        };
+      })
     } else {
       localStorage.setItem('jwt', state.authToken)
       setUser();
+      setState((prev) => {
+        return {
+          ...prev,
+          initFlag: true,
+        };
+      })
     }
   }, [state.authToken, localStorage])
 

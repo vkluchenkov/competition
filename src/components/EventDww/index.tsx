@@ -26,8 +26,12 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
   const { setValue } = methods;
 
   // Workshops and contest categories data
-  const { data: workshopsData, isLoading: isWorkshopsLoading, isError: isWorkshopsError, error: workshopsError } = useQuery<any, any>('workshops', () => getWorkshops(festival.id))
-  const { data: contestCatsData, isLoading: isContestCatsLoading, isError: isContestCatsError, error: contestCatsError } = useQuery<any, any>('contestCats', () => getContestCats(festival.id))
+  const { data: workshopsData, isLoading: isWorkshopsLoading, isError: isWorkshopsError, error: workshopsError } = useQuery<any, any>('workshops', () => getWorkshops(festival.id), {
+    refetchOnWindowFocus: false
+  })
+  const { data: contestCatsData, isLoading: isContestCatsLoading, isError: isContestCatsError, error: contestCatsError } = useQuery<any, any>('contestCats', () => getContestCats(festival.id), {
+    refetchOnWindowFocus: false
+  })
 
   useEffect(() => {
     if (workshopsData && (registration || orderFestival)) {

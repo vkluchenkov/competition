@@ -18,7 +18,10 @@ export const Register: React.FC = () => {
   const [registration, setRegistration] = useState<Registration | null>(null);
   const [orderFestival, setOrderFestival] = useState<OrderFestival | null>(null);
 
-  const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderLoading } = useQuery<Order, any>('isOrder', getOrderByUser, { retry: 0 })
+  const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderLoading } = useQuery<Order, any>('isOrder', getOrderByUser, {
+    retry: 0,
+    refetchOnWindowFocus: false
+  })
 
 
   const { data: festivalData, isLoading: isFestivalLoading } = useQuery('isFestival', () => getFestival(festivalUrl), {
@@ -27,7 +30,8 @@ export const Register: React.FC = () => {
         navigate('/')
       }
     },
-    retry: 0
+    retry: 0,
+    refetchOnWindowFocus: false
   })
 
   const { data: regData, isFetched: isRegFetched, isLoading: isRegloading } = useQuery<any, any>(
@@ -36,6 +40,7 @@ export const Register: React.FC = () => {
     {
       enabled: !!festivalData,
       retry: 0,
+      refetchOnWindowFocus: false
     }
   )
 
