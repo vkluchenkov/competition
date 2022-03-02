@@ -52,21 +52,7 @@ export const UserProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (localStorage.jwt) {
       setAuthToken(localStorage.jwt)
-    }
-  }, [localStorage.jwt])
-
-  useEffect(() => {
-    if (!state.authToken) {
-      localStorage.removeItem('jwt')
-      setState((prev) => {
-        return {
-          ...prev,
-          initFlag: false,
-        };
-      })
     } else {
-      localStorage.setItem('jwt', state.authToken)
-      setUser();
       setState((prev) => {
         return {
           ...prev,
@@ -74,7 +60,23 @@ export const UserProvider: React.FC = ({ children }) => {
         };
       })
     }
-  }, [state.authToken, localStorage])
+  }, [localStorage.jwt])
+
+  useEffect(() => {
+    if (!state.authToken) {
+      localStorage.removeItem('jwt')
+    } else {
+      localStorage.setItem('jwt', state.authToken)
+      setUser()
+        .then(() => setState((prev) => {
+          return {
+            ...prev,
+            initFlag: true,
+          };
+        })
+        )
+    }
+  }, [state.authToken])
 
   const setAuthToken: UserStoreActions["setAuthToken"] = (token) => {
     setState((prev) => {
