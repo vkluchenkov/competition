@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
 import { Link as RouterLink, Navigate } from "react-router-dom";
 import { useUser } from "../../store/User";

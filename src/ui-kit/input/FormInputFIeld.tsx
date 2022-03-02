@@ -36,3 +36,5 @@ export const FormInputField: React.FC<FormInputFieldProps> = ({ control, name, r
     />
   )
 }
+
+FormInputField.whyDidYouRender = true;
