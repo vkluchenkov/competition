@@ -8,8 +8,12 @@ import { Festival } from "../../models/festival";
 import { useQuery } from 'react-query'
 
 export const EventsList = () => {
+  console.log("festivals")
 
-  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', getFestivals)
+  const { isLoading, isError, data, error } = useQuery<any, any>('festivals', getFestivals, {
+    retry: 0,
+    refetchOnWindowFocus: false
+  })
 
   if (isLoading) {
     return <CircularProgress />
@@ -37,7 +41,7 @@ export const EventsList = () => {
           location={festival.location}
           description={festival.description}
           img={festival.img}
-          url_slug={festival.url_slug}
+          urlSlug={festival.urlSlug}
         />)
     })
   }
@@ -55,7 +59,7 @@ export const EventsList = () => {
           location={festival.location}
           description={festival.description}
           img={festival.img}
-          url_slug={festival.url_slug}
+          urlSlug={festival.urlSlug}
           past
         />)
     })
@@ -75,4 +79,8 @@ export const EventsList = () => {
     </Box>
   )
 
-}
+};
+
+EventsList.whyDidYouRender = {
+  logOnDifferentValues: true,
+};

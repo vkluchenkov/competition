@@ -1,30 +1,61 @@
-/** @jsxImportSource @emotion/react */
-import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { DateTime } from "luxon";
-import React from "react";
-import { useQuery } from "react-query";
-import { getOrder } from "../../api";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { getOrderByUser, payOrder } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
+import { ThankYou } from "./Thank-you";
+import { OrderFestival, Order } from "./types";
 
-export const Order = () => {
+export const OrderPage = () => {
 
-  // Временно
-  const orderId = '44';
+  const [order, setOrder] = useState<Order | null>(null);
+  const [isPaid, setisPaid] = useState(false);
 
-  const { isLoading, isError, data, error } = useQuery<any, any>('orderId', () => getOrder(orderId))
+  const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser, { retry: 0, refetchOnWindowFocus: false });
 
-  if (isLoading) {
+  const payMutation = useMutation<Order, any, any, any>(payOrder);
+
+  useEffect(() => {
+    if (data) {
+      setOrder(data)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (payMutation.data) {
+      console.log(payMutation.data)
+      setOrder(payMutation.data)
+    }
+  }, [payMutation.data])
+
+  useEffect(() => {
+    if (order?.status === "paid") {
+      setisPaid(true)
+    }
+  }, [order])
+
+  if (isLoading || payMutation.isLoading) {
     return <CircularProgress />
   }
-  if (isError && error.message === "Request failed with status code 404") {
+
+  if (!isPaid && isError && error.message === "Request failed with status code 404") {
     return <span>You don't have an active order</span>
   }
 
-  const festivals = () => {
-    return data.festivals.map((item: any) => {
-      const fullPass = item.isFullPass
+  const handlePayment = async () => {
+    try {
+      await payMutation.mutateAsync("")
+    } catch (error: any) {
+      throw error;
+    }
+  }
 
-      const workshops = item.workshops.map((ws: Workshop) => {
+  const festivals = () => {
+    return order?.festivals.map((festival) => {
+
+      const workshops = festival.workshops?.map((ws) => {
         const start = DateTime.fromISO(ws.start).toFormat("dd.LL.y | H:mm")
         return (
           <Box sx={{ paddingLeft: "16px" }} key={"workshop" + ws.id}>
@@ -41,15 +72,46 @@ export const Order = () => {
         )
       })
 
+      const contest = () => {
+        const contestCats = festival.contest?.map((cat) => {
+          return (
+            <Box sx={{ paddingLeft: "16px" }} key={"contest" + cat.id}>
+              <Typography variant="body2">
+                <strong>{cat.title}</strong>
+              </Typography>
+            </Box>
+          )
+        })
+        if (festival.isSoloPass) {
+          return (
+            <>
+              <Typography variant="body1" sx={{ paddingLeft: "8px" }}>
+                Competition: Solo Pass
+              </Typography>
+              {contestCats}
+            </>
+          )
+        }
+        if (contestCats && festival.contest.length > 0)
+          return (
+            <>
+              <Typography variant="body1" sx={{ paddingLeft: "8px" }}>
+                Competition:
+              </Typography>
+              {contestCats}
+            </>
+          )
+      }
+
       const fullPassOrWorkshops = () => {
-        if (fullPass) {
+        if (festival.isFullPass) {
           return (
             <Typography variant="body1" sx={{ paddingLeft: "8px" }}>
               Workshops: Full Pass
             </Typography>
           )
         }
-        if (workshops && item.workshops.length > 0) {
+        if (workshops && festival.workshops.length > 0) {
           return (
             <>
               <Typography variant="body1" gutterBottom sx={{ paddingLeft: "8px" }}>
@@ -62,13 +124,13 @@ export const Order = () => {
       }
 
       return (
-        <TableRow key={"festival" + item.festival.id}>
+        <TableRow key={"festival" + festival.festival.id}>
           <TableCell>
             <Typography variant="body1" gutterBottom>
-              <strong>{item.festival.title}</strong>
+              <strong>{festival.festival.title}</strong>
             </Typography>
             {fullPassOrWorkshops()}
-
+            {contest()}
           </TableCell>
           <TableCell>€XX</TableCell>
         </TableRow>
@@ -76,44 +138,70 @@ export const Order = () => {
     })
   }
 
+  const orderButton = () => {
+    if (order?.status === "new") {
+      return (
+        <Button
+          sx={{
+            mt: 3,
+            mb: 2,
+          }}
+          variant="contained"
+          size="large"
+          disableElevation
+          onClick={handlePayment}
+        >
+          Pay
+        </Button>
+      )
+    }
+  }
+
+  if (isPaid) {
+    return <ThankYou />
+  }
+
   return (
-    <Box sx={{ width: "100%", maxWidth: "600px" }}>
-      <Paper
-        elevation={3}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "20px 10px 5px"
-        }}>
-        <Typography variant="h3">
-          Your order
-        </Typography>
+    <>
+      <Box sx={{ width: "100%", maxWidth: "600px" }}>
+        <Paper
+          elevation={3}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "20px 10px 5px"
+          }}>
+          <Typography variant="h3">
+            Your order
+          </Typography>
 
-        <Typography variant="h5">
-          Status: {data.status}
-        </Typography>
+          <Typography variant="h5">
+            Status: {order?.status}
+          </Typography>
 
-        <TableContainer sx={{ maxWidth: "600px" }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Item</TableCell>
-                <TableCell>Price</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {festivals()}
-              <TableRow sx={{ borderBottom: 0 }}>
-                <TableCell align="right" sx={{ borderBottom: 0 }}>
-                  <strong>Total:</strong>
-                </TableCell>
-                <TableCell sx={{ borderBottom: 0 }}>€XXX</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+          <TableContainer sx={{ maxWidth: "600px" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Item</TableCell>
+                  <TableCell>Price</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {festivals()}
+                <TableRow sx={{ borderBottom: 0 }}>
+                  <TableCell align="right" sx={{ borderBottom: 0 }}>
+                    <strong>Total:</strong>
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: 0 }}>€XXX</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Box>
+      {orderButton()}
+    </>
   )
 };

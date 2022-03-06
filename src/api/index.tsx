@@ -1,3 +1,8 @@
+import { Registration } from "../components/EventDww/types";
+import { Festival } from "../models/festival";
+import { Order } from "../pages/Order/types";
+import { LoginPayload, ValidateEmailPayload, ValidateCodePayload, SetUserPayload, SetOrderPayload } from "./types";
+
 const BACKEND = "http://localhost:3001"
 
 const axios = require('axios').default;
@@ -11,41 +16,16 @@ axios.interceptors.request.use((config: any) => {
   return config;
 })
 
-interface LoginPayload {
-  email: string;
-  password: string;
-}
-
-interface ValidateCodePayload {
-  email: string;
-  code: string;
-}
-
-interface ValidateEmailPayload {
-  email: string;
-}
-
-interface SetUserPayload {
-  email: string;
-  code: string;
-  password: string;
-}
-
-interface SetOrderPayload {
-  workshops: number[],
-  isFullPass: boolean;
-  festivalId: number;
-}
 
 // Festivals
-export const getFestival = (festivalUrl: string | undefined) => {
+export const getFestival = (festivalUrl: string | undefined): Festival => {
   return axios.get(`${BACKEND}/festivals/${festivalUrl}`)
     .then((result: any) => {
       return result.data
     })
 }
 
-export const getFestivalById = (festivalId: string) => {
+export const getFestivalById = (festivalId: number) => {
   return axios.get(`${BACKEND}/festivals/${festivalId}/data`)
     .then((result: any) => {
       return result.data
@@ -54,6 +34,13 @@ export const getFestivalById = (festivalId: string) => {
 
 export const getWorkshops = (festivalId: number) => {
   return axios.get(`${BACKEND}/festivals/${festivalId}/workshops`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+export const getContestCats = (festivalId: number) => {
+  return axios.get(`${BACKEND}/festivals/${festivalId}/contest`)
     .then((result: any) => {
       return result.data
     })
@@ -129,8 +116,15 @@ export const setNewPassword = (data: SetUserPayload) => {
 }
 
 // Order
-export const getOrder = (id: string) => {
+export const getOrder = (id: number): Order => {
   return axios.get(`${BACKEND}/orders/${id}`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+export const getOrderByUser = (): Order => {
+  return axios.get(`${BACKEND}/orders`)
     .then((result: any) => {
       return result.data
     })
@@ -138,6 +132,21 @@ export const getOrder = (id: string) => {
 
 export const setOrder = (data: SetOrderPayload) => {
   return axios.post(`${BACKEND}/festivals/register`, data)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+export const payOrder = () => {
+  return axios.post(`${BACKEND}/orders/pay`)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+// Registration
+export const getRegistrationByFestival = (festivalId: number): Registration => {
+  return axios.get(`${BACKEND}/festivals/${festivalId}/registration`)
     .then((result: any) => {
       return result.data
     })

@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import React, { TextareaHTMLAttributes } from "react";
 import { styles } from "./styles";
 import clsx from "clsx";

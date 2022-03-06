@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { styles } from "./styles";
 import {
@@ -48,8 +47,10 @@ export const WorkshopsByDate: React.FC = () => {
 
   const workshops = uniqueDays.map(day => {
     const wsDate = DateTime.fromISO(day).toFormat("dd.LL.y")
+
     const wsList = wsByDayFilter(day).map(ws => {
       const wsLength = length(ws.start, ws.end).hours;
+
       const wsDateTime = DateTime.fromISO(ws.start).toFormat("H:mm") + "-" + DateTime.fromISO(ws.end).toFormat("H:mm") + " (" + wsLength + t('Dww.ws.h') + ")";
 
       const wsSpotsLeft = () => {
@@ -72,6 +73,7 @@ export const WorkshopsByDate: React.FC = () => {
             <InputCheckbox
               onChange={handleChange.bind(null, ws.id)}
               checked={ws.selected}
+              disabled={ws.disabled}
             />
           }
           label={

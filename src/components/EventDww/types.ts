@@ -1,7 +1,7 @@
 interface Teacher {
   id: number;
   name: string;
-  sort_order: number;
+  sortOrder: number;
 }
 
 export interface Workshop {
@@ -20,9 +20,18 @@ export interface ContestCategory {
   title: string;
   priceFullPass: number;
   price: number;
+  festivalId?: number;
 }
 
 export interface FormFields {
-  workshops: (Workshop & { selected: boolean })[];
-  contest: (ContestCategory & { selected: boolean })[];
+  workshops: (Workshop & { selected: boolean; disabled: boolean })[];
+  contest: (ContestCategory & { selected: boolean; disabled: boolean })[];
+}
+
+export interface Registration {
+  festivalId: number;
+  isFullPass: boolean;
+  isSoloPass: boolean;
+  workshops: Workshop[];
+  contest: ContestCategory[];
 }

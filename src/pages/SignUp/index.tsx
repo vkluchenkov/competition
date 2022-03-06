@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Typography, Box, Paper, Avatar, FormControlLabel, Switch, Grid, CircularProgress, Link } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -11,14 +10,7 @@ import { signUpRequest, signUpValidateCode, signUpCreate } from "../../api";
 import { useUser } from "../../store/User";
 import { styles } from "./styles"
 import { FormDatePicker } from "../../ui-kit/input/FormInputDatePicker";
-
-interface FormFields {
-  email: string,
-  code: string,
-  password: string,
-  name: string,
-  birthDate: string,
-}
+import { FormFields } from "./types";
 
 export const Signup: React.FC = () => {
   // Hooks

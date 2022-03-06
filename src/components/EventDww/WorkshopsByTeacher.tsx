@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import React from "react";
 import { styles } from "./styles";
 import {
@@ -39,7 +38,7 @@ export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = () => {
     };
   });
 
-  const sortedWorkshops = controlledFields.slice().sort((a, b) => a.teacher.sort_order - b.teacher.sort_order)
+  const sortedWorkshops = controlledFields.slice().sort((a, b) => a.teacher.sortOrder - b.teacher.sortOrder)
 
   const wsByTeacherFilter = (filter: number) => sortedWorkshops.filter(ws => ws.teacher.id === filter)
 
@@ -78,6 +77,7 @@ export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = () => {
             <InputCheckbox
               onChange={handleChange.bind(null, ws.id)}
               checked={ws.selected}
+              disabled={ws.disabled}
             />
           }
           label={

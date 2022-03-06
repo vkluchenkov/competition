@@ -1,17 +1,20 @@
-/** @jsxImportSource @emotion/react */
 import { ListItemText, Button, List, ListItem, Box } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WorkshopsForm } from "./WorkshopsForm";
 import { styles } from "./styles";
 import { ContestForm } from "./ContestForm";
+import { Registration } from "./types";
+import { OrderFestival } from "../../pages/Order/types";
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
   festivalId: number;
+  registration: Registration | null;
+  orderFestival: OrderFestival | null;
 }
 
-export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) => {
+export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration, orderFestival }) => {
   const { t } = useTranslation();
 
   const [wsOpen, setWsOpen] = useState(false);
@@ -63,14 +66,17 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId }) =>
         onClose={handleWsClose}
         ageGroup={ageGroup}
         festivalId={festivalId}
+        registration={registration}
+        orderFestival={orderFestival}
       />
 
       <ContestForm
         open={contestOpen}
         onClose={handleContestClose}
         ageGroup={ageGroup}
+        registration={registration}
+        orderFestival={orderFestival}
         festivalId={festivalId}
-        isFullPass={false}
       />
     </Box>
 

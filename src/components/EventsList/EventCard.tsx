@@ -6,7 +6,7 @@ import { styles } from "./styles"
 import clsx from "clsx";
 import { Festival } from "../../models/festival";
 
-export const EventCard: React.FC<Festival> = ({ id, title, type, startDate, endDate, location, description, img, url_slug, past }) => {
+export const EventCard: React.FC<Festival> = ({ title, type, startDate, endDate, location, description, img, urlSlug, past }) => {
 
   return (
 
@@ -39,7 +39,7 @@ export const EventCard: React.FC<Festival> = ({ id, title, type, startDate, endD
       <CardActions>
         <Button
           component={Link}
-          to={`/festivals/${url_slug}/register`}
+          to={`/festivals/${urlSlug}/register`}
           size="small"
         >
           Learn More

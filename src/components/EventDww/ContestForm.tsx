@@ -1,7 +1,6 @@
-/** @jsxImportSource @emotion/react */
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { FormFields } from './types';
+import { FormFields, Registration } from './types';
 import {
   Dialog,
   DialogActions,
@@ -18,20 +17,28 @@ import {
 import { styles } from "./styles"
 import { useTranslation } from "react-i18next";
 import { InputCheckbox } from "../../ui-kit/input";
+import { OrderFestival } from "../../pages/Order/types";
+import { useMutation, useQueryClient } from "react-query";
+import { setOrder } from "../../api";
 
 interface ContestFormProps {
   open: boolean;
   onClose: () => void;
   ageGroup: string | undefined;
+  registration: Registration | null;
+  orderFestival: OrderFestival | null;
   festivalId: number;
-  isFullPass: boolean;
 };
 
-export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, festivalId, isFullPass }) => {
+export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, orderFestival, festivalId }) => {
 
   // Hooks
   const { t } = useTranslation();
   const { control, watch, handleSubmit, setValue } = useFormContext<FormFields>();
+
+  const SubmitMutation = useMutation<string, any, any, any>(setOrder);
+
+  const queryClient = useQueryClient();
 
   const { fields } = useFieldArray({
     control,
@@ -46,33 +53,48 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     };
   });
 
-  console.log(fields)
+  const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass))
 
-  const [soloPass, setSoloPass] = useState(false)
+  const [isFullPass, setIsFullPass] = useState(() => (registration?.isFullPass || orderFestival?.isFullPass))
 
   // States
   const selected = watch("contest").filter((cats) => cats.selected);
 
   // Handlers
-  const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setSoloPass(event.target.checked)
+  const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setIsSoloPass(event.target.checked)
 
   const handleChange = (catId: number, event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const catIndex = watchContest.findIndex((cat: any) => cat.id === catId);
     setValue(`contest.${catIndex}.selected`, checked);
   }
 
-  const onSubmit = () => { }
+  const onSubmit = handleSubmit(async () => {
+    const contest = () => selected ? selected.map((category) => category.id) : []
+
+    const submitPayload = {
+      contest: contest(),
+      isSoloPass,
+      festivalId
+    }
+
+    await SubmitMutation.mutateAsync(submitPayload);
+    queryClient.refetchQueries("isOrder");
+    onClose()
+  })
 
   // Calculations
-  const soloPassPrice = () => {
+  const soloPassPrice = useCallback(() => {
+    if (registration?.isSoloPass) {
+      return 0
+    }
     if (isFullPass) {
       return 80
     }
     return 100
-  }
+  }, [registration, isFullPass])
 
   const total = useMemo(() => {
-    if (soloPass) {
+    if (isSoloPass) {
       return soloPassPrice()
     } else
       if (!selected) {
@@ -84,12 +106,12 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
       }
       return prev + current.price
     }), 0)
-  }, [selected])
+  }, [selected, isSoloPass, isFullPass, soloPassPrice])
 
   // Categories mapping
   const categories = controlledFields.map((cat) => {
     const price = () => {
-      if (soloPass) {
+      if (isSoloPass) {
         return null;
       }
       if (isFullPass) {
@@ -136,6 +158,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
           <InputCheckbox
             onChange={handleChange.bind(null, cat.id)}
             checked={cat.selected}
+            disabled={cat.disabled}
           />
         }
         label={
@@ -169,12 +192,13 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
               control={
                 <InputCheckbox
                   onChange={handleSoloPass}
-                  checked={soloPass}
+                  checked={isSoloPass}
+                  disabled={registration?.isSoloPass}
                 />
               }
               label={
                 <Typography variant="body1">
-                  I want to take Solo Pass €{soloPassPrice()}
+                  I want to take Solo Pass {soloPassPrice() > 0 ? `€${soloPassPrice()}` : ""}
                 </Typography>
               } />
           </FormControl>
