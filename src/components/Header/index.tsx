@@ -23,7 +23,6 @@ const pages = ['My events', 'Menu2', 'Menu3'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const Header: React.FC = () => {
-  console.log("Header")
   const [{ currentUser }, { removeActiveUser }] = useUser();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);

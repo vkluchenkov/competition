@@ -2,15 +2,18 @@ import { Box, Button, CircularProgress, Paper, Table, TableBody, TableCell, Tabl
 import { DateTime } from "luxon";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { getOrderByUser, payOrder } from "../../api";
 import { Workshop } from "../../components/EventDww/types";
+import { ThankYou } from "./Thank-you";
 import { OrderFestival, Order } from "./types";
 
 export const OrderPage = () => {
-  console.log("Order")
-  const [order, setOrder] = useState<Order | null>(null);
 
-  const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser, { retry: 0 });
+  const [order, setOrder] = useState<Order | null>(null);
+  const [isPaid, setisPaid] = useState(false);
+
+  const { isLoading, isError, data, error } = useQuery<Order, any>('order', getOrderByUser, { retry: 0, refetchOnWindowFocus: false });
 
   const payMutation = useMutation<Order, any, any, any>(payOrder);
 
@@ -22,15 +25,22 @@ export const OrderPage = () => {
 
   useEffect(() => {
     if (payMutation.data) {
+      console.log(payMutation.data)
       setOrder(payMutation.data)
     }
   }, [payMutation.data])
+
+  useEffect(() => {
+    if (order?.status === "paid") {
+      setisPaid(true)
+    }
+  }, [order])
 
   if (isLoading || payMutation.isLoading) {
     return <CircularProgress />
   }
 
-  if (isError && error.message === "Request failed with status code 404") {
+  if (!isPaid && isError && error.message === "Request failed with status code 404") {
     return <span>You don't have an active order</span>
   }
 
@@ -61,8 +71,6 @@ export const OrderPage = () => {
           </Box>
         )
       })
-
-
 
       const contest = () => {
         const contestCats = festival.contest?.map((cat) => {
@@ -147,6 +155,10 @@ export const OrderPage = () => {
         </Button>
       )
     }
+  }
+
+  if (isPaid) {
+    return <ThankYou />
   }
 
   return (

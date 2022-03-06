@@ -11,7 +11,7 @@ export interface OrderFestival {
 }
 
 export interface Order {
-  id: string;
+  id: number;
   status: string;
   updatedAt: DateTime | null;
   paidAt: DateTime | null;

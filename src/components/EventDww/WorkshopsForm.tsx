@@ -22,7 +22,7 @@ import { WorkshopsByDate } from "./WorkshopsByDate"
 import { Filters } from "./WorkshopsFilters";
 import { useFormContext } from "react-hook-form";
 import { FormFields } from './types';
-import { useMutation } from "react-query";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { setOrder } from "../../api";
 import { Registration } from "./types";
 import { OrderFestival } from "../../pages/Order/types";
@@ -46,6 +46,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   const [radioDisabled, setRadioDisabled] = useState(false);
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
   const [sorting, setSorting] = React.useState('teacher');
+  const queryClient = useQueryClient();
 
   // Calculations
   const fullPassPrice = useCallback(() => {
@@ -123,7 +124,8 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     }
 
     await SubmitMutation.mutateAsync(submitPayload);
-    onClose()
+    queryClient.refetchQueries("isOrder");
+    onClose();
   })
 
   const handleSorting = (event: React.MouseEvent<HTMLElement>, newSort: string,) => setSorting(newSort);

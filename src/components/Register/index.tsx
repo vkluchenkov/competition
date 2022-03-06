@@ -10,7 +10,6 @@ import { Festival } from "../../models/festival";
 
 
 export const Register: React.FC = () => {
-  console.log("Registration")
   const navigate = useNavigate()
   const { festivalUrl } = useParams();
 

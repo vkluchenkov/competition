@@ -18,7 +18,7 @@ import { styles } from "./styles"
 import { useTranslation } from "react-i18next";
 import { InputCheckbox } from "../../ui-kit/input";
 import { OrderFestival } from "../../pages/Order/types";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { setOrder } from "../../api";
 
 interface ContestFormProps {
@@ -37,6 +37,8 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
   const { control, watch, handleSubmit, setValue } = useFormContext<FormFields>();
 
   const SubmitMutation = useMutation<string, any, any, any>(setOrder);
+
+  const queryClient = useQueryClient();
 
   const { fields } = useFieldArray({
     control,
@@ -76,6 +78,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     }
 
     await SubmitMutation.mutateAsync(submitPayload);
+    queryClient.refetchQueries("isOrder");
     onClose()
   })
 

@@ -116,7 +116,7 @@ export const setNewPassword = (data: SetUserPayload) => {
 }
 
 // Order
-export const getOrder = (id: string): Order => {
+export const getOrder = (id: number): Order => {
   return axios.get(`${BACKEND}/orders/${id}`)
     .then((result: any) => {
       return result.data
