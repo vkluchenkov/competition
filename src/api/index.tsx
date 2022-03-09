@@ -3,7 +3,7 @@ import { Festival } from "../models/festival";
 import { Order } from "../pages/Order/types";
 import { LoginPayload, ValidateEmailPayload, ValidateCodePayload, SetUserPayload, SetOrderPayload } from "./types";
 
-const BACKEND = "http://localhost:3001"
+const BACKEND = process.env.REACT_APP_SERVER_URL
 
 const axios = require('axios').default;
 
