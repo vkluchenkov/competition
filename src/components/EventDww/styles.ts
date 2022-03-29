@@ -33,11 +33,15 @@ export const styles = createStyles({
   bottomBar: {
     padding: "12px 24px",
     backgroundColor: "#eee",
+    justifyContent: "space-between",
   },
   total: {
     display: "block",
-    width: "100%",
     justifySelf: "flex-start",
+  },
+  buttonsContainer: {
+    display: "flex",
+    gap: "15px",
   },
   divider: {
     mt: 2,

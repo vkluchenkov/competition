@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 import { InputCheckbox } from "../../ui-kit/input";
 import { OrderFestival } from "../../pages/Order/types";
 import { useMutation, useQueryClient } from "react-query";
-import { setOrder } from "../../api";
+import { register } from "../../api";
 
 interface ContestFormProps {
   open: boolean;
@@ -36,7 +36,7 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
   const { t } = useTranslation();
   const { control, watch, handleSubmit, setValue } = useFormContext<FormFields>();
 
-  const SubmitMutation = useMutation<string, any, any, any>(setOrder);
+  const SubmitMutation = useMutation<string, any, any, any>(register);
 
   const queryClient = useQueryClient();
 
@@ -112,6 +112,8 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
       return prev + current.price
     }), 0)
   }, [selectedContest, isSoloPass, isFullPass, soloPassPrice])
+
+  const submitBtnLabel = orderFestival && total === 0 ? "Clear order" : t('Dww.submitBtn');
 
   // Categories mapping
   const categories = controlledFields.map((cat) => {
@@ -224,13 +226,15 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
 
       <DialogActions sx={styles.bottomBar}>
         <Typography variant="body1" sx={styles.total}>Total: €{total}</Typography>
-        <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
-        <Button
-          disabled={!total}
-          onClick={onSubmit}
-          variant="outlined">
-          {t('Dww.submitBtn')}
-        </Button>
+        <div css={styles.buttonsContainer}>
+          <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
+          <Button
+            disabled={false}
+            onClick={onSubmit}
+            variant="outlined">
+            {submitBtnLabel}
+          </Button>
+        </div>
       </DialogActions>
     </Dialog>
   )

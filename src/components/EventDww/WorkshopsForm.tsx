@@ -21,9 +21,9 @@ import { WorkshopsByTeacher } from "./WorkshopsByTeacher"
 import { WorkshopsByDate } from "./WorkshopsByDate"
 import { Filters } from "./WorkshopsFilters";
 import { useFormContext } from "react-hook-form";
-import { FormFields } from './types';
+import { FormFields, Workshop } from './types';
 import { QueryClient, useMutation, useQueryClient } from "react-query";
-import { setOrder } from "../../api";
+import { register } from "../../api";
 import { Registration } from "./types";
 import { OrderFestival } from "../../pages/Order/types";
 
@@ -59,7 +59,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     return basePrices.fullPass
   }, [ageGroup, registration?.isFullPass])
 
-  const SubmitMutation = useMutation<string, any, any, any>(setOrder);
+  const SubmitMutation = useMutation<string, any, any, any>(register);
 
   // States
   const selectedWs = watch("workshops").filter((ws) => ws.selected);
@@ -106,9 +106,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
 
   const onSubmit = handleSubmit(async () => {
     const isFullPass = !!(workshopsType === "fullPass")
-
     const workshops = !isFullPass && selectedWs ? selectedWs.map((ws) => ws.id) : []
-
     const contest = selectedContest ? selectedContest.map(cat => cat.id) : []
 
     const submitPayload = {
@@ -117,7 +115,6 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
       isFullPass,
       festivalId
     }
-    console.log(submitPayload)
 
     await SubmitMutation.mutateAsync(submitPayload);
     queryClient.refetchQueries("isOrder");
@@ -126,6 +123,32 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   })
 
   const handleSorting = (event: React.MouseEvent<HTMLElement>, newSort: string,) => setSorting(newSort);
+
+  const submitBtnLabel = orderFestival && total === 0 ? "Save changes" : t('Dww.submitBtn');
+
+  // const isSubmitBtnDisabled = () => {
+
+  //   const compare = (arr: Workshop[] | undefined) => {
+  //     if (arr) {
+  //       const selectedIds = selectedWs.map(ws => ws.id)
+  //       const arrIds = arr.map(arrWs => arrWs.id)
+  //       const filter = selectedIds.filter(id => !arrIds.includes(id))
+  //       return !!filter.length
+  //     }
+  //     return true
+  //   }
+
+  //   if (workshopsType != "fullPass" && !selectedWs) {
+  //     return true
+  //   }
+  //   if (workshopsType != "fullPass" && compare(registration?.workshops)) {
+  //     return false
+  //   }
+  //   if (workshopsType != "fullPass" && compare(orderFestival?.workshops)) {
+  //     return false
+  //   }
+  //   return true
+  // }
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -184,14 +207,16 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
       </DialogContent>
 
       <DialogActions sx={styles.bottomBar}>
-        <Typography variant="body1" sx={styles.total}>Total: €{total}</Typography>
-        <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
-        <Button
-          disabled={!total}
-          onClick={onSubmit}
-          variant="outlined">
-          {t('Dww.submitBtn')}
-        </Button>
+        <Typography variant="body1" css={styles.total}>Total: €{total}</Typography>
+        <div css={styles.buttonsContainer}>
+          <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
+          <Button
+            disabled={false}
+            onClick={onSubmit}
+            variant="outlined">
+            {submitBtnLabel}
+          </Button>
+        </div>
       </DialogActions>
     </Dialog>
   );

@@ -130,8 +130,15 @@ export const getOrderByUser = (): Order => {
     })
 }
 
-export const setOrder = (data: SetOrderPayload) => {
+export const register = (data: SetOrderPayload) => {
   return axios.post(`${BACKEND}/festivals/register`, data)
+    .then((result: any) => {
+      return result.data
+    })
+}
+
+export const unregister = (festivalId: number) => {
+  return axios.post(`${BACKEND}/festivals/unregister`, festivalId)
     .then((result: any) => {
       return result.data
     })
