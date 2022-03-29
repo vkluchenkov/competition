@@ -55,7 +55,7 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
     }
   }, [workshopsData, registration, orderFestival, setValue])
 
-  // Competition data mock
+  // Competition data
   useEffect(() => {
     // If there's reg
     if (contestCatsData && (registration || orderFestival)) {

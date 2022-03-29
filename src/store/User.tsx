@@ -60,7 +60,7 @@ export const UserProvider: React.FC = ({ children }) => {
         };
       })
     }
-  }, [localStorage.jwt])
+  }, [])
 
   useEffect(() => {
     if (!state.authToken) {

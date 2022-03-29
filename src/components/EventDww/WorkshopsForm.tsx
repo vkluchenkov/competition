@@ -62,7 +62,8 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   const SubmitMutation = useMutation<string, any, any, any>(setOrder);
 
   // States
-  const selected = watch("workshops").filter((ws) => ws.selected);
+  const selectedWs = watch("workshops").filter((ws) => ws.selected);
+  const selectedContest = watch("contest").filter((cat) => cat.selected);
 
   // Устанавливаем выбор и/или блокировки на выбор фулл пасса если есть воркшопы в регистрации или ордере
   useEffect(() => {
@@ -89,11 +90,11 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     if (workshopsType === "fullPass") {
       return registration?.isFullPass ? 0 : fullPassPrice()
     } else
-      if (!selected) {
+      if (!selectedWs) {
         return 0
       }
-    return selected.reduce(((prev, current) => prev + current.price), 0)
-  }, [selected, workshopsType, fullPassPrice])
+    return selectedWs.reduce(((prev, current) => prev + current.price), 0)
+  }, [selectedWs, workshopsType, fullPassPrice])
 
   // Handlers
   const handleSingles = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,25 +107,21 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   const onSubmit = handleSubmit(async () => {
     const isFullPass = !!(workshopsType === "fullPass")
 
-    const workshops = () => {
-      if (!isFullPass && selected) {
-        return selected.map((ws) => ws.id)
-      } else {
-        return []
-      }
-    }
+    const workshops = !isFullPass && selectedWs ? selectedWs.map((ws) => ws.id) : []
 
-    const contest = registration?.contest ? registration?.contest : []
+    const contest = selectedContest ? selectedContest.map(cat => cat.id) : []
 
     const submitPayload = {
-      workshops: workshops(),
+      workshops,
       contest,
       isFullPass,
       festivalId
     }
+    console.log(submitPayload)
 
     await SubmitMutation.mutateAsync(submitPayload);
     queryClient.refetchQueries("isOrder");
+    queryClient.refetchQueries("isRegistration");
     onClose();
   })
 

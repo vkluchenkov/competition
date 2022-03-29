@@ -19,7 +19,12 @@ export const Register: React.FC = () => {
 
   const { data: orderData, isFetched: isOrderFetched, isLoading: isOrderLoading } = useQuery<Order, any>('isOrder', getOrderByUser, {
     retry: 0,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    onError: (error: any) => {
+      if (error?.response?.status === 404) {
+        setOrderFestival(null)
+      }
+    },
   })
 
 
@@ -39,7 +44,12 @@ export const Register: React.FC = () => {
     {
       enabled: !!festivalData,
       retry: 0,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      onError: (error: any) => {
+        if (error?.response?.status === 404) {
+          setRegistration(null)
+        }
+      },
     }
   )
 

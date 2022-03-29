@@ -53,12 +53,13 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     };
   });
 
-  const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass))
+  const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass || false))
 
-  const [isFullPass, setIsFullPass] = useState(() => (registration?.isFullPass || orderFestival?.isFullPass))
+  const [isFullPass, setIsFullPass] = useState(() => (registration?.isFullPass || orderFestival?.isFullPass || false))
 
   // States
-  const selected = watch("contest").filter((cats) => cats.selected);
+  const selectedContest = watch("contest").filter((cats) => cats.selected);
+  const selectedWs = watch("workshops").filter((ws) => ws.selected);
 
   // Handlers
   const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setIsSoloPass(event.target.checked)
@@ -69,16 +70,20 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
   }
 
   const onSubmit = handleSubmit(async () => {
-    const contest = () => selected ? selected.map((category) => category.id) : []
+    const contest = selectedContest ? selectedContest.map((category) => category.id) : []
+    const workshops = selectedWs ? selectedWs.map((ws) => ws.id) : []
 
     const submitPayload = {
-      contest: contest(),
+      workshops,
+      contest,
+      isFullPass,
       isSoloPass,
       festivalId
     }
 
     await SubmitMutation.mutateAsync(submitPayload);
     queryClient.refetchQueries("isOrder");
+    queryClient.refetchQueries("isRegistration");
     onClose()
   })
 
@@ -97,16 +102,16 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     if (isSoloPass) {
       return soloPassPrice()
     } else
-      if (!selected) {
+      if (!selectedContest) {
         return 0
       }
-    return selected.reduce(((prev, current) => {
+    return selectedContest.reduce(((prev, current) => {
       if (isFullPass) {
         return prev + current.priceFullPass
       }
       return prev + current.price
     }), 0)
-  }, [selected, isSoloPass, isFullPass, soloPassPrice])
+  }, [selectedContest, isSoloPass, isFullPass, soloPassPrice])
 
   // Categories mapping
   const categories = controlledFields.map((cat) => {

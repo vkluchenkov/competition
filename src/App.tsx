@@ -23,7 +23,6 @@ import { useUser } from "./store/User";
 
 function App() {
   const queryClient = new QueryClient()
-  console.log("App")
   const [{ initFlag }] = useUser();
 
   if (!initFlag) {

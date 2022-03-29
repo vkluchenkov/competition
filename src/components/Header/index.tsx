@@ -221,4 +221,4 @@ export const Header: React.FC = () => {
   );
 };
 
-Header.whyDidYouRender = true;
+// Header.whyDidYouRender = true;

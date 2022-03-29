@@ -2,14 +2,11 @@ import { Typography, Box, CircularProgress } from "@mui/material";
 import { DateTime } from "luxon";
 import React from "react";
 import { EventCard } from "./EventCard";
-// import { festivals } from "./festivals";
 import { getFestivals } from "../../api";
 import { Festival } from "../../models/festival";
 import { useQuery } from 'react-query'
 
 export const EventsList = () => {
-  console.log("festivals")
-
   const { isLoading, isError, data, error } = useQuery<any, any>('festivals', getFestivals, {
     retry: 0,
     refetchOnWindowFocus: false
@@ -81,6 +78,6 @@ export const EventsList = () => {
 
 };
 
-EventsList.whyDidYouRender = {
-  logOnDifferentValues: true,
-};
+// EventsList.whyDidYouRender = {
+//   logOnDifferentValues: true,
+// };
