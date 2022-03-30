@@ -50,7 +50,7 @@
     "submitBtn": "Save",
     "nextBtn": "Next",
     "prevBtn": "Back",
-    "cancelBtn": "Cancel",
+    "cancelBtn": "Close",
     "ws": {
       "title": "Workshops selection",
       "sub1": "You can choose between Full Pass and single workshops.",

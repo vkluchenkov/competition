@@ -26,6 +26,7 @@ import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { register } from "../../api";
 import { Registration } from "./types";
 import { OrderFestival } from "../../pages/Order/types";
+import clsx from "clsx";
 
 interface WorkshopsFormProps {
   open: boolean;
@@ -34,11 +35,13 @@ interface WorkshopsFormProps {
   festivalId: number;
   registration: Registration | null;
   orderFestival: OrderFestival | null;
+  wsInitFlag: boolean;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration, orderFestival }) => {
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration, orderFestival, wsInitFlag }) => {
+  var _ = require('lodash');
   // Hooks
   const { t } = useTranslation();
   const { watch, handleSubmit } = useFormContext<FormFields>();
@@ -46,6 +49,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   const [radioDisabled, setRadioDisabled] = useState(false);
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
   const [sorting, setSorting] = React.useState('teacher');
+  const [confirmationActive, setConfirmationActive] = React.useState(false);
   const queryClient = useQueryClient();
 
   // Calculations
@@ -62,7 +66,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   const SubmitMutation = useMutation<string, any, any, any>(register);
 
   // States
-  const selectedWs = watch("workshops").filter((ws) => ws.selected);
+  const selectedWs = watch("workshops").filter((ws) => ws.selected)
   const selectedContest = watch("contest").filter((cat) => cat.selected);
 
   // Устанавливаем выбор и/или блокировки на выбор фулл пасса если есть воркшопы в регистрации или ордере
@@ -86,6 +90,12 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     }
   }, [orderFestival, registration])
 
+  useEffect(() => {
+    if (wsInitFlag) {
+      debounced()
+    }
+  }, [workshopsType, selectedWs.length, wsInitFlag])
+
   const total = useMemo(() => {
     if (workshopsType === "fullPass") {
       return registration?.isFullPass ? 0 : fullPassPrice()
@@ -104,51 +114,39 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     });
   };
 
-  const onSubmit = handleSubmit(async () => {
-    const isFullPass = !!(workshopsType === "fullPass")
-    const workshops = !isFullPass && selectedWs ? selectedWs.map((ws) => ws.id) : []
-    const contest = selectedContest ? selectedContest.map(cat => cat.id) : []
+  const onSubmit = useCallback(async () => {
+    handleSubmit(async () => {
+      const isFullPass = !!(workshopsType === "fullPass")
+      const workshops = !isFullPass && selectedWs ? selectedWs.map((ws) => ws.id) : []
+      const contest = selectedContest ? selectedContest.map(cat => cat.id) : []
+      const submitPayload = {
+        workshops,
+        contest,
+        isFullPass,
+        festivalId
+      }
+      await SubmitMutation.mutateAsync(submitPayload);
+      queryClient.refetchQueries("isOrder");
+      queryClient.refetchQueries("isRegistration");
+      // onClose();
+    })();
+  }, [workshopsType, selectedWs, selectedContest])
 
-    const submitPayload = {
-      workshops,
-      contest,
-      isFullPass,
-      festivalId
-    }
 
-    await SubmitMutation.mutateAsync(submitPayload);
-    queryClient.refetchQueries("isOrder");
-    queryClient.refetchQueries("isRegistration");
-    onClose();
-  })
+  const debounced = useCallback(_.debounce(() => {
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    onSubmit()
+      .then(() => {
+        setConfirmationActive(true)
+        delay(1500)
+          .then(() => setConfirmationActive(false))
+      }
+      )
+  }, 1000), [onSubmit]);
 
   const handleSorting = (event: React.MouseEvent<HTMLElement>, newSort: string,) => setSorting(newSort);
 
-  const submitBtnLabel = orderFestival && total === 0 ? "Save changes" : t('Dww.submitBtn');
-
-  // const isSubmitBtnDisabled = () => {
-
-  //   const compare = (arr: Workshop[] | undefined) => {
-  //     if (arr) {
-  //       const selectedIds = selectedWs.map(ws => ws.id)
-  //       const arrIds = arr.map(arrWs => arrWs.id)
-  //       const filter = selectedIds.filter(id => !arrIds.includes(id))
-  //       return !!filter.length
-  //     }
-  //     return true
-  //   }
-
-  //   if (workshopsType != "fullPass" && !selectedWs) {
-  //     return true
-  //   }
-  //   if (workshopsType != "fullPass" && compare(registration?.workshops)) {
-  //     return false
-  //   }
-  //   if (workshopsType != "fullPass" && compare(orderFestival?.workshops)) {
-  //     return false
-  //   }
-  //   return true
-  // }
+  const submitConfirmation = <Typography variant="body1" css={styles.confirmation} className={clsx({ confirmationActive })}>Saved!</Typography>
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -209,13 +207,14 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
       <DialogActions sx={styles.bottomBar}>
         <Typography variant="body1" css={styles.total}>Total: €{total}</Typography>
         <div css={styles.buttonsContainer}>
+          {submitConfirmation}
           <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
-          <Button
+          {/* <Button
             disabled={false}
             onClick={onSubmit}
             variant="outlined">
             {submitBtnLabel}
-          </Button>
+          </Button> */}
         </div>
       </DialogActions>
     </Dialog>

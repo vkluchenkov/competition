@@ -39,8 +39,17 @@ export const styles = createStyles({
     display: "block",
     justifySelf: "flex-start",
   },
+  confirmation: {
+    color: "green",
+    transition: "all 0.5s",
+    opacity: 0,
+    "&.confirmationActive": {
+      opacity: 1,
+    },
+  },
   buttonsContainer: {
     display: "flex",
+    alignItems: "center",
     gap: "15px",
   },
   divider: {

@@ -18,6 +18,8 @@ interface DwwProps {
 }
 
 export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival }) => {
+  const [wsInitFlag, setWsInitFlag] = useState(false)
+  const [contestInitFlag, setContestInitFlag] = useState(false)
 
   const [{ currentUser }] = useUser();
 
@@ -39,18 +41,22 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
         "workshops", workshopsData.map((ws: Workshop) => {
           // If workshop in reg set checked and disable
           if (registration?.workshops.some((regWs) => regWs.id === ws.id)) {
+            setWsInitFlag(true)
             return { ...ws, selected: true, disabled: true, price: 0 }
           }
           // If workshop in order set checked, but not disable
           if (orderFestival?.workshops.some((orderWs) => orderWs.id === ws.id)) {
+            setWsInitFlag(true)
             return { ...ws, selected: true, disabled: false }
           }
           // If workshop not in reg or order set free to choose
+          setWsInitFlag(true)
           return { ...ws, selected: false }
         })
       )
     }
     else if (workshopsData) {
+      setWsInitFlag(true)
       setValue("workshops", workshopsData.map((ws: Workshop) => ({ ...ws, selected: false })))
     }
   }, [workshopsData, registration, orderFestival, setValue])
@@ -63,25 +69,30 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
         "contest", contestCatsData.map((cat: ContestCategory) => {
           // If in reg and solo pass, set checked, but not disabled
           if (registration?.contest.some((regCat) => regCat.id === cat.id) && registration.isSoloPass) {
+            setContestInitFlag(true)
             return { ...cat, selected: true, disabled: false, price: 0 }
           }
 
           // If in order and solo pass, set checked, but not disabled
           if (orderFestival?.contest.some((orderCat) => orderCat.id === cat.id) && orderFestival.isSoloPass) {
+            setContestInitFlag(true)
             return { ...cat, selected: true, disabled: false }
           }
 
           // If in reg without solo pass set checked and disabled
           else if (registration?.contest.some((regCat) => regCat.id === cat.id)) {
+            setContestInitFlag(true)
             return { ...cat, selected: true, disabled: true, price: 0 }
           }
 
           // If in order without solo pass set checked but not disabled
           else if (orderFestival?.contest.some((orderCat) => orderCat.id === cat.id)) {
+            setContestInitFlag(true)
             return { ...cat, selected: true, disabled: false }
           }
 
           //If NOT in reg or order set free to choose
+          setContestInitFlag(true)
           return { ...cat, selected: false, disabled: false }
         })
       )
@@ -91,6 +102,14 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
       setValue("contest", contestCatsData.map((cat: ContestCategory) => ({ ...cat, selected: false, disabled: false })))
     }
   }, [registration, contestCatsData, orderFestival, setValue])
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log("unmounted")
+  //     setWsInitFlag(false)
+  //     setContestInitFlag(false)
+  //   }
+  // }, [])
 
   // Age group setup
   const eventDate = festival.startDate;
@@ -116,6 +135,7 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
         festivalId={festival.id}
         registration={registration}
         orderFestival={orderFestival}
+        wsInitFlag={wsInitFlag}
       />
     </FormProvider>
   );

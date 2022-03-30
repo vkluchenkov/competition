@@ -12,9 +12,10 @@ interface DwwEventsProps {
   festivalId: number;
   registration: Registration | null;
   orderFestival: OrderFestival | null;
+  wsInitFlag: boolean;
 }
 
-export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration, orderFestival }) => {
+export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration, orderFestival, wsInitFlag }) => {
   const { t } = useTranslation();
 
   const [wsOpen, setWsOpen] = useState(false);
@@ -68,6 +69,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
         festivalId={festivalId}
         registration={registration}
         orderFestival={orderFestival}
+        wsInitFlag={wsInitFlag}
       />
 
       <ContestForm
