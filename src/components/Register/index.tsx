@@ -78,25 +78,6 @@ export const Register: React.FC = () => {
     return <CircularProgress />
   }
 
-  const orderButton = () => {
-    if (orderFestival && orderData?.status === "new") {
-      return (
-        <Button
-          sx={{
-            mt: 3,
-            mb: 2,
-          }}
-          variant="contained"
-          size="large"
-          disableElevation
-          onClick={() => navigate('/my-order')}
-        >
-          View my order
-        </Button>
-      )
-    }
-  }
-
   if (festival && isRegFetched && isOrderFetched) {
     return (
       <>
@@ -105,7 +86,6 @@ export const Register: React.FC = () => {
           registration={registration}
           orderFestival={orderFestival}
         />
-        {orderButton()}
       </>
     )
   }

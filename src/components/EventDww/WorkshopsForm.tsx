@@ -21,11 +21,12 @@ import { WorkshopsByTeacher } from "./WorkshopsByTeacher"
 import { WorkshopsByDate } from "./WorkshopsByDate"
 import { Filters } from "./WorkshopsFilters";
 import { useFormContext } from "react-hook-form";
-import { FormFields, Workshop } from './types';
-import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { FormFields } from './types';
+import { useMutation } from "react-query";
 import { register } from "../../api";
 import { Registration } from "./types";
 import { OrderFestival } from "../../pages/Order/types";
+import { useIsMounted } from 'usehooks-ts'
 import clsx from "clsx";
 
 interface WorkshopsFormProps {
@@ -35,22 +36,22 @@ interface WorkshopsFormProps {
   festivalId: number;
   registration: Registration | null;
   orderFestival: OrderFestival | null;
-  wsInitFlag: boolean;
+  activeOrderHandler: (value: boolean) => void;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration, orderFestival, wsInitFlag }) => {
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration, orderFestival, activeOrderHandler }) => {
   var _ = require('lodash');
   // Hooks
   const { t } = useTranslation();
+  const isMounted = useIsMounted();
   const { watch, handleSubmit } = useFormContext<FormFields>();
   const [singles, setSingles] = useState({});
   const [radioDisabled, setRadioDisabled] = useState(false);
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
   const [sorting, setSorting] = React.useState('teacher');
-  const [confirmationActive, setConfirmationActive] = React.useState(false);
-  const queryClient = useQueryClient();
+  const [confirmationActive, setConfirmationActive] = useState(false);
 
   // Calculations
   const fullPassPrice = useCallback(() => {
@@ -63,7 +64,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     return basePrices.fullPass
   }, [ageGroup, registration?.isFullPass])
 
-  const SubmitMutation = useMutation<string, any, any, any>(register);
+  const SubmitMutation = useMutation<any, any, any, any>(register);
 
   // States
   const selectedWs = watch("workshops").filter((ws) => ws.selected)
@@ -91,10 +92,18 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   }, [orderFestival, registration])
 
   useEffect(() => {
-    if (wsInitFlag) {
+    if (isMounted()) {
+      console.log(selectedWs)
+      console.log(workshopsType)
       debounced()
     }
-  }, [workshopsType, selectedWs.length, wsInitFlag])
+  }, [workshopsType, selectedWs.length, isMounted])
+
+  useEffect(() => {
+    if (SubmitMutation.data) {
+      activeOrderHandler(SubmitMutation.data.isActiveOrder)
+    }
+  }, [SubmitMutation.data])
 
   const total = useMemo(() => {
     if (workshopsType === "fullPass") {
@@ -126,9 +135,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
         festivalId
       }
       await SubmitMutation.mutateAsync(submitPayload);
-      queryClient.refetchQueries("isOrder");
-      queryClient.refetchQueries("isRegistration");
-      // onClose();
+
     })();
   }, [workshopsType, selectedWs, selectedContest])
 
