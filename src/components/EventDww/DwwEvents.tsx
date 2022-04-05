@@ -48,7 +48,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
   }, [orderFestival])
 
   useEffect(() => {
-    if (SubmitMutation.data) setIsActiveOrder(true)
+    if (SubmitMutation.data) setIsActiveOrder(SubmitMutation.data.isActiveOrder)
   }, [SubmitMutation.data])
 
   useEffect(() => {
@@ -149,10 +149,8 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
           open={wsOpen}
           onClose={handleWsClose}
           ageGroup={ageGroup}
-          // festivalId={festivalId}
           registration={registration}
           orderFestival={orderFestival}
-        // activeOrderHandler={handleActiveOrder}
         />
 
         <ContestForm
@@ -160,9 +158,6 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
           onClose={handleContestClose}
           ageGroup={ageGroup}
           registration={registration}
-        // orderFestival={orderFestival}
-        // festivalId={festivalId}
-        // activeOrderHandler={handleActiveOrder}
         />
       </Box>
       {orderButton()}
