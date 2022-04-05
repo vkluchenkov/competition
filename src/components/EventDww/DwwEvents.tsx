@@ -1,5 +1,5 @@
 import { ListItemText, Button, List, ListItem, Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WorkshopsForm } from "./WorkshopsForm";
 import { styles } from "./styles";
@@ -7,6 +7,10 @@ import { ContestForm } from "./ContestForm";
 import { Registration } from "./types";
 import { OrderFestival } from "../../pages/Order/types";
 import { useNavigate } from "react-router-dom";
+import { useFormContext } from "react-hook-form";
+import { FormFields } from './types';
+import { useMutation } from "react-query";
+import { register } from "../../api";
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
@@ -16,6 +20,7 @@ interface DwwEventsProps {
 }
 
 export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration, orderFestival }) => {
+  var _ = require('lodash');
   const navigate = useNavigate()
   const { t } = useTranslation();
 
@@ -27,12 +32,63 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
   const handleContestOpen = () => setContestOpen(true);
   const handleContestClose = () => setContestOpen(false);
 
+  const { watch, handleSubmit, formState, setValue } = useFormContext<FormFields>();
+  const SubmitMutation = useMutation<any, any, any, any>(register);
+
   const [isActiveOrder, setIsActiveOrder] = useState(false);
   const handleActiveOrder = (value: boolean) => setIsActiveOrder(!!value)
+
+  const selectedWs = watch("workshops").filter((ws) => ws.selected)
+  const selectedContest = watch("contest").filter((cat) => cat.selected);
+  const isSoloPass = watch("isSoloPass");
+  const isFullPass = watch("isFullPass")
 
   useEffect(() => {
     if (orderFestival) setIsActiveOrder(true)
   }, [orderFestival])
+
+  useEffect(() => {
+    if (SubmitMutation.data) setIsActiveOrder(true)
+  }, [SubmitMutation.data])
+
+  useEffect(() => {
+    if (
+      formState.touchedFields.workshops ||
+      formState.touchedFields.isFullPass ||
+      formState.touchedFields.contest ||
+      formState.touchedFields.isSoloPass
+    ) {
+      console.log("submit")
+      debounced()
+    }
+  }, [selectedWs.length, selectedContest.length, formState, isFullPass, isSoloPass])
+
+  const onSubmit = useCallback(async () => {
+    handleSubmit(async () => {
+      const contest = selectedContest ? selectedContest.map((category) => category.id) : []
+      const workshops = selectedWs ? selectedWs.map((ws) => ws.id) : []
+
+      const submitPayload = {
+        workshops,
+        contest,
+        isFullPass,
+        isSoloPass,
+        festivalId
+      }
+      await SubmitMutation.mutateAsync(submitPayload);
+    })();
+  }, [selectedContest, selectedWs, isSoloPass, isFullPass])
+
+  const debounced = useCallback(_.debounce(() => {
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    onSubmit()
+    // .then(() => {
+    //   setConfirmationActive(true)
+    //   delay(1500)
+    //     .then(() => setConfirmationActive(false))
+    // }
+    // )
+  }, 1000), [onSubmit]);
 
   const orderButton = () => {
     if (isActiveOrder) {
@@ -93,10 +149,10 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
           open={wsOpen}
           onClose={handleWsClose}
           ageGroup={ageGroup}
-          festivalId={festivalId}
+          // festivalId={festivalId}
           registration={registration}
           orderFestival={orderFestival}
-          activeOrderHandler={handleActiveOrder}
+        // activeOrderHandler={handleActiveOrder}
         />
 
         <ContestForm
@@ -104,8 +160,9 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
           onClose={handleContestClose}
           ageGroup={ageGroup}
           registration={registration}
-          orderFestival={orderFestival}
-          festivalId={festivalId}
+        // orderFestival={orderFestival}
+        // festivalId={festivalId}
+        // activeOrderHandler={handleActiveOrder}
         />
       </Box>
       {orderButton()}

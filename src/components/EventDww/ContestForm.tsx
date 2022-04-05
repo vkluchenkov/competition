@@ -17,28 +17,20 @@ import {
 import { styles } from "./styles"
 import { useTranslation } from "react-i18next";
 import { InputCheckbox } from "../../ui-kit/input";
-import { OrderFestival } from "../../pages/Order/types";
-import { useMutation, useQueryClient } from "react-query";
-import { register } from "../../api";
+import clsx from "clsx";
 
 interface ContestFormProps {
   open: boolean;
   onClose: () => void;
   ageGroup: string | undefined;
   registration: Registration | null;
-  orderFestival: OrderFestival | null;
-  festivalId: number;
 };
 
-export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, orderFestival, festivalId }) => {
-
+export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration }) => {
   // Hooks
   const { t } = useTranslation();
-  const { control, watch, handleSubmit, setValue } = useFormContext<FormFields>();
-
-  const SubmitMutation = useMutation<string, any, any, any>(register);
-
-  const queryClient = useQueryClient();
+  const { control, watch, setValue, formState } = useFormContext<FormFields>();
+  const [confirmationActive, setConfirmationActive] = useState(false);
 
   const { fields } = useFieldArray({
     control,
@@ -53,39 +45,18 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     };
   });
 
-  const [isSoloPass, setIsSoloPass] = useState(() => (registration?.isSoloPass || orderFestival?.isSoloPass || false))
-
-  const [isFullPass, setIsFullPass] = useState(() => (registration?.isFullPass || orderFestival?.isFullPass || false))
-
   // States
   const selectedContest = watch("contest").filter((cats) => cats.selected);
-  const selectedWs = watch("workshops").filter((ws) => ws.selected);
+  const isSoloPass = watch("isSoloPass")
+  const isFullPass = watch("isFullPass")
 
   // Handlers
-  const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setIsSoloPass(event.target.checked)
+  const handleSoloPass = (event: React.ChangeEvent<HTMLInputElement>) => setValue("isSoloPass", event.target.checked, { shouldTouch: true });
 
   const handleChange = (catId: number, event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const catIndex = watchContest.findIndex((cat: any) => cat.id === catId);
-    setValue(`contest.${catIndex}.selected`, checked);
+    setValue(`contest.${catIndex}.selected`, checked, { shouldTouch: true });
   }
-
-  const onSubmit = handleSubmit(async () => {
-    const contest = selectedContest ? selectedContest.map((category) => category.id) : []
-    const workshops = selectedWs ? selectedWs.map((ws) => ws.id) : []
-
-    const submitPayload = {
-      workshops,
-      contest,
-      isFullPass,
-      isSoloPass,
-      festivalId
-    }
-
-    await SubmitMutation.mutateAsync(submitPayload);
-    queryClient.refetchQueries("isOrder");
-    queryClient.refetchQueries("isRegistration");
-    onClose()
-  })
 
   // Calculations
   const soloPassPrice = useCallback(() => {
@@ -113,7 +84,8 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
     }), 0)
   }, [selectedContest, isSoloPass, isFullPass, soloPassPrice])
 
-  const submitBtnLabel = orderFestival && total === 0 ? "Clear order" : t('Dww.submitBtn');
+  const submitConfirmation = <Typography variant="body1" css={styles.confirmation} className={clsx({ confirmationActive })}>Saved!</Typography>
+
 
   // Categories mapping
   const categories = controlledFields.map((cat) => {
@@ -227,13 +199,8 @@ export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGrou
       <DialogActions sx={styles.bottomBar}>
         <Typography variant="body1" sx={styles.total}>Total: €{total}</Typography>
         <div css={styles.buttonsContainer}>
+          {submitConfirmation}
           <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
-          <Button
-            disabled={false}
-            onClick={onSubmit}
-            variant="outlined">
-            {submitBtnLabel}
-          </Button>
         </div>
       </DialogActions>
     </Dialog>

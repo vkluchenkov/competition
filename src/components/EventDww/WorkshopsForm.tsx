@@ -22,31 +22,24 @@ import { WorkshopsByDate } from "./WorkshopsByDate"
 import { Filters } from "./WorkshopsFilters";
 import { useFormContext } from "react-hook-form";
 import { FormFields } from './types';
-import { useMutation } from "react-query";
-import { register } from "../../api";
 import { Registration } from "./types";
 import { OrderFestival } from "../../pages/Order/types";
-import { useIsMounted } from 'usehooks-ts'
 import clsx from "clsx";
 
 interface WorkshopsFormProps {
   open: boolean;
   onClose: () => void;
   ageGroup: string | undefined;
-  festivalId: number;
   registration: Registration | null;
   orderFestival: OrderFestival | null;
-  activeOrderHandler: (value: boolean) => void;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, festivalId, registration, orderFestival, activeOrderHandler }) => {
-  var _ = require('lodash');
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, registration, orderFestival }) => {
   // Hooks
   const { t } = useTranslation();
-  const isMounted = useIsMounted();
-  const { watch, handleSubmit } = useFormContext<FormFields>();
+  const { watch, setValue } = useFormContext<FormFields>();
   const [singles, setSingles] = useState({});
   const [radioDisabled, setRadioDisabled] = useState(false);
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
@@ -64,16 +57,15 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     return basePrices.fullPass
   }, [ageGroup, registration?.isFullPass])
 
-  const SubmitMutation = useMutation<any, any, any, any>(register);
 
   // States
   const selectedWs = watch("workshops").filter((ws) => ws.selected)
-  const selectedContest = watch("contest").filter((cat) => cat.selected);
 
   // Устанавливаем выбор и/или блокировки на выбор фулл пасса если есть воркшопы в регистрации или ордере
   useEffect(() => {
     if (orderFestival && orderFestival?.isFullPass) {
       setWorkshopsType("fullPass")
+      setValue("isFullPass", true, { shouldTouch: false })
       setRadioDisabled(false)
     }
     if (orderFestival && orderFestival?.workshops.length > 0) {
@@ -82,6 +74,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     }
     if (registration && registration?.isFullPass) {
       setWorkshopsType("fullPass")
+      setValue("isFullPass", true, { shouldTouch: false })
       setRadioDisabled(true)
     }
 
@@ -90,20 +83,6 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
       setRadioDisabled(true)
     }
   }, [orderFestival, registration])
-
-  useEffect(() => {
-    if (isMounted()) {
-      console.log(selectedWs)
-      console.log(workshopsType)
-      debounced()
-    }
-  }, [workshopsType, selectedWs.length, isMounted])
-
-  useEffect(() => {
-    if (SubmitMutation.data) {
-      activeOrderHandler(SubmitMutation.data.isActiveOrder)
-    }
-  }, [SubmitMutation.data])
 
   const total = useMemo(() => {
     if (workshopsType === "fullPass") {
@@ -123,33 +102,14 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
     });
   };
 
-  const onSubmit = useCallback(async () => {
-    handleSubmit(async () => {
-      const isFullPass = !!(workshopsType === "fullPass")
-      const workshops = !isFullPass && selectedWs ? selectedWs.map((ws) => ws.id) : []
-      const contest = selectedContest ? selectedContest.map(cat => cat.id) : []
-      const submitPayload = {
-        workshops,
-        contest,
-        isFullPass,
-        festivalId
-      }
-      await SubmitMutation.mutateAsync(submitPayload);
-
-    })();
-  }, [workshopsType, selectedWs, selectedContest])
-
-
-  const debounced = useCallback(_.debounce(() => {
-    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-    onSubmit()
-      .then(() => {
-        setConfirmationActive(true)
-        delay(1500)
-          .then(() => setConfirmationActive(false))
-      }
-      )
-  }, 1000), [onSubmit]);
+  const handleFullPass = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
+    if (value === "fullPass") {
+      setValue("isFullPass", true, { shouldTouch: true })
+    } else {
+      setValue("isFullPass", false, { shouldTouch: true })
+    }
+    setWorkshopsType(value as WorkshopsType)
+  }
 
   const handleSorting = (event: React.MouseEvent<HTMLElement>, newSort: string,) => setSorting(newSort);
 
@@ -171,7 +131,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
               row
               name="workshops-selection"
               value={workshopsType || ""}
-              onChange={(event, value) => setWorkshopsType(value as WorkshopsType)}
+              onChange={(event, value) => handleFullPass(event, value)}
             >
               <FormControlLabel
                 value="fullPass"
@@ -216,12 +176,6 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
         <div css={styles.buttonsContainer}>
           {submitConfirmation}
           <Button onClick={onClose}>{t('Dww.cancelBtn')}</Button>
-          {/* <Button
-            disabled={false}
-            onClick={onSubmit}
-            variant="outlined">
-            {submitBtnLabel}
-          </Button> */}
         </div>
       </DialogActions>
     </Dialog>

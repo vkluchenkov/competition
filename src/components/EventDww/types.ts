@@ -26,6 +26,8 @@ export interface ContestCategory {
 export interface FormFields {
   workshops: (Workshop & { selected: boolean; disabled: boolean })[];
   contest: (ContestCategory & { selected: boolean; disabled: boolean })[];
+  isSoloPass: boolean;
+  isFullPass: boolean;
 }
 
 export interface Registration {

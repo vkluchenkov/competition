@@ -47,7 +47,7 @@ export const WorkshopsByTeacher: React.FC<WorkshopsByTeacherProps> = () => {
 
   const handleChange = (wsId: number, event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const wsIndex = watchWorkshops.findIndex((ws: any) => ws.id === wsId);
-    setValue(`workshops.${wsIndex}.selected`, checked);
+    setValue(`workshops.${wsIndex}.selected`, checked, { shouldTouch: true });
   }
 
 

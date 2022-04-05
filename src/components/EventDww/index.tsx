@@ -21,7 +21,14 @@ export const Dww: React.FC<DwwProps> = ({ festival, registration, orderFestival 
   const [{ currentUser }] = useUser();
 
   // Form setup
-  const methods = useForm<FormFields>({ defaultValues: { workshops: [], contest: [] } });
+  const methods = useForm<FormFields>({
+    defaultValues: {
+      workshops: [],
+      contest: [],
+      isSoloPass: registration?.isSoloPass || orderFestival?.isSoloPass || false,
+      isFullPass: registration?.isFullPass || orderFestival?.isFullPass || false
+    }
+  });
   const { setValue } = methods;
 
   // Workshops and contest categories data

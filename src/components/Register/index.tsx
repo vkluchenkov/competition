@@ -27,7 +27,6 @@ export const Register: React.FC = () => {
     },
   })
 
-
   const { data: festivalData, isLoading: isFestivalLoading } = useQuery('isFestival', () => getFestival(festivalUrl), {
     onError: (error: any) => {
       if (error?.response?.status === 404) {
