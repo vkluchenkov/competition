@@ -11,6 +11,7 @@ import { useFormContext } from "react-hook-form";
 import { FormFields } from './types';
 import { useMutation } from "react-query";
 import { register } from "../../api";
+import { debounce } from 'lodash'
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
@@ -20,7 +21,6 @@ interface DwwEventsProps {
 }
 
 export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, registration, orderFestival }) => {
-  var _ = require('lodash');
   const navigate = useNavigate()
   const { t } = useTranslation();
 
@@ -59,7 +59,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
       formState.touchedFields.isSoloPass
     ) {
       console.log("submit")
-      debounced()
+      debouncedSubmit()
     }
   }, [selectedWs.length, selectedContest.length, formState, isFullPass, isSoloPass])
 
@@ -79,15 +79,15 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
     })();
   }, [selectedContest, selectedWs, isSoloPass, isFullPass])
 
-  const debounced = useCallback(_.debounce(() => {
+  const debouncedSubmit = useCallback(debounce(() => {
     const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     onSubmit()
-    // .then(() => {
-    //   setConfirmationActive(true)
-    //   delay(1500)
-    //     .then(() => setConfirmationActive(false))
-    // }
-    // )
+      .then(() => {
+        setConfirmationActive(true)
+        delay(1500)
+          .then(() => setConfirmationActive(false))
+      }
+      )
   }, 1000), [onSubmit]);
 
   const orderButton = () => {

@@ -103,11 +103,7 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   };
 
   const handleFullPass = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-    if (value === "fullPass") {
-      setValue("isFullPass", true, { shouldTouch: true })
-    } else {
-      setValue("isFullPass", false, { shouldTouch: true })
-    }
+    setValue("isFullPass", value === "fullPass", { shouldTouch: true })
     setWorkshopsType(value as WorkshopsType)
   }
 
