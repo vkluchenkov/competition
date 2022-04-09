@@ -24,13 +24,13 @@ interface ContestFormProps {
   onClose: () => void;
   ageGroup: string | undefined;
   registration: Registration | null;
+  confirmationActive: boolean;
 };
 
-export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration }) => {
+export const ContestForm: React.FC<ContestFormProps> = ({ open, onClose, ageGroup, registration, confirmationActive }) => {
   // Hooks
   const { t } = useTranslation();
   const { control, watch, setValue, formState } = useFormContext<FormFields>();
-  const [confirmationActive, setConfirmationActive] = useState(false);
 
   const { fields } = useFieldArray({
     control,

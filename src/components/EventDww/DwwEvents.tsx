@@ -35,8 +35,10 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
   const { watch, handleSubmit, formState, setValue } = useFormContext<FormFields>();
   const SubmitMutation = useMutation<any, any, any, any>(register);
 
+  const [confirmationActive, setConfirmationActive] = useState(false);
+
+
   const [isActiveOrder, setIsActiveOrder] = useState(false);
-  const handleActiveOrder = (value: boolean) => setIsActiveOrder(!!value)
 
   const selectedWs = watch("workshops").filter((ws) => ws.selected)
   const selectedContest = watch("contest").filter((cat) => cat.selected);
@@ -151,6 +153,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
           ageGroup={ageGroup}
           registration={registration}
           orderFestival={orderFestival}
+          confirmationActive={confirmationActive}
         />
 
         <ContestForm
@@ -158,6 +161,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
           onClose={handleContestClose}
           ageGroup={ageGroup}
           registration={registration}
+          confirmationActive={confirmationActive}
         />
       </Box>
       {orderButton()}

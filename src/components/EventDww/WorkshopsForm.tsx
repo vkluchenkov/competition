@@ -32,11 +32,12 @@ interface WorkshopsFormProps {
   ageGroup: string | undefined;
   registration: Registration | null;
   orderFestival: OrderFestival | null;
+  confirmationActive: boolean;
 };
 
 type WorkshopsType = "fullPass" | "single";
 
-export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, registration, orderFestival }) => {
+export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, ageGroup, registration, orderFestival, confirmationActive }) => {
   // Hooks
   const { t } = useTranslation();
   const { watch, setValue } = useFormContext<FormFields>();
@@ -44,7 +45,6 @@ export const WorkshopsForm: React.FC<WorkshopsFormProps> = ({ open, onClose, age
   const [radioDisabled, setRadioDisabled] = useState(false);
   const [workshopsType, setWorkshopsType] = useState<WorkshopsType | null>(null);
   const [sorting, setSorting] = React.useState('teacher');
-  const [confirmationActive, setConfirmationActive] = useState(false);
 
   // Calculations
   const fullPassPrice = useCallback(() => {
