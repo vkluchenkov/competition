@@ -11,7 +11,7 @@ import { useFormContext } from "react-hook-form";
 import { FormFields } from './types';
 import { useMutation } from "react-query";
 import { register } from "../../api";
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 
 interface DwwEventsProps {
   ageGroup?: string | undefined;
@@ -36,8 +36,6 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
   const SubmitMutation = useMutation<any, any, any, any>(register);
 
   const [confirmationActive, setConfirmationActive] = useState(false);
-
-
   const [isActiveOrder, setIsActiveOrder] = useState(false);
 
   const selectedWs = watch("workshops").filter((ws) => ws.selected)
@@ -59,10 +57,7 @@ export const DwwEvents: React.FC<DwwEventsProps> = ({ ageGroup, festivalId, regi
       formState.touchedFields.isFullPass ||
       formState.touchedFields.contest ||
       formState.touchedFields.isSoloPass
-    ) {
-      console.log("submit")
-      debouncedSubmit()
-    }
+    ) debouncedSubmit()
   }, [selectedWs.length, selectedContest.length, formState, isFullPass, isSoloPass])
 
   const onSubmit = useCallback(async () => {
